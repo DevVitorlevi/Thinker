@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+
+import image1 from '../assets/ft1.png'
+import { Container, Imagediv, Formdiv } from '../styles/Login'
 
 const Register = () => {
     return (
-        <div className="container">
-            <div className="image">
-
-            </div>
-            <div className='form'>
-
-            </div>
-        </div>
+        <>
+            <Container>
+                <Imagediv>
+                    <h1 className='font'>THINKER</h1>
+                    <img src={image1} alt="" />
+                </Imagediv>
+                <Formdiv>
+                    <form>
+                        <input type="text" />
+                    </form>
+                </Formdiv>
+            </Container>
+        </>
     )
 }
 
