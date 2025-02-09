@@ -4,25 +4,31 @@ export const Container = styled.div`
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-    font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */
-    border: 1px solid black
+    font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */   
     
 `
 export const Imagediv = styled.div`
     background-color: #C87BDA;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     .font{
         position: absolute;
-        top: 2%;
+        top: 5%;
         left: 15px;
         color:white;
         font-size: 24px;
         font-weight: 600;
+        z-index: 999999;
     }
-    height: 20vh;
+    height: 25vh;   
     img{
-        width: 150px;
-        margin: auto;
+        width: 190px;
         display: block;
+        object-fit: contain;
     }
 ` 
 export const Formdiv = styled.div`
@@ -33,8 +39,7 @@ export const Formdiv = styled.div`
             font-weight: 600;
             margin-top:25px;
             margin-left: 10px;
-        }    
-        
+        }
 `
 export const Divider = styled.div`
     display: flex;
@@ -56,4 +61,81 @@ export const Divider = styled.div`
 export const Text = styled.span`
     font-size: 14px;
     color: #5a6285; /* Cor do texto */
-    `;
+
+`;
+export const Form = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;   
+    form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+    
+    }
+    .inputs{
+        position: relative;
+    }
+    .required{
+        color: red;
+        font-size: 15px;
+        margin-top: 5px;
+        display: none;
+    }
+    .input{
+        max-width:25rem;
+        min-width: 20rem;
+        height: 40px;
+        background-color: #F6F7FB;
+        outline: 0;
+        border: 0;
+        border-radius: 15px;
+        text-indent: 10px;
+    }
+    ::placeholder{
+        color: #939BB4;
+        font-size: 16px;
+        font-weight: 700;
+    }
+    .eye-c,.eye{
+        position: absolute;
+        right: 5px;
+        top: 28px;
+        color: #C87BDA;
+    }
+    p{
+        margin-bottom: 3px;
+    }
+
+    button{
+        background-color: #C87BDA;
+        font-size: 17px;
+        color: white;
+        border: 0;
+        width: 100%;
+        height: 55px;  
+        border-radius:15px ;
+        transition: .4s;
+    }
+    button:active{
+        background-color: #D394E2;
+        
+    }
+    button:hover{
+        background-color: #D394E2;
+    }
+
+    a{
+        text-decoration: none;
+        color: #5A6582;
+        border: 2px solid #D9DDE8;
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        border-radius: 15px;
+    }
+
+`
