@@ -83,7 +83,7 @@ export const Form = styled.div`
         color: red;
         font-size: 15px;
         margin-top: 5px;
-        display: none;
+        display: block;
     }
     .input{
         max-width:25rem;
@@ -105,6 +105,7 @@ export const Form = styled.div`
         right: 5px;
         top: 28px;
         color: #C87BDA;
+        cursor: pointer;
     }
     p{
         margin-bottom: 3px;
