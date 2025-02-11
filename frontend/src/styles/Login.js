@@ -8,13 +8,15 @@ export const Container = styled.div`
     
 `
 export const Imagediv = styled.div`
-    background-color: #C87BDA;
-    overflow: hidden;
+    background-color: #7D49AB;
     position: relative;
     display: flex;
+    overflow: hidden;
     align-items: center;
     justify-content: center;
-
+    .desktop{
+        display: none;
+    }
     .font{
         position: absolute;
         top: 5%;
@@ -25,21 +27,83 @@ export const Imagediv = styled.div`
         z-index: 999999;
     }
     height: 25vh;   
-    img{
-        width: 190px;
+    .mobile{
         display: block;
         object-fit: contain;
+    }
+    @media screen and (min-width:320px) and (max-width:360px){
+        .mobile{
+            width: 130px;
+        }
+    }
+    @media screen and (min-width:360px) and (max-width:375px) {
+        .mobile{    
+            position: absolute;
+            top: 0%;
+            width: 190px;
+        }
+    }
+    @media screen and (min-width:375px) and (max-width:390px){
+        .mobile{
+            position: absolute;
+            top: -5%;
+            width: 200px;
+        }
+    }
+    @media screen and (min-width:391px) and (max-width:430px){
+        .mobile{
+            position: absolute;
+            top: -2%;
+            width: 220px;
+        }
+    }
+    @media screen and (min-width:768px) and (max-width:800px){
+        .mobile{
+            position: absolute;
+            top: -5%;
+            width: 260px;
+        }
+        .font{
+            font-size: 32px;
+        }
+    }
+    @media screen and (min-width:800px) and (max-width:834px) {
+        .mobile{
+            position: absolute;
+            top: -5%;
+            width: 320px;
+        }
+        .font{
+            font-size: 36px;
+        }
+    }
+    @media screen and (min-width:884px) and (max-width:992px){
+        .mobile{
+            position: absolute;
+            top: -5%;
+            width: 300px;
+        }
+        .font{
+            font-size: 36px;
+        
+        }
     }
 ` 
 export const Formdiv = styled.div`
         height: 70vh;
+        display: block;
         .titulo{
             font-size: 24px;
             color: #5A6582;
             font-weight: 600;
-            margin-top:25px;
-            margin-left: 10px;
+            margin-top:45px;
+            margin-left: 20px;
         }
+        @media screen and (min-width:768px) and (max-width:992px){
+        .titulo{
+            font-size: 32px;
+        }
+    }
 `
 export const Divider = styled.div`
     display: flex;
@@ -61,7 +125,10 @@ export const Divider = styled.div`
 export const Text = styled.span`
     font-size: 14px;
     color: #5a6285; /* Cor do texto */
-
+    @media screen and (min-width:768px) and (max-width:992px){
+        
+        font-size: 24px;
+    }
 `;
 export const Form = styled.div`
     display: flex;
@@ -73,8 +140,7 @@ export const Form = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 30px;
-    
+        gap: 20px;
     }
     .inputs{
         position: relative;
@@ -104,7 +170,7 @@ export const Form = styled.div`
         position: absolute;
         right: 5px;
         top: 28px;
-        color: #C87BDA;
+        color: #7D49AB;
         cursor: pointer;
     }
     p{
@@ -112,7 +178,7 @@ export const Form = styled.div`
     }
 
     button{
-        background-color: #C87BDA;
+        background-color: #7D49AB;
         font-size: 17px;
         color: white;
         border: 0;
@@ -126,7 +192,7 @@ export const Form = styled.div`
         
     }
     button:hover{
-        background-color: #D394E2;
+        background-color:#821fda;
     }
 
     a{
@@ -139,4 +205,34 @@ export const Form = styled.div`
         border-radius: 15px;
     }
 
+    @media screen and (min-width:768px) and (max-width:992px){
+        form{
+            gap: 30px;
+        }
+        .required{
+            font-size: 18px;
+        }
+        .input{
+            max-width:55rem;
+            min-width: 40rem;
+            height: 50px;
+            font-size:20px;
+        }
+        p{
+            font-size: 20px;
+        }
+        .eye-c,.eye{
+            width: 30px;
+            height: 30px;
+            top: 35px;
+        }
+        button{
+            height: 68px;
+            font-size: 20px;
+        }
+        a{
+            height: 68px;
+            font-size: 20px;
+        }
+    }
 `

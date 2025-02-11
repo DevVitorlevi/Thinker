@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import image1 from '../assets/ft1.png'
+import image2 from '../assets/ft.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form } from '../styles/Login'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -44,8 +45,8 @@ const Register = () => {
             newErrors.email = "Email inválido";
             hasError = true;
         }
-        if (FormData.password.length < 6) {
-            newErrors.password = "A senha deve ter pelo menos 6 caracteres";
+        if (FormData.password.length < 8) {
+            newErrors.password = "A senha deve ter pelo menos 8 caracteres";
             hasError = true;
         }
 
@@ -74,11 +75,12 @@ const Register = () => {
             <Container>
                 <Imagediv>
                     <h1 className='font'>THINKER</h1>
-                    <img src={image1} alt="Thinker logo" />
+                    <img src={image1} alt="Thinker logo" className='mobile' />
+                    <img src={image2} className='desktop' />
                 </Imagediv>
                 <Formdiv>
                     <div className="entre">
-                        <h1 className='titulo'>Junte-se a THINKER</h1>
+                        <h1 className='titulo'>Cadastre-se no THINKER</h1>
                     </div>
                     <Divider>
                         <Text>ou com e-mail</Text>
@@ -130,7 +132,7 @@ const Register = () => {
                                 </span>
                             </div>
 
-                            <button type="submit">Entrar</button>
+                            <button type="submit">Cadastrar-se</button>
                             <Link to='/login' target='_blank'>Já é THINKER? Entre</Link>
                         </form>
                     </Form>
