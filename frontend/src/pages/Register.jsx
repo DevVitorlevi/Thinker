@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import image1 from '../assets/ft1.png'
 import image2 from '../assets/ft.png'
-import { Container, Imagediv, Formdiv, Divider, Text, Form } from '../styles/Login'
+import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../styles/Login'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -36,11 +36,6 @@ const Register = () => {
 
         let hasError = false;
         let newErrors = { name: "", email: "", password: "" };
-
-        if (FormData.name.trim() === "") {
-            newErrors.name = "Nome é obrigatório";
-            hasError = true;
-        }
         if (!emailRegex.test(FormData.email)) {
             newErrors.email = "Email inválido";
             hasError = true;
@@ -79,9 +74,13 @@ const Register = () => {
                     <img src={image2} className='desktop' />
                 </Imagediv>
                 <Formdiv>
-                    <div className="entre">
-                        <h1 className='titulo'>Cadastre-se no THINKER</h1>
-                    </div>
+                    <h1 className='titulo'>Cadastre-se no THINKER</h1>
+                    <Auth>
+                        <div className="google">
+                            <p>Entre com o Google</p>
+                        </div>
+
+                    </Auth>
                     <Divider>
                         <Text>ou com e-mail</Text>
                     </Divider>
@@ -130,10 +129,11 @@ const Register = () => {
                                 <span onClick={TogglePass}>
                                     {open ? <EyeClosed className="eye-c" /> : <Eye className="eye" />}
                                 </span>
+                                <Link to='/forgot' id='forgot'>Esqueci a Senha</Link>
                             </div>
 
                             <button type="submit">Cadastrar-se</button>
-                            <Link to='/login' target='_blank'>Já é THINKER? Entre</Link>
+                            <Link to='/login' target='_blank' id='link'>Já é THINKER? Entre</Link>
                         </form>
                     </Form>
                 </Formdiv>

@@ -4,8 +4,11 @@ export const Container = styled.div`
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-    font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */   
+    font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */
     
+    @media screen and (min-width:992px){
+        flex-direction: row;
+    }
 `
 export const Imagediv = styled.div`
     background-color: #7D49AB;
@@ -77,7 +80,7 @@ export const Imagediv = styled.div`
             font-size: 36px;
         }
     }
-    @media screen and (min-width:884px) and (max-width:992px){
+    @media screen and (min-width:883px) and (max-width:992px){
         .mobile{
             position: absolute;
             top: -5%;
@@ -86,6 +89,27 @@ export const Imagediv = styled.div`
         .font{
             font-size: 36px;
         
+        }
+    }
+    @media screen and (min-width:992px) {
+        overflow: unset;
+        .desktop{
+            position: absolute;
+            left: -1%; 
+            display: block;
+            width: 770px;
+        }
+        .mobile{
+            display: none;
+        }
+
+        height: 100vh;
+        display: flex;
+        width: 50vw;
+
+        .font{
+            font-size:36px;
+            top: 2%;
         }
     }
 ` 
@@ -97,13 +121,23 @@ export const Formdiv = styled.div`
             color: #5A6582;
             font-weight: 600;
             margin-top:45px;
+            margin-bottom: 20px;
             margin-left: 20px;
         }
         @media screen and (min-width:768px) and (max-width:992px){
         .titulo{
             font-size: 32px;
         }
+
     }
+    @media screen and (min-width:992px){
+        .titulo{
+        font-size: 30px;
+        text-align: left;
+        margin-left: 5rem;
+        }
+    }
+
 `
 export const Divider = styled.div`
     display: flex;
@@ -129,7 +163,8 @@ export const Text = styled.span`
         
         font-size: 24px;
     }
-`;
+
+`
 export const Form = styled.div`
     display: flex;
     flex-direction: column;
@@ -195,7 +230,7 @@ export const Form = styled.div`
         background-color:#821fda;
     }
 
-    a{
+    #link{
         text-decoration: none;
         color: #5A6582;
         border: 2px solid #D9DDE8;
@@ -203,6 +238,15 @@ export const Form = styled.div`
         padding: 20px;
         text-align: center;
         border-radius: 15px;
+    }
+    #forgot{
+        position: absolute;
+        top: 0;   
+        right: 1%;
+        width: 150px;
+        color:#7D49AB;
+        text-align: center;
+        text-decoration: none;
     }
 
     @media screen and (min-width:768px) and (max-width:992px){
@@ -233,6 +277,50 @@ export const Form = styled.div`
         a{
             height: 68px;
             font-size: 20px;
+        }
+    }
+    @media screen and (min-width:992px) {
+        width: 50vw;    
+        .input{
+            max-width: 40rem;
+            min-width: 30rem;
+            height:40px;
+            font-size:25px;
+        }
+        ::placeholder{
+            font-size: 20px;
+        }
+        .eye,.eye-c{
+            width: 32px;
+            height: 32px;
+            top: 30px;
+        }
+        p{
+            font-size: 22px;
+        }
+    }
+`
+export const Auth = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .google{
+        width:80%;
+        padding: 15px;
+        font-size: 16px;
+        text-align: center;
+        border: 2px solid #D9DDE8;
+        border-radius: 15px;
+    }
+    @media screen and (min-width:768px) {
+        .google{
+            font-size: 24px;
+        }
+    }
+    @media screen and (min-width:992px){
+        .google{
+            width: 60%;
+            margin: auto;
         }
     }
 `
