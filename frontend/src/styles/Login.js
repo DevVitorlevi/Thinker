@@ -3,6 +3,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100vw;
+    overflow: hidden;
     height: 100vh;
     font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */
     
@@ -34,6 +35,7 @@ export const Imagediv = styled.div`
         display: block;
         object-fit: contain;
     }
+
     @media screen and (min-width:320px) and (max-width:360px){
         .mobile{
             width: 130px;
@@ -80,7 +82,7 @@ export const Imagediv = styled.div`
             font-size: 36px;
         }
     }
-    @media screen and (min-width:883px) and (max-width:992px){
+    @media screen and (min-width:883px) and (max-width:1023px){
         .mobile{
             position: absolute;
             top: -5%;
@@ -91,13 +93,11 @@ export const Imagediv = styled.div`
         
         }
     }
-    @media screen and (min-width:992px) {
+    @media screen and (min-width:1024px) and (max-width:1280px){
         overflow: unset;
-        .desktop{
-            position: absolute;
-            left: -1%; 
+        .desktop{ 
             display: block;
-            width: 770px;
+            width: 900px;
         }
         .mobile{
             display: none;
@@ -124,13 +124,13 @@ export const Formdiv = styled.div`
             margin-bottom: 20px;
             margin-left: 20px;
         }
-        @media screen and (min-width:768px) and (max-width:992px){
+        @media screen and (min-width:768px) and (max-width:1023px){
         .titulo{
             font-size: 32px;
         }
 
     }
-    @media screen and (min-width:992px){
+    @media screen and (min-width:1024px) and (max-width:1280px){
         .titulo{
         font-size: 30px;
         text-align: left;
@@ -154,12 +154,11 @@ export const Divider = styled.div`
         border-bottom: 2px solid #ccc; /* Cor da linha */
         margin:4px; /* Espaço entre o texto e as linhas */
     }
-    `;
-
+    `
 export const Text = styled.span`
     font-size: 14px;
     color: #5a6285; /* Cor do texto */
-    @media screen and (min-width:768px) and (max-width:992px){
+    @media screen and (min-width:768px) and (max-width:1023px){
         
         font-size: 24px;
     }
@@ -222,6 +221,13 @@ export const Form = styled.div`
         border-radius:15px ;
         transition: .4s;
     }
+    .buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 30px;
+        width: 100%;
+    }
     button:active{
         background-color: #D394E2;
         
@@ -249,7 +255,7 @@ export const Form = styled.div`
         text-decoration: none;
     }
 
-    @media screen and (min-width:768px) and (max-width:992px){
+    @media screen and (min-width:768px) and (max-width:1023px){
         form{
             gap: 30px;
         }
@@ -279,24 +285,44 @@ export const Form = styled.div`
             font-size: 20px;
         }
     }
-    @media screen and (min-width:992px) {
-        width: 50vw;    
+    @media screen and (min-width:1024px) {
+        width: 50vw;
+        height :100vw ;
+        form{
+            gap: 30px;
+        } 
         .input{
             max-width: 40rem;
             min-width: 30rem;
-            height:40px;
+            height:50px;
             font-size:25px;
         }
         ::placeholder{
-            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
         }
         .eye,.eye-c{
             width: 32px;
             height: 32px;
-            top: 30px;
+            top: 36px;  
         }
         p{
             font-size: 22px;
+        }
+        #forgot{
+            font-size: 20px;
+            top: 5px;
+        }
+        #link{
+            font-size: 20px;
+        }
+        button{
+            font-size: 20px;
+        }
+        .required{
+            font-size: 20px;
         }
     }
 `
@@ -312,14 +338,14 @@ export const Auth = styled.div`
         border: 2px solid #D9DDE8;
         border-radius: 15px;
     }
-    @media screen and (min-width:768px) {
+    @media screen and (min-width:768px) and (max-width:1023px) {
         .google{
             font-size: 24px;
         }
     }
-    @media screen and (min-width:992px){
+    @media screen and (min-width:1024px){
         .google{
-            width: 60%;
+            width: 70%;
             margin: auto;
         }
     }

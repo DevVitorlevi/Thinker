@@ -132,8 +132,10 @@ const Register = () => {
                                 <Link to='/forgot' id='forgot'>Esqueci a Senha</Link>
                             </div>
 
-                            <button type="submit">Cadastrar-se</button>
-                            <Link to='/login' target='_blank' id='link'>Já é THINKER? Entre</Link>
+                            <div className="buttons">
+                                <button type="submit">Cadastrar-se</button>
+                                <Link to='/login' target='_blank' id='link'>Já é THINKER? Entre</Link>
+                            </div>
                         </form>
                     </Form>
                 </Formdiv>
