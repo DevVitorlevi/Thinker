@@ -3,12 +3,12 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100vw;
-    overflow: hidden;
     height: 100vh;
     font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */
     
-    @media screen and (min-width:992px){
+    @media screen and (min-width:1024px){
         flex-direction: row;
+        overflow: hidden;
     }
 `
 export const Imagediv = styled.div`
@@ -85,19 +85,23 @@ export const Imagediv = styled.div`
     @media screen and (min-width:883px) and (max-width:1023px){
         .mobile{
             position: absolute;
-            top: -5%;
-            width: 300px;
         }
         .font{
             font-size: 36px;
         
         }
     }
-    @media screen and (min-width:1024px) and (max-width:1280px){
+    @media screen and (min-width:1024px) and (max-width:1279px){
         overflow: unset;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         .desktop{ 
             display: block;
-            width: 900px;
+            position: absolute;
+            left:-5%;
+            min-width: 670px;
+            max-width: 900px;
         }
         .mobile{
             display: none;
