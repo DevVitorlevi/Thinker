@@ -6,7 +6,7 @@ export const Container = styled.div`
     height: 100vh;
     font-family: 'Josefin Sans', sans-serif; /* Aplica a fonte apenas aqui */
     
-    @media screen and (min-width:1024px){
+    @media screen and (min-width:1025px){
         flex-direction: row;
         overflow: hidden;
     }
@@ -78,16 +78,16 @@ export const Imagediv = styled.div`
             font-size: 36px;
         }
     }
-    @media screen and (min-width:883px) and (max-width:1023px){
+    @media screen and (min-width:883px) and (max-width:1024px){
         .mobile{
-            width: 300px;
+            width: 250px;
         }
         .font{
             font-size: 36px;
         
         }
     }
-    @media screen and (min-width:1024px) and (max-width:1279px){
+    @media screen and (min-width:1025px) and (max-width:1279px){
         overflow: unset;
         display: flex;
         align-items: center;
@@ -107,6 +107,43 @@ export const Imagediv = styled.div`
         .font{
             font-size:36px;
             top: 2%;
+        }
+    }
+    @media screen and (min-width: 1280px) and (max-width:1366px){
+        height: 100vh;
+        width: 50vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .font{
+            top: 2%;
+            font-size: 32px;
+        }
+        .desktop{
+                display: block;
+                min-width: 700px;
+
+        }
+        .mobile{
+            display: none;
+        }
+    }
+    @media screen and (min-width:1367px){
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .font{
+            top: 2%;
+            font-size: 32px;
+        }
+        .desktop{
+                display: block;
+                min-width: 900px;
+
+        }
+        .mobile{
+            display: none;
         }
     }
 ` 
@@ -132,6 +169,16 @@ export const Formdiv = styled.div`
         font-size: 30px;
         text-align: left;
         margin-left: 5rem;
+        }
+    }
+    @media screen and (min-width:1281px) and (max-width:1366px) {
+        .titulo{
+            font-size: 36px;
+        }
+    }
+    @media screen  and (min-width:1367px){
+        .titulo{
+            font-size: 40px ;
         }
     }
 
@@ -165,6 +212,7 @@ export const Form = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width:100%;   
     form{
         display: flex;
@@ -252,7 +300,7 @@ export const Form = styled.div`
         text-decoration: none;
     }
 
-    @media screen and (min-width:768px) and (max-width:1023px){
+    @media screen and (min-width:768px) and (max-width:1024px){
         form{
             gap: 30px;
         }
@@ -282,9 +330,8 @@ export const Form = styled.div`
             font-size: 20px;
         }
     }
-    @media screen and (min-width:1024px) {
+    @media screen and (min-width:1025px) and (max-width:1280px) {
         width: 50vw;
-        height :100vw ;
         form{
             gap: 30px;
         } 
@@ -318,10 +365,99 @@ export const Form = styled.div`
         button{
             font-size: 20px;
         }
+    }
         .required{
             font-size: 20px;
-        }
     }
+    @media screen and (min-width:1281px) and (max-width:1366px) {
+        width: 50vw;
+        form{
+            gap: 30px;
+        } 
+        .input{
+            max-width: 40rem;
+            min-width: 35rem;
+            height:60px;
+            font-size:28px;
+        }
+        ::placeholder{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        .eye,.eye-c{
+            width: 35px;
+            height: 35px;
+            top: 38px;  
+        }
+        p{
+            font-size: 24px;
+        }
+        #forgot{
+            font-size: 20px;
+            top: 5px;
+        }
+        #link{
+            font-size: 24px;
+            text-align: center;
+        }
+        button{
+            font-size: 24px;
+            height: 80px;
+        }
+        .buttons{
+            gap: 30px;
+        }
+        .required{
+            font-size: 24px;
+        }
+    }  
+    @media screen and (min-width:1367px) {
+        width: 53vw;
+        margin-top: 30px;
+        form{
+            gap: 30px;
+        } 
+        .input{
+            max-width: 50rem;
+            min-width: 45rem;
+            height:70px;
+            font-size:28px;
+        }
+        ::placeholder{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        .eye,.eye-c{
+            width: 40px;
+            height: 40px;
+            top: 46px;  
+        }
+        p{
+            font-size: 28px;
+        }
+        #forgot{
+            font-size: 20px;
+            top: 5px;
+        }
+        #link{
+            font-size: 24px;
+            text-align: center;
+        }
+        button{
+            font-size: 24px;
+            height: 80px;
+        }
+        .buttons{
+            gap: 30px;
+        }
+        .required{
+            font-size: 24px;
+        }
+    }  
 `
 export const Auth = styled.div`
     display: flex;
@@ -340,10 +476,19 @@ export const Auth = styled.div`
             font-size: 24px;
         }
     }
-    @media screen and (min-width:1024px){
+    @media screen and (min-width:1024px) and (max-width:1279px){
         .google{
             width: 70%;
             margin: auto;
+        }
+    }
+    @media screen and (min-width: 1280px) {
+        .google{
+            width: 80%;
+            padding: 20px;
+            font-size: 26px;
+            margin-top: 30px;
+            margin-bottom: 30px
         }
     }
 `
