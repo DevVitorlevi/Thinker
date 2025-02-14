@@ -114,7 +114,7 @@ const Register = () => {
 
                             <div className="buttons">
                                 <button type="submit">Entre</button>
-                                <Link to='/login' target='_blank' id='link'>Novo no THINKER? Criar uma conta</Link>
+                                <Link to='/register' id='link'>Novo no THINKER? Criar uma conta</Link>
                             </div>
                         </form>
                     </Form>

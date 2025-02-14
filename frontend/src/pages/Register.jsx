@@ -134,7 +134,7 @@ const Register = () => {
 
                             <div className="buttons">
                                 <button type="submit">Cadastrar-se</button>
-                                <Link to='/login' target='_blank' id='link'>Já é THINKER? Entre</Link>
+                                <Link to='/login' id='link'>Já é THINKER? Entre</Link>
                             </div>
                         </form>
                     </Form>
