@@ -206,6 +206,9 @@ export const Text = styled.span`
         
         font-size: 24px;
     }
+    @media screen and (min-width: 1024px) {
+        font-size: 24px;
+    }
 
 `
 export const Form = styled.div`
