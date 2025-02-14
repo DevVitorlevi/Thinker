@@ -43,8 +43,6 @@ export const Imagediv = styled.div`
     }
     @media screen and (min-width:360px) and (max-width:375px) {
         .mobile{    
-            position: absolute;
-            top: 0%;
             width: 190px;
         }
     }
@@ -52,13 +50,11 @@ export const Imagediv = styled.div`
         .mobile{
             position: absolute;
             top: -5%;
-            width: 200px;
+            width: 180px;
         }
     }
-    @media screen and (min-width:391px) and (max-width:430px){
+    @media screen and (min-width:391px) and (max-width:440px){
         .mobile{
-            position: absolute;
-            top: -2%;
             width: 220px;
         }
     }
@@ -84,7 +80,7 @@ export const Imagediv = styled.div`
     }
     @media screen and (min-width:883px) and (max-width:1023px){
         .mobile{
-            position: absolute;
+            width: 300px;
         }
         .font{
             font-size: 36px;
@@ -98,10 +94,7 @@ export const Imagediv = styled.div`
         justify-content: center;
         .desktop{ 
             display: block;
-            position: absolute;
-            left:-5%;
-            min-width: 670px;
-            max-width: 900px;
+            min-width: 560px;
         }
         .mobile{
             display: none;
