@@ -1,5 +1,5 @@
 
-import { use, useRef, useState } from 'react'
+import React, { ChangeEvent, useRef, useState } from 'react'
 import image1 from '../../assets/image2.png'
 import image2 from '../../assets/image1.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../../styles/Form'
@@ -9,6 +9,32 @@ import { Link } from 'react-router-dom'
 
 const Register = () => {
     const [open, setopen] = useState(false)
+    const inputPass = useRef<HTMLInputElement>(null)
+
+    const toggleEye = () => {
+        if (!inputPass.current) return;
+        inputPass.current.type = open ? "password" : "text";
+        setopen(!open);
+    }
+
+    const [Formdata, setFormdata] = useState({
+        name: '',
+        email: '',
+        senha: ''
+    })
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        setFormdata({ name: '', email: '', senha: '' })
+
+    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setFormdata(prevData => (
+            { ...prevData, [name]: value }
+        ))
+    }
     return (
         <>
             <Container>
@@ -30,16 +56,17 @@ const Register = () => {
                         <Text>ou com e-mail</Text>
                     </Divider>
                     <Form>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="inputs">
                                 <p> Nome do Usuário </p>
                                 <input
                                     type="text"
-
                                     name='name'
+                                    value={Formdata.name}
                                     className='input'
                                     placeholder='Seu Nome'
                                     required
+                                    onChange={handleChange}
                                 />
 
                             </div>
@@ -50,8 +77,15 @@ const Register = () => {
                             </div>
                             <div className="inputs">
                                 <p>Senha</p>
-                                <input type="password"
-                                    placeholder='Digite sua Senha' className='input' />
+                                <input type={open ? 'password' : 'text'}
+                                    placeholder='Digite sua Senha' className='input'
+                                    ref={inputPass}
+                                />
+                                <span onClick={toggleEye}>
+
+                                    {open ? <EyeClosed className="eye-c" /> : <Eye className="eye" />}
+                                </span>
+
                             </div>
                             <button type="submit">Cadastre-se</button>
                             <Link to='/login' target='_blank' id='link'>Já Possui Conta? Entre</Link>
