@@ -5,11 +5,14 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
+//style
+import { GlobalStyle } from "./styles/Global"
 
 function App() {
 
   return (
     <>
+      <GlobalStyle />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
