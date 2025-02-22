@@ -1,5 +1,5 @@
 
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import image1 from '../../assets/image2.png'
 import image2 from '../../assets/image1.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../../styles/Form'
@@ -73,13 +73,16 @@ const Register = () => {
                             <div className="inputs">
                                 <p>Email</p>
                                 <input type="text" className='input'
-                                    placeholder='Insire seu enderenço de e-mail' />
+                                    placeholder='Insire seu enderenço de e-mail'
+                                    onChange={handleChange}
+                                />
                             </div>
                             <div className="inputs">
                                 <p>Senha</p>
                                 <input type={open ? 'password' : 'text'}
                                     placeholder='Digite sua Senha' className='input'
                                     ref={inputPass}
+                                    onChange={handleChange}
                                 />
                                 <span onClick={toggleEye}>
 
