@@ -22,11 +22,37 @@ const Register = () => {
         email: '',
         senha: ''
     })
+    const [error, setError] = useState(
+        {
+            email: '',
+            senha: '',
+        }
+    )
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+        let hasError = false
+        let NewErros = { email: '', senha: '' }
+
+        if (!emailRegex.test(Formdata.email)) {
+            NewErros.email = 'Email Inválido'
+            hasError = true
+        }
+
+        if (Formdata.senha.length < 8 || Formdata.senha.length > 30) {
+            NewErros.senha = 'Senha No Minimo 8 Caracteres e Maximo 30 Caracteres'
+            hasError = true
+        }
+
+        if (hasError) {
+            return setError(NewErros)
+        }
+
+        setError({ email: '', senha: '' })
         setFormdata({ name: '', email: '', senha: '' })
+
 
     }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +60,7 @@ const Register = () => {
         setFormdata(prevData => (
             { ...prevData, [name]: value }
         ))
+        setError({ email: '', senha: '' })
     }
     return (
         <>
@@ -68,24 +95,30 @@ const Register = () => {
                                     required
                                     onChange={handleChange}
                                 />
-
                             </div>
                             <div className="inputs">
                                 <p>Email</p>
-                                <input type="text" className='input'
+                                <input type="email" className={`input ${error.email ? 'input-error' : ''}`}
+                                    name='email'
+                                    value={Formdata.email}
                                     placeholder='Insire seu enderenço de e-mail'
                                     onChange={handleChange}
                                 />
+                                {error.email && <p className='required'>{error.email}</p>}
                             </div>
                             <div className="inputs">
                                 <p>Senha</p>
-                                <input type={open ? 'password' : 'text'}
-                                    placeholder='Digite sua Senha' className='input'
-                                    ref={inputPass}
-                                    onChange={handleChange}
-                                />
-                                <span onClick={toggleEye}>
 
+                                <input type={open ? 'password' : 'text'}
+                                    placeholder='Digite sua Senha' className={`input ${error.senha ? 'input-error' : ''}`}
+                                    ref={inputPass}
+                                    name='senha'
+                                    value={Formdata.senha}
+                                    onChange={handleChange}
+                                    maxLength={30}
+                                />
+                                {error.senha && <p className='required'>{error.senha}</p>}
+                                <span onClick={toggleEye}>
                                     {open ? <EyeClosed className="eye-c" /> : <Eye className="eye" />}
                                 </span>
 
@@ -95,7 +128,7 @@ const Register = () => {
                         </form>
                     </Form>
                 </Formdiv>
-            </Container>
+            </Container >
         </>
     )
 }

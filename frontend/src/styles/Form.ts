@@ -196,8 +196,9 @@ export const Form = styled.div`
     .required{
         color: red;
         font-size: 15px;
-        margin-top: 5px;
+        margin-top: 10px;
         display: block;
+        text-indent: 10px;
     }
     .input{
         max-width:25rem;
@@ -208,6 +209,9 @@ export const Form = styled.div`
         border: 0;
         border-radius: 15px;
         text-indent: 10px;
+    }
+    input:focus{
+        outline: 2px solid #7D49AB;
     }
     ::placeholder{
         color: #939BB4;
@@ -224,7 +228,9 @@ export const Form = styled.div`
     p{
         margin-bottom: 3px;
     }
-
+    .input-error{
+        border: 2px solid  red;
+    }
     button{
         background-color: #7D49AB;
         font-size: 17px;
