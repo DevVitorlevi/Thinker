@@ -124,7 +124,7 @@ const Register = () => {
 
                             </div>
                             <button type="submit">Cadastre-se</button>
-                            <Link to='/login' target='_blank' id='link'>Já Possui Conta? Entre</Link>
+                            <Link to='/login' id='link'>Já Possui Conta? Entre</Link>
                         </form>
                     </Form>
                 </Formdiv>
