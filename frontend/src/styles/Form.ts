@@ -124,6 +124,7 @@ export const Formdiv = styled.div`
             margin-bottom: 20px;
             margin-left: 20px;
         }
+        
         @media screen and (min-width:768px) and (max-width:1023px){
         .titulo{
             font-size: 32px;
@@ -273,6 +274,15 @@ export const Form = styled.div`
         color:#7D49AB;
         text-align: center;
         text-decoration: none;
+    }
+    @media screen and (min-width: 550px) and (max-width:768px){
+        form{
+            gap: 30px;
+        }
+        .input{
+            min-width: 28rem;
+            height: 50px;
+        }
     }
 
     @media screen and (min-width:768px) and (max-width:1024px){
