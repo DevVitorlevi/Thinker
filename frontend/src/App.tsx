@@ -10,6 +10,9 @@ import NotFound from "./pages/NotFound/NotFound";
 import { GlobalStyle } from "./styles/Global";
 import { useAuth } from "./hooks/useAuth";
 import { AuthProvider } from "./Context/AuthContext";
+//Components
+import Header from "./components/Header";
+
 
 // App component
 function App() {
@@ -29,6 +32,7 @@ function App() {
       {/* Passando o valor do usuário para o AuthProvider */}
       <AuthProvider>
         <GlobalStyle />
+        <Header />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
