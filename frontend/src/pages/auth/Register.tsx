@@ -5,9 +5,12 @@ import image2 from '../../assets/image1.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../../styles/Form'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { signInWithGoogle } from '../../hooks/useGoogle'
+import { useAuth } from '../../hooks/useAuth'
 
 
 const Register = () => {
+    const { createUser, loading } = useAuth()
     const [open, setopen] = useState(false)
     const inputPass = useRef<HTMLInputElement>(null)
 
@@ -29,7 +32,7 @@ const Register = () => {
         }
     )
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -52,6 +55,7 @@ const Register = () => {
 
         setError({ email: '', senha: '' })
         setFormdata({ name: '', email: '', senha: '' })
+        await createUser(Formdata)
 
 
     }
@@ -75,7 +79,7 @@ const Register = () => {
                         <h1 className='titulo'>Junte-se a THINKER</h1>
                     </div>
                     <Auth>
-                        <div className="google">
+                        <div className="google" onClick={signInWithGoogle}>
                             <p>Entre com o Google</p>
                         </div>
                     </Auth>
@@ -123,7 +127,12 @@ const Register = () => {
                                 </span>
 
                             </div>
-                            <button type="submit">Cadastre-se</button>
+                            {loading && (
+                                <button type="submit" disabled>Aguarde</button>
+                            )}
+                            {!loading && (
+                                <button type="submit">Cadastre-se</button>
+                            )}
                             <Link to='/login' id='link'>Já Possui Conta? Entre</Link>
                         </form>
                     </Form>
