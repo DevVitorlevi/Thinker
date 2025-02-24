@@ -1,10 +1,18 @@
 import { HeaderS } from '../styles/Header'
-import { NavLink } from 'react-router-dom'
 import Logo from '../assets/Logo.jpg'
+import { Link } from 'react-router-dom'
+import { Desktop, Mobile } from '../styles/Header'
 const Header = () => {
     return (
         <HeaderS>
-            <img src={Logo} alt="" />
+            <Link to='/'><img src={Logo} /></Link>
+
+            <Desktop>
+
+            </Desktop>
+            <Mobile>
+
+            </Mobile>
         </HeaderS>
     )
 }

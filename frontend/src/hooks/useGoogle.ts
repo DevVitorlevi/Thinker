@@ -13,4 +13,5 @@ export const signInWithGoogle = async () => {
         console.error("Erro ao fazer login com Google:", error);
         return null;
     }
+
 };
