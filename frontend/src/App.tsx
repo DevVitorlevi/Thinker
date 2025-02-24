@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 // Pages
@@ -10,9 +10,8 @@ import NotFound from "./pages/NotFound/NotFound";
 import { GlobalStyle } from "./styles/Global";
 import { useAuth } from "./hooks/useAuth";
 import { AuthProvider } from "./Context/AuthContext";
-//Components
+// Components
 import Header from "./components/Header";
-
 
 // App component
 function App() {
@@ -28,20 +27,31 @@ function App() {
   }, [auth]);
 
   return (
-    <>
-      {/* Passando o valor do usuário para o AuthProvider */}
-      <AuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
         <GlobalStyle />
-        <Header />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+        <Routes>
+          <Route path="/*" element={<Layout />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
+// Layout component (responsável pela renderização do Header de acordo com a rota)
+function Layout() {
+  const location = useLocation();
+  const showHeader = location.pathname !== '/register' && location.pathname !== '/login';
+
+  return (
+    <>
+      {showHeader && <Header />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 }
