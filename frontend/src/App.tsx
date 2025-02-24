@@ -16,7 +16,7 @@ import Header from "./components/Header";
 // App component
 function App() {
   const { auth } = useAuth(); // Suponho que useAuth retorne o objeto auth corretamente tipado
-  const [usuario, setUsuario] = useState<User | null>(null); // Tipando como User ou null
+  const [, setUsuario] = useState<User | null>(null); // Tipando como User ou null
 
   useEffect(() => {
     const cancelarObservador = onAuthStateChanged(auth, (usuario) => {
