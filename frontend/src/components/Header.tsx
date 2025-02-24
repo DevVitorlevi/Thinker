@@ -12,6 +12,10 @@ const Header = () => {
     const toggleMenu = (): void => {
         setOpen(!open)
     }
+    const SearchOpen = (): void => {
+        setOpen(!open)
+
+    }
 
     return (
         <HeaderS>
@@ -24,7 +28,10 @@ const Header = () => {
             </Desktop>
 
             <Mobile>
-                <Search className='search' />
+                <span onClick={SearchOpen}>
+                    <Search className='search' />
+                    {open ? <input type='text'></input> : ''}
+                </span>
                 <span onClick={toggleMenu}>
                     {open ? <X className='icon' /> : <Menu className='icon' />}
                 </span>

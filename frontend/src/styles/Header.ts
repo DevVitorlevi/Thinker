@@ -29,6 +29,7 @@ export const Mobile = styled.div`
     }
 
     .mobile_menu {
+        display: none;
         position: fixed;
         top: 9%;
         right: 0;
@@ -38,16 +39,11 @@ export const Mobile = styled.div`
         z-index: 9999;
         padding-top: 60px;
         transform: translateY(-100%); /* Esconde o menu fora da tela */
-        opacity: 0; /* Inicialmente invisível */
-        visibility: hidden; /* Impede a interação com o menu */
-        transition: transform 0.5s ease-in-out; /* Transição para transform, opacity e visibility */
     }
 
     .mobile_menu.open {
+        display: flex;
         transform: translateY(0); /* Exibe o menu deslizando para baixo */
-        opacity: 1; /* Torna o menu visível */
-        visibility: visible; /* Permite interação com o menu */
-        transition: transform 0.2s ease-in-out; /* Faz a transição de visibility junto com transform e opacity */
     }
 
     .menu_items {
