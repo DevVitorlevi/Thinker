@@ -455,6 +455,13 @@ export const Auth = styled.div`
         text-align: center;
         border: 2px solid #D9DDE8;
         border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+            img{
+                width: 30px;
+                margin-right:10px ;
+            }
     }
     @media screen and (min-width:768px) and (max-width:1023px) {
         .google{

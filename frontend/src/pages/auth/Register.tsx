@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react'
 import image1 from '../../assets/image2.png'
 import image2 from '../../assets/image1.png'
+import logo from '../../assets/logo-google.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../../styles/Form'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -80,6 +81,7 @@ const Register = () => {
                     </div>
                     <Auth>
                         <div className="google" onClick={signInWithGoogle}>
+                            <img src={logo} />
                             <p>Entre com o Google</p>
                         </div>
                     </Auth>

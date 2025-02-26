@@ -1,37 +1,52 @@
 import Logo from '../assets/Logo.jpg'
 import { X, Menu, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { HeaderS, Desktop, Mobile } from '../styles/Header'
+import { HeaderS, Desktop, Mobile, Form } from '../styles/Header'
 import { useState } from 'react'
 
 const Header = () => {
     // Tipagem explícita de "open" como boolean
     const [open, setOpen] = useState<boolean>(false)
+    const [data, setData] = useState({
+        search: ''
+    })
 
     // Função para alternar o estado do menu
     const toggleMenu = (): void => {
         setOpen(!open)
     }
-    const SearchOpen = (): void => {
-        setOpen(!open)
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
 
+        setData({ search: '' })
+    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setData(prevData => (
+            { ...prevData, [name]: value }
+        ))
     }
 
     return (
         <HeaderS>
+
             <Link to='/'>
                 <img src={Logo} alt="Logo" />
             </Link>
+            <Form>
+                <form onSubmit={handleSubmit}>
+                    <div className="inputs">
+                        <input type="text" name='search' value={data?.search} onChange={handleChange} placeholder='Pesquise um Tema' className='input' />
+                        <span><Search className='search' /></span>
+                    </div>
+                </form>
+            </Form>
 
             <Desktop className='desktop'>
                 {/* Pode adicionar um menu de desktop aqui, caso queira */}
             </Desktop>
 
             <Mobile>
-                <span onClick={SearchOpen}>
-                    <Search className='search' />
-                    {open ? <input type='text'></input> : ''}
-                </span>
                 <span onClick={toggleMenu}>
                     {open ? <X className='icon' /> : <Menu className='icon' />}
                 </span>

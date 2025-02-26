@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const HeaderS = styled.header`
 font-family: 'Josefin Sans';
-    height: 10vh;
+    height: 8vh;
     background-color: #7D49AB;
     display: flex;
     align-items: center;
@@ -14,8 +14,9 @@ font-family: 'Josefin Sans';
     }
 
     img {
-        width: 90px;
+        width: 70px;
     }
+  
 `
 
 export const Desktop = styled.div``
@@ -31,7 +32,7 @@ export const Mobile = styled.div`
     .mobile_menu {
         display: none;
         position: fixed;
-        top: 9%;
+        top: 7.9%;
         right: 0;
         background-color: #7D49AB;
         width: 100%;
@@ -70,4 +71,27 @@ export const Mobile = styled.div`
     .menu_items a:hover {
         background-color: #5c2a94;
     }
-`   
+`
+export const Form = styled.div`
+    .inputs{
+        position: relative;
+    }
+    .input{
+        width:12rem;
+        background-color: white;
+        border: 0;
+        height: 30px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    ::placeholder{
+        color: #7D49AB;
+    }
+    .search{
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7D49AB;
+    }
+`
