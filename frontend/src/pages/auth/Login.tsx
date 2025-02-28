@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react'
 import image1 from '../../assets/image2.png'
 import image2 from '../../assets/image1.png'
-import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../../styles/Form'
+import { Container, Imagediv, Formdiv, Divider, Text, Form } from '../../styles/Form'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -74,11 +74,6 @@ const Login = () => {
                     <div className="entre">
                         <h1 className='titulo'>Conecte-se ao THINKER</h1>
                     </div>
-                    <Auth>
-                        <div className="google">
-                            <p>Entre com o Google</p>
-                        </div>
-                    </Auth>
                     <Divider>
                         <Text>ou com e-mail</Text>
                     </Divider>

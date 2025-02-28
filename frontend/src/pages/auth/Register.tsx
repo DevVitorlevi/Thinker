@@ -2,16 +2,12 @@
 import React, { useRef, useState } from 'react'
 import image1 from '../../assets/image2.png'
 import image2 from '../../assets/image1.png'
-import logo from '../../assets/logo-google.png'
-import { Container, Imagediv, Formdiv, Divider, Text, Form, Auth } from '../../styles/Form'
+import { Container, Imagediv, Formdiv, Divider, Text, Form} from '../../styles/Form'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { signInWithGoogle } from '../../hooks/useGoogle'
-import { useAuth } from '../../hooks/useAuth'
 
 
 const Register = () => {
-    const { createUser, loading } = useAuth()
     const [open, setopen] = useState(false)
     const inputPass = useRef<HTMLInputElement>(null)
 
@@ -56,7 +52,6 @@ const Register = () => {
 
         setError({ email: '', senha: '' })
         setFormdata({ name: '', email: '', senha: '' })
-        await createUser(Formdata)
 
 
     }
@@ -79,12 +74,6 @@ const Register = () => {
                     <div className="entre">
                         <h1 className='titulo'>Junte-se a THINKER</h1>
                     </div>
-                    <Auth>
-                        <div className="google" onClick={signInWithGoogle}>
-                            <img src={logo} />
-                            <p>Entre com o Google</p>
-                        </div>
-                    </Auth>
                     <Divider>
                         <Text>ou com e-mail</Text>
                     </Divider>
@@ -129,12 +118,8 @@ const Register = () => {
                                 </span>
 
                             </div>
-                            {loading && (
-                                <button type="submit" disabled>Aguarde</button>
-                            )}
-                            {!loading && (
-                                <button type="submit">Cadastre-se</button>
-                            )}
+                                <button
+                                 type="submit">Cadastre-se</button>
                             <Link to='/login' id='link'>Já Possui Conta? Entre</Link>
                         </form>
                     </Form>
