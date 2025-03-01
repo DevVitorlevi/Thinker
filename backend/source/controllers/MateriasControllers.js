@@ -1,5 +1,6 @@
 
 const Materias = require('../models/Materias')
+const Quiz = require('../models/Quizes')
 module.exports = class MateriasController {
 
     static async createMateria(req, res) {
@@ -8,7 +9,7 @@ module.exports = class MateriasController {
             if (!nome || !descricao || !quizId) {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
             }
-            const quiz = await Quizzes.findById(quizId);
+            const quiz = await Quiz.findById(quizId);
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
