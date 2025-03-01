@@ -82,4 +82,16 @@ module.exports =  class UserController{
         // Envia a resposta com o usuário atual ou null
         res.status(200).send(useratual);
     }
+
+    static async getUser (req,res){
+        const id = req.params.id
+
+        const user = await User.findById(id).select('-senha')
+
+        if(!user){
+            return res.status(422).json({message:'Usuário Não Encontrado'})
+        }
+
+        res.status(200).json({user:user})
+    }
 }
