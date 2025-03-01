@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const Conquista = new Schema({
-    nome: { type: String, required: true },
+const Conquista = new mongoose.Schema({
+    titulo: { type: String, required: true },
     descricao: { type: String },
-    criterio: { type: String, required: true }, // Exemplo: 'Completar 10 quizzes'
+    usuarios: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Conquista', Conquista);
