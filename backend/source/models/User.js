@@ -1,22 +1,12 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
-const User = new Schema({
+const UserSchema = new mongoose.Schema({
     nome: { type: String, required: true },
-    email: { 
-        type: String, 
-        required: true, 
-        unique: true // Evita duplicação de e-mails no banco de dados 
-    },
-    image: { type: String },
-    senha: { 
-        type: String, 
-        required: true    
-    },
-    conquistas: [{ 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Conquista' 
-    }]
+    email: { type: String, required: true, unique: true },
+    senha: { type: String, required: true },
+    image:{type:String},
+    role: { type: String, enum: ['admin', 'user'], default: 'user' }, // Define se é admin ou usuário normal
+    conquistas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conquista' }]
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', User);
+module.exports = mongoose.model('User', UserSchema);
