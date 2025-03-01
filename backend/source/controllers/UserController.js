@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const CreateUserToken = require('../helpers/Create-token')
 const getToken = require("../helpers/get-token")
+const getUserbyToken = require('../helpers/get-user-by-token')
 module.exports =  class UserController{
 
     static async register(req,res){
@@ -94,4 +95,28 @@ module.exports =  class UserController{
 
         res.status(200).json({user:user})
     }
+
+    static async editUser(req, res) {
+        try {
+            const id = req.params.id;
+            const token = getToken(req);
+            const user = await getUserbyToken(token);
+    
+            if (!user) {
+                return res.status(404).json({ message: "Usuário não encontrado" });
+            }
+    
+            if (req.file) {
+                user.image = req.file.filename;
+                await user.save(); // Salvar a atualização
+                return res.status(200).json({ message: "Foto atualizada com sucesso!", image: user.image });
+            }
+    
+            return res.status(400).json({ message: "Nenhuma imagem foi enviada" });
+    
+        } catch (error) {
+            return res.status(500).json({ message: "Erro ao atualizar foto", error });
+        }
+    }
+    
 }

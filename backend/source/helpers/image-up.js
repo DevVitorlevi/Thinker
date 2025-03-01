@@ -1,45 +1,34 @@
-// Importa o módulo 'multer' para fazer o upload de arquivos
-const multer = require('multer');
+const fs = require("fs"); // Importa File System
+const multer = require("multer");
+const path = require("path");
 
-// Importa o módulo 'path' para manipulação de caminhos de arquivos
-const path = require('path');
-
-// Configuração de armazenamento para as imagens
 const Imagearmazenar = multer.diskStorage({
-    // Define o diretório de destino para o armazenamento dos arquivos
     destination: function (req, file, cb) {
-        let folder = ""; // Inicializa a variável para armazenar o nome da pasta
+        let folder = "users"; // Define a pasta padrão
 
-        // Verifica a URL base da requisição para determinar a pasta de destino
-        if (req.baseUrl.includes("users")) {
-            folder = "users"; // Se a URL base contém "users", a pasta será "users"
+        const uploadPath = path.join(__dirname, `../public/images/${folder}`);
+
+        // Verifica se a pasta existe, se não, cria
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
         }
-        
-        // Define o caminho completo da pasta onde o arquivo será armazenado
-        cb(null, `public/images/${folder}`);
+
+        cb(null, uploadPath);
     },
 
-    // Define o nome do arquivo ao salvá-lo
     filename: function (req, file, cb) {
-        // O nome do arquivo será o timestamp atual + a extensão original do arquivo
         cb(null, Date.now() + String(Math.floor(Math.random() * 1000)) + path.extname(file.originalname));
     }
 });
 
-// Configuração do middleware de upload de imagens
 const ImageUpload = multer({
-    storage: Imagearmazenar, // Utiliza o armazenamento configurado acima
+    storage: Imagearmazenar,
     fileFilter(req, file, cb) {
-        // Verifica se o arquivo possui extensão .png ou .jpg
         if (!file.originalname.match(/\.(png|jpg)$/)) {
-            // Se o arquivo não é válido, retorna um erro
-            return cb(new Error('Por favor Escolha somente png ou jpg'));
+            return cb(new Error("Por favor escolha somente PNG ou JPG"));
         }
-
-        // Se o arquivo é válido, permite o upload
         cb(undefined, true);
     }
 });
 
-// Exporta o middleware para ser utilizado em outras partes da aplicação
 module.exports = { ImageUpload };
