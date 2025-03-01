@@ -14,10 +14,6 @@ const UserSchema = new Schema({
     image: {
         type: String
     },
-    telefone: {
-        type: String,
-        required: true
-    },
     senha: {
         type: String,
         required: true    
