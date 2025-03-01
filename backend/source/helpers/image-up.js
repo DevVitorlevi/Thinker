@@ -13,10 +13,8 @@ const Imagearmazenar = multer.diskStorage({
         // Verifica a URL base da requisição para determinar a pasta de destino
         if (req.baseUrl.includes("users")) {
             folder = "users"; // Se a URL base contém "users", a pasta será "users"
-        } else if (req.baseUrl.includes("pets")) {
-            folder = "pets"; // Se a URL base contém "pets", a pasta será "pets"
         }
-
+        
         // Define o caminho completo da pasta onde o arquivo será armazenado
         cb(null, `public/images/${folder}`);
     },
