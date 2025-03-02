@@ -10,22 +10,22 @@ const UserController = require('../controllers/UserController')
 
 // CRUD Materias
 router.post('/materia', adminAuth, MateriaController.create);
-router.put('/materia/:id', adminAuth, MateriaController.update);
+router.patch('/materia/:id', adminAuth, MateriaController.update);
 router.delete('/materia/:id', adminAuth, MateriaController.delete);
 
 // CRUD Quizzes
 router.post('/quiz', adminAuth, QuizController.create);
-router.put('/quiz/:id', adminAuth, QuizController.update);
+router.patch('/quiz/:id', adminAuth, QuizController.update);
 router.delete('/quiz/:id', adminAuth, QuizController.delete);
 
 // CRUD Questões
 router.post('/questao', adminAuth, QuestaoController.create);
-router.put('/questao/:id', adminAuth, QuestaoController.update);
+router.patch('/questao/:id', adminAuth, QuestaoController.update);
 router.delete('/questao/:id', adminAuth, QuestaoController.delete);
 
 // CRUD Conquistas
 router.post('/conquista', adminAuth, ConquistaController.create);
-router.put('/conquista/:id', adminAuth, ConquistaController.update);
+router.patch('/conquista/:id', adminAuth, ConquistaController.update);
 router.delete('/conquista/:id', adminAuth, ConquistaController.delete);
 
 //CRUD Admin
