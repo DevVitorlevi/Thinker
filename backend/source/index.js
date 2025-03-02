@@ -14,10 +14,6 @@ app.use(express.static('public'));
 
 // Importando Rotas
 const UserRoutes = require('./routes/UserRoutes');
-const MateriaRoutes = require('./routes/materiaRoutes');
-const QuizRoutes = require('./routes/quizRoutes');
-const QuestaoRoutes = require('./routes/questaoRoutes');
-const ConquistaRoutes = require('./routes/conquistaRoutes');
 const AdminRoutes = require('./routes/AdminRoutes');
 
 // Definição das Rotas
