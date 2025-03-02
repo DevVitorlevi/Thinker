@@ -1,32 +1,46 @@
+const Materia = require('../models/Materias');
 
-const Materias = require('../models/Materias')
-const Quiz = require('../models/Quizes')
-module.exports = class MateriasController {
-
-    static async createMateria(req, res) {
+module.exports = class MateriaController {
+    static async create(req, res) {
         try {
-            const { nome, descricao, quizId } = req.body;
-            if (!nome || !descricao || !quizId) {
+            const { nome, descricao } = req.body;
+            if (!nome || !descricao) {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
             }
-            const quiz = await Quiz.findById(quizId);
-            if (!quiz) {
-                return res.status(404).json({ message: 'Quiz não encontrado.' });
-            }
-            const novaMateria = new Materias({ nome, descricao, quiz: quizId });
+            const novaMateria = new Materia({ nome, descricao });
             await novaMateria.save();
             res.status(201).json({ message: 'Matéria criada com sucesso!', materia: novaMateria });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao criar matéria.', error });
         }
     }
-    static async getMaterias(req, res) {
+
+    static async update(req, res) {
         try {
-            const materias = await Materias.find().populate('quiz');
-            res.status(200).json(materias);
+            const { id } = req.params;
+            const { nome, descricao } = req.body;
+            const materiaAtualizada = await Materia.findByIdAndUpdate(id, { nome, descricao }, { new: true });
+
+            if (!materiaAtualizada) {
+                return res.status(404).json({ message: 'Matéria não encontrada.' });
+            }
+            res.status(200).json({ message: 'Matéria atualizada com sucesso!', materia: materiaAtualizada });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao buscar matérias.', error });
+            res.status(500).json({ message: 'Erro ao atualizar matéria.', error });
         }
     }
 
-}
+    static async delete(req, res) {
+        try {
+            const { id } = req.params;
+            const materia = await Materia.findByIdAndDelete(id);
+
+            if (!materia) {
+                return res.status(404).json({ message: 'Matéria não encontrada.' });
+            }
+            res.status(200).json({ message: 'Matéria deletada com sucesso!' });
+        } catch (error) {
+            res.status(500).json({ message: 'Erro ao deletar matéria.', error });
+        }
+    }
+};
