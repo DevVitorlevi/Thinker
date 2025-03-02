@@ -1,13 +1,22 @@
-const router = require('express').Router()
-const UserController = require('../controllers/UserController')
-const VerifyToken = require('../helpers/verify-token')
-const {ImageUpload} = require("../helpers/image-up")
+const express = require('express');
+const router = express.Router();
+const UserController = require('../controllers/UserController');
+const VerifyToken = require('../helpers/verify-token'); // Middleware para verificar token
+const { ImageUpload } = require('../helpers/image-up'); // Middleware para upload de imagem
 
-router.post('/register', UserController.register)
-router.post("/login", UserController.login);
-router.get('/checkuser',UserController.checkUser)
-router.get("/:id", UserController.getUser);
-router.patch('/edit/:id',VerifyToken,ImageUpload.single("image"),
-UserController.editUser)
+// Registrar um novo usuário
+router.post('/register', UserController.register);
 
-module.exports = router
+// Autenticar um usuário
+router.post('/login', UserController.login);
+
+// Verificar usuário autenticado
+router.get('/checkuser', VerifyToken, UserController.checkUser);
+
+// Obter informações de um usuário
+router.get('/:id', VerifyToken, UserController.getUser);
+
+// Editar informações do usuário (foto de perfil)
+router.patch('/edit/:id', VerifyToken, ImageUpload.single('image'), UserController.editUser);
+
+module.exports = router;
