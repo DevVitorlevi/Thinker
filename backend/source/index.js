@@ -1,21 +1,29 @@
-const express = require('express')
-const cors = require('cors')
-const conn = require('./database/conn')
-const app = express()
+const express = require('express');
+const cors = require('cors');
+const conn = require('./database/conn');
+const app = express();
 
-// JSON
-app.use(express.json())
+// JSON Middleware
+app.use(express.json());
 
-//CORS
+// CORS Middleware
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
-app.use(cors({credentials:true, origin:'http://localhost:3000'}))
+// Public Directory
+app.use(express.static('public'));
 
-// Public
+// Importando Rotas
+const UserRoutes = require('./routes/UserRoutes');
+const MateriaRoutes = require('./routes/materiaRoutes');
+const QuizRoutes = require('./routes/quizRoutes');
+const QuestaoRoutes = require('./routes/questaoRoutes');
+const ConquistaRoutes = require('./routes/conquistaRoutes');
+const AdminRoutes = require('./routes/AdminRoutes');
 
-app.use(express.static('public'))
+// Definição das Rotas
+app.use('/user', UserRoutes);
+app.use('/admin',AdminRoutes)
 
-// Routes
-const UserRoutes = require('../source/routes/UserRoutes')
-
-app.use('/user',UserRoutes)
-app.listen(5000)
+// Iniciando o Servidor
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
