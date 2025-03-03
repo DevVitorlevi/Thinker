@@ -1,6 +1,7 @@
 const Questao = require('../models/Questions');
 const User = require('../models/User');
 const ConquistaController = require('./ConquistasController');
+const Quiz = require('../models/Quizes')
 
 module.exports = class QuestaoController {
     // Criar uma nova questão
@@ -13,9 +14,20 @@ module.exports = class QuestaoController {
             }
 
             const novaQuestao = new Questao({ pergunta, alternativas, respostaCorreta, quiz: quizId });
+
             await novaQuestao.save();
 
+            // Atualiza o array de questões no Quiz correspondente
+            const quiz = await Quiz.findById(quizId);
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz não encontrado.' });
+            }
+
+            quiz.questoes.push(novaQuestao._id); // Adiciona o ID da nova questão ao array
+            await quiz.save(); // Salva a atualização do Quiz
+
             res.status(201).json({ message: 'Questão criada com sucesso!', questao: novaQuestao });
+
         } catch (error) {
             res.status(500).json({ message: 'Erro ao criar questão.', error });
         }
@@ -48,11 +60,21 @@ module.exports = class QuestaoController {
         try {
             const { id } = req.params;
 
-            const questao = await Questao.findByIdAndDelete(id);
-
+            // Busca a questão no banco de dados
+            const questao = await Questao.findById(id);
             if (!questao) {
                 return res.status(404).json({ message: 'Questão não encontrada.' });
             }
+
+            // Remove o ID da questão do array `questoes` do Quiz correspondente
+            const quiz = await Quiz.findById(questao.quiz);
+            if (quiz) {
+                quiz.questoes.pull(id); // Remove o ID da questão do array
+                await quiz.save(); // Salva a atualização do Quiz
+            }
+
+            // Deleta a questão do banco de dados
+            await Questao.findByIdAndDelete(id);
 
             res.status(200).json({ message: 'Questão deletada com sucesso!' });
         } catch (error) {
@@ -64,22 +86,30 @@ module.exports = class QuestaoController {
     static async responderQuestao(req, res) {
         try {
             const { questaoId, acertou } = req.body;
-            const userId = req.user.id;
+            const userId = req.user.id; // ID do usuário autenticado
 
+            // Busca a questão no banco de dados
+            const questao = await Questao.findById(questaoId);
+            if (!questao) {
+                return res.status(404).json({ message: 'Questão não encontrada.' });
+            }
+
+            // Busca o usuário no banco de dados
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
 
-            // Atualizar estatísticas
+            // Atualiza as estatísticas do usuário
             user.estatisticas.questoes_feitas += 1;
             if (acertou) {
                 user.estatisticas.acertos += 1;
             }
 
+            // Salva as atualizações do usuário
             await user.save();
 
-            // Verificar conquistas
+            // Verifica se o usuário desbloqueou alguma conquista
             await ConquistaController.verificarConquistas(userId);
 
             res.status(200).json({ message: 'Questão respondida com sucesso!', estatisticas: user.estatisticas });
