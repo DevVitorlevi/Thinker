@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const CriterioSchema = new mongoose.Schema({
     tipo: {
         type: String,
-        enum: ['questoes_feitas', 'acertos', 'quizzes_completos', 'streak_diario', 'tempo_estudo'],
+        enum: ['questoes_feitas', 'acertos', 'quizzes_completos'],
         required: true
     },
     valorAlvo: { type: Number, required: true },
@@ -14,13 +14,13 @@ const CriterioSchema = new mongoose.Schema({
     }
 });
 
-const Conquista = new mongoose.Schema({
+const ConquistaSchema = new mongoose.Schema({
     titulo: { type: String, required: true },
     descricao: { type: String },
     criterios: [CriterioSchema],
-    usuarios: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    ativa: { type: Boolean, default: true }, // Indica se a conquista está disponível
-    oculta: { type: Boolean, default: false } // Se true, a conquista não é visível até ser obtida
+    usuarios: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array de usuários que desbloquearam a conquista
+    ativa: { type: Boolean, default: true },
+    oculta: { type: Boolean, default: false }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Conquista', Conquista);
+module.exports = mongoose.model('Conquista', ConquistaSchema);
