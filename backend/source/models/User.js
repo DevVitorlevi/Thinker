@@ -4,7 +4,6 @@ const EstatsticasSchema = new mongoose.Schema({
     questoes_feitas: { type: Number, default: 0 },
     acertos: { type: Number, default: 0 },
     quizzes_completos: { type: Number, default: 0 },
-    tempo_estudo: { type: Number, default: 0 } // em minutos
 });
 
 const UserSchema = new mongoose.Schema({
