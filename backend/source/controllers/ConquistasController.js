@@ -100,7 +100,6 @@ module.exports = class ConquistaController {
         }
     }
 
-    // Método auxiliar para comparar valores
     static compararValores(valorAtual, valorAlvo, comparador) {
         switch (comparador) {
             case 'igual':
