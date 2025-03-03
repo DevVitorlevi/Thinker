@@ -6,13 +6,13 @@ module.exports = class QuizController {
     // Criar um novo quiz
     static async create(req, res) {
         try {
-            const { titulo, questoes, materiaId } = req.body;
+            const { titulo, questoes, materiaId, tempo_estimado } = req.body;
 
             if (!titulo || !questoes || !materiaId) {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
             }
 
-            const novoQuiz = new Quiz({ titulo, questoes, materia: materiaId });
+            const novoQuiz = new Quiz({ titulo, questoes, materia: materiaId,tempo_estimado });
             await novoQuiz.save();
 
             res.status(201).json({ message: 'Quiz criado com sucesso!', quiz: novoQuiz });
@@ -25,11 +25,11 @@ module.exports = class QuizController {
     static async update(req, res) {
         try {
             const { id } = req.params;
-            const { titulo, questoes, materiaId } = req.body;
+            const { titulo, questoes, materiaId,tempo_estimado } = req.body;
 
             const quizAtualizado = await Quiz.findByIdAndUpdate(
                 id,
-                { titulo, questoes, materia: materiaId },
+                { titulo, questoes, materia: materiaId,tempo_estimado },
                 { new: true }
             );
 
@@ -64,21 +64,29 @@ module.exports = class QuizController {
     static async completarQuiz(req, res) {
         try {
             const { quizId, acertos, totalQuestoes } = req.body;
-            const userId = req.user.id;
+            const userId = req.user.id; // ID do usuário autenticado
 
+            // Busca o quiz no banco de dados
+            const quiz = await Quiz.findById(quizId);
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz não encontrado.' });
+            }
+
+            // Busca o usuário no banco de dados
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
 
-            // Atualizar estatísticas
+            // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
             user.estatisticas.acertos += acertos;
             user.estatisticas.questoes_feitas += totalQuestoes;
 
+            // Salva as atualizações do usuário
             await user.save();
 
-            // Verificar conquistas
+            // Verifica se o usuário desbloqueou alguma conquista
             await ConquistaController.verificarConquistas(userId);
 
             res.status(200).json({ message: 'Quiz completado com sucesso!', estatisticas: user.estatisticas });
