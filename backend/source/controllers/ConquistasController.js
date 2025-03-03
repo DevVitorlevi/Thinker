@@ -74,6 +74,13 @@ module.exports = class ConquistaController {
             const conquistas = await Conquista.find({ ativa: true });
 
             for (const conquista of conquistas) {
+                // Verifica se o usuário já possui a conquista
+                const possuiConquista = user.conquistas.some(c => c._id.toString() === conquista._id.toString());
+                if (possuiConquista) {
+                    continue; // Pula para a próxima conquista
+                }
+
+                // Verifica se os critérios foram atingidos
                 const criteriosAtingidos = conquista.criterios.every(criterio => {
                     switch (criterio.tipo) {
                         case 'questoes_feitas':
@@ -89,9 +96,14 @@ module.exports = class ConquistaController {
                     }
                 });
 
-                if (criteriosAtingidos && !user.conquistas.includes(conquista._id)) {
+                // Se os critérios foram atingidos, atribui a conquista ao usuário e adiciona o usuário à conquista
+                if (criteriosAtingidos) {
                     user.conquistas.push(conquista._id);
                     await user.save();
+
+                    conquista.usuarios.push(user._id);
+                    await conquista.save();
+
                     console.log(`Conquista "${conquista.titulo}" atribuída ao usuário ${user.nome}.`);
                 }
             }
