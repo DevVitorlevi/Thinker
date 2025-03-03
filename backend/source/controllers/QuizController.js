@@ -1,19 +1,28 @@
 const Quiz = require('../models/Quizes');
 const User = require('../models/User');
+const Materia = require('../models/Materias');
 const ConquistaController = require('./ConquistasController');
 
 module.exports = class QuizController {
     // Criar um novo quiz
     static async create(req, res) {
         try {
-            const { titulo, questoes, materiaId, tempo_estimado } = req.body;
+            const { titulo, materiaId } = req.body;
 
-            if (!titulo || !questoes || !materiaId) {
+            if (!titulo || !materiaId) {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
             }
 
-            const novoQuiz = new Quiz({ titulo, questoes, materia: materiaId,tempo_estimado });
+            // Cria o novo quiz
+            const novoQuiz = new Quiz({ titulo, materia: materiaId });
             await novoQuiz.save();
+
+            // Atualiza o array `quizzes` da Matéria correspondente
+            const materia = await Materia.findById(materiaId);
+            if (materia) {
+                materia.quizzes.push(novoQuiz._id); // Adiciona o ID do quiz ao array
+                await materia.save(); // Salva a atualização da Matéria
+            }
 
             res.status(201).json({ message: 'Quiz criado com sucesso!', quiz: novoQuiz });
         } catch (error) {
@@ -48,14 +57,34 @@ module.exports = class QuizController {
         try {
             const { id } = req.params;
 
-            const quiz = await Quiz.findByIdAndDelete(id);
-
+            // Busca o quiz no banco de dados
+            const quiz = await Quiz.findById(id);
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
 
+            // Remove o ID do quiz do array `quizzes` da Matéria correspondente
+            const materia = await Materia.findById(quiz.materia);
+            if (materia) {
+                // Verifica se o ID do quiz está no array `quizzes`
+                const index = materia.quizzes.indexOf(quiz._id);
+                if (index !== -1) {
+                    materia.quizzes.pull(quiz._id); // Remove o ID do quiz do array
+                    await materia.save(); // Salva a atualização da Matéria
+                    console.log(`Quiz ${quiz._id} removido da Matéria ${materia._id}.`);
+                } else {
+                    console.log(`Quiz ${quiz._id} não encontrado no array quizzes da Matéria ${materia._id}.`);
+                }
+            } else {
+                console.log(`Matéria ${quiz.materia} não encontrada.`);
+            }
+
+            // Deleta o quiz do banco de dados
+            await Quiz.findByIdAndDelete(id);
+
             res.status(200).json({ message: 'Quiz deletado com sucesso!' });
         } catch (error) {
+            console.error('Erro ao deletar quiz:', error);
             res.status(500).json({ message: 'Erro ao deletar quiz.', error });
         }
     }
