@@ -7,13 +7,13 @@ module.exports = class QuestaoController {
     // Criar uma nova questão
     static async create(req, res) {
         try {
-            const { pergunta, alternativas, respostaCorreta, quizId } = req.body;
+            const { pergunta, alternativas, respostaCorreta, quizId,dificuldade } = req.body;
 
             if (!pergunta || !alternativas || !respostaCorreta || !quizId) {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
             }
 
-            const novaQuestao = new Questao({ pergunta, alternativas, respostaCorreta, quiz: quizId });
+            const novaQuestao = new Questao({ pergunta, alternativas, respostaCorreta, quiz: quizId,dificuldade });
 
             await novaQuestao.save();
 
@@ -37,11 +37,11 @@ module.exports = class QuestaoController {
     static async update(req, res) {
         try {
             const { id } = req.params;
-            const { pergunta, alternativas, respostaCorreta } = req.body;
+            const { pergunta, alternativas, respostaCorreta, dificuldade } = req.body;
 
             const questaoAtualizada = await Questao.findByIdAndUpdate(
                 id,
-                { pergunta, alternativas, respostaCorreta },
+                { pergunta, alternativas, respostaCorreta,dificuldade },
                 { new: true }
             );
 
@@ -81,7 +81,6 @@ module.exports = class QuestaoController {
             res.status(500).json({ message: 'Erro ao deletar questão.', error });
         }
     }
-
     // Responder uma questão
     static async responderQuestao(req, res) {
         try {
