@@ -88,10 +88,13 @@ module.exports = class UserController {
 
     // Obter informações de um usuário
     static async getUser(req, res) {
-        const id = req.params.id;
-
         try {
-            const user = await User.findById(id).select('-senha');
+            const id = req.params.id;
+
+            // Busca o usuário e popula as conquistas
+            const user = await User.findById(id)
+                .select('-senha') // Remove a senha da resposta
+                .populate('conquistas', 'titulo descricao'); // Popula as conquistas com título e descrição
 
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
