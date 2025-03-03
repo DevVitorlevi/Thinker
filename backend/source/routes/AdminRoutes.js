@@ -30,7 +30,7 @@ router.patch('/conquista/:id', adminAuth, AdminController.checkAdminRole, Conqui
 router.delete('/conquista/:id', adminAuth, AdminController.checkAdminRole, ConquistaController.delete);
 
 // CRUD Admin
-router.post('/register', VerifyToken, AdminController.checkAdminRole, AdminController.registerAdmin);
+router.post('/register', AdminController.registerAdmin);
 router.post('/login', AdminController.loginAdmin);
 router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
 
