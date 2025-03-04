@@ -7,7 +7,7 @@ module.exports = class QuestaoController {
     // Criar uma nova questão
     static async create(req, res) {
         try {
-            const { pergunta, alternativas, respostaCorreta, quizId,dificuldade } = req.body;
+            const { pergunta, alternativas, respostaCorreta, dificuldade,quizId} = req.body;
 
             if (!pergunta || !alternativas || !respostaCorreta || !quizId) {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
@@ -102,13 +102,14 @@ module.exports = class QuestaoController {
             // Atualiza as estatísticas do usuário
             const estatisticaQuestao = user.estatisticas.questoes_feitas.find(q => q.dificuldade === questao.dificuldade);
             if (estatisticaQuestao) {
-                estatisticaQuestao.quantidade += 1;
+                estatisticaQuestao.quantidade += 1; // Incrementa a quantidade de questões respondidas dessa dificuldade
             } else {
+                // Se não existir uma entrada para essa dificuldade, cria uma nova
                 user.estatisticas.questoes_feitas.push({ dificuldade: questao.dificuldade, quantidade: 1 });
             }
     
             if (acertou) {
-                user.estatisticas.acertos += 1;
+                user.estatisticas.acertos += 1; // Incrementa o número de acertos
             }
     
             // Salva as atualizações do usuário
