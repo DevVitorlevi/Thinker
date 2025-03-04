@@ -86,31 +86,37 @@ module.exports = class QuestaoController {
         try {
             const { questaoId, acertou } = req.body;
             const userId = req.user.id; // ID do usuário autenticado
-
+    
             // Busca a questão no banco de dados
             const questao = await Questao.findById(questaoId);
             if (!questao) {
                 return res.status(404).json({ message: 'Questão não encontrada.' });
             }
-
+    
             // Busca o usuário no banco de dados
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
-
+    
             // Atualiza as estatísticas do usuário
-            user.estatisticas.questoes_feitas += 1;
+            const estatisticaQuestao = user.estatisticas.questoes_feitas.find(q => q.dificuldade === questao.dificuldade);
+            if (estatisticaQuestao) {
+                estatisticaQuestao.quantidade += 1;
+            } else {
+                user.estatisticas.questoes_feitas.push({ dificuldade: questao.dificuldade, quantidade: 1 });
+            }
+    
             if (acertou) {
                 user.estatisticas.acertos += 1;
             }
-
+    
             // Salva as atualizações do usuário
             await user.save();
-
+    
             // Verifica se o usuário desbloqueou alguma conquista
             await ConquistaController.verificarConquistas(userId);
-
+    
             res.status(200).json({ message: 'Questão respondida com sucesso!', estatisticas: user.estatisticas });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao responder questão.', error });
