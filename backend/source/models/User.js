@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 const EstatsticasSchema = new mongoose.Schema({
-    questoes_feitas: { type: Number, default: 0 },
+    questoes_feitas: [{
+        dificuldade: { type: String, enum: ['facil', 'medio', 'dificil'], required: true },
+        quantidade: { type: Number, default: 0 }
+    }],
     acertos: { type: Number, default: 0 },
     quizzes_completos: { type: Number, default: 0 },
 });
@@ -12,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     senha: { type: String, required: true },
     image: { type: String },
     role: { type: String, enum: ['admin', 'user'], default: 'user' }, // Define se é admin ou usuário normal
-    conquistas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conquista' }],
+    conquistas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conquista' }], // Referência às conquistas
     estatisticas: { type: EstatsticasSchema, default: () => ({}) },
     quizzes_respondidos: [{
         quiz: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' },
