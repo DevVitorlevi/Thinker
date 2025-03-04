@@ -94,30 +94,38 @@ module.exports = class QuizController {
         try {
             const { quizId, acertos, totalQuestoes } = req.body;
             const userId = req.user.id; // ID do usuário autenticado
-
+    
             // Busca o quiz no banco de dados
             const quiz = await Quiz.findById(quizId);
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
-
+    
             // Busca o usuário no banco de dados
             const user = await User.findById(userId);
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
-
+    
             // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
             user.estatisticas.acertos += acertos;
             user.estatisticas.questoes_feitas += totalQuestoes;
-
+    
+            // Adiciona o quiz respondido ao array de quizzes respondidos do usuário
+            user.quizzes_respondidos.push({
+                quiz: quizId,
+                data: new Date(),
+                acertos: acertos,
+                total_questoes: totalQuestoes
+            });
+    
             // Salva as atualizações do usuário
             await user.save();
-
+    
             // Verifica se o usuário desbloqueou alguma conquista
             await ConquistaController.verificarConquistas(userId);
-
+    
             res.status(200).json({ message: 'Quiz completado com sucesso!', estatisticas: user.estatisticas });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao completar quiz.', error });
