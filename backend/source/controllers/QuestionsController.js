@@ -111,6 +111,13 @@ module.exports = class QuestaoController {
             if (acertou) {
                 user.estatisticas.acertos += 1; // Incrementa o número de acertos
             }
+
+            // Adiciona o usuário ao array de respondida_por da questão
+            questao.respondida_por.push({
+            user: userId,
+            acertou: acertou,
+            data: new Date()
+            });
     
             // Salva as atualizações do usuário
             await user.save();
