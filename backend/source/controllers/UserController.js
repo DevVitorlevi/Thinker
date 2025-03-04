@@ -90,21 +90,21 @@ module.exports = class UserController {
     static async getUser(req, res) {
         try {
             const id = req.params.id;
-
-            // Busca o usuário e popula as conquistas
+    
+            // Busca o usuário e popula as conquistas com título e descrição
             const user = await User.findById(id)
                 .select('-senha') // Remove a senha da resposta
                 .populate('conquistas', 'titulo descricao'); // Popula as conquistas com título e descrição
-
+    
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
-
+    
             res.status(200).json({ user });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao obter usuário.', error });
         }
-    }
+    }   
 
     // Editar informações do usuário
     static async editUser(req, res) {
