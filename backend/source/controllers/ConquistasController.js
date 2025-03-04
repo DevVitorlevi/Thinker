@@ -104,7 +104,11 @@ module.exports = class ConquistaController {
     
                 // Se os critérios foram atingidos, atribui a conquista ao usuário e adiciona o usuário à conquista
                 if (criteriosAtingidos) {
-                    user.conquistas.push(conquista._id);
+                    user.conquistas.push({
+                        _id,
+                        titulo:titulo,
+                        descricao:descricao
+                    })
                     await user.save();
     
                     conquista.usuarios.push(user._id);
