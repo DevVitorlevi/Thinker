@@ -70,21 +70,27 @@ module.exports = class ConquistaController {
             if (!user) {
                 throw new Error('Usuário não encontrado.');
             }
-
+    
             const conquistas = await Conquista.find({ ativa: true });
-
+    
             for (const conquista of conquistas) {
                 // Verifica se o usuário já possui a conquista
                 const possuiConquista = user.conquistas.some(c => c._id.toString() === conquista._id.toString());
                 if (possuiConquista) {
                     continue; // Pula para a próxima conquista
                 }
-
+    
                 // Verifica se os critérios foram atingidos
                 const criteriosAtingidos = conquista.criterios.every(criterio => {
                     switch (criterio.tipo) {
                         case 'questoes_feitas':
-                            return this.compararValores(user.estatisticas.questoes_feitas, criterio.valorAlvo, criterio.comparador);
+                            // Verifica a dificuldade das questões
+                            if (criterio.dificuldade) {
+                                const questoesDificeis = user.estatisticas.questoes_feitas.filter(q => q.dificuldade === criterio.dificuldade);
+                                return this.compararValores(questoesDificeis.length, criterio.valorAlvo, criterio.comparador);
+                            } else {
+                                return this.compararValores(user.estatisticas.questoes_feitas.length, criterio.valorAlvo, criterio.comparador);
+                            }
                         case 'acertos':
                             return this.compararValores(user.estatisticas.acertos, criterio.valorAlvo, criterio.comparador);
                         case 'quizzes_completos':
@@ -95,15 +101,15 @@ module.exports = class ConquistaController {
                             return false;
                     }
                 });
-
+    
                 // Se os critérios foram atingidos, atribui a conquista ao usuário e adiciona o usuário à conquista
                 if (criteriosAtingidos) {
                     user.conquistas.push(conquista._id);
                     await user.save();
-
+    
                     conquista.usuarios.push(user._id);
                     await conquista.save();
-
+    
                     console.log(`Conquista "${conquista.titulo}" atribuída ao usuário ${user.nome}.`);
                 }
             }
@@ -111,7 +117,6 @@ module.exports = class ConquistaController {
             console.error('Erro ao verificar conquistas:', error);
         }
     }
-
     static compararValores(valorAtual, valorAlvo, comparador) {
         switch (comparador) {
             case 'igual':
