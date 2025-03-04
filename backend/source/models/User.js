@@ -14,8 +14,8 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     senha: { type: String, required: true },
     image: { type: String },
-    role: { type: String, enum: ['admin', 'user'], default: 'user' }, // Define se é admin ou usuário normal
-    conquistas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conquista' }], // Referência às conquistas
+    role: { type: String, enum: ['admin', 'user'], default: 'user' },
+    conquistas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conquista' }],
     estatisticas: { type: EstatsticasSchema, default: () => ({}) },
     quizzes_respondidos: [{
         quiz: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' },
