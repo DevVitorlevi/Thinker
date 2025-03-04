@@ -110,7 +110,7 @@ module.exports = class QuizController {
             // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
             user.estatisticas.acertos += acertos;
-            user.estatisticas.questoes_feitas += totalQuestoes;
+            user.estatisticas.questoes_feitas.push({ dificuldade: 'facil', quantidade: totalQuestoes }); // Exemplo: adiciona todas as questões como fáceis (ajuste conforme a dificuldade real)
     
             // Adiciona o quiz respondido ao array de quizzes respondidos do usuário
             user.quizzes_respondidos.push({
