@@ -110,7 +110,7 @@ module.exports = class QuizController {
             // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
             user.estatisticas.acertos += acertos;
-            user.estatisticas.questoes_feitas.push({ dificuldade: 'facil', quantidade: totalQuestoes }); // Exemplo: adiciona todas as questões como fáceis (ajuste conforme a dificuldade real)
+            user.estatisticas.questoes_feitas += totalQuestoes;
     
             // Adiciona o quiz respondido ao array de quizzes respondidos do usuário
             user.quizzes_respondidos.push({
@@ -120,8 +120,17 @@ module.exports = class QuizController {
                 total_questoes: totalQuestoes
             });
     
-            // Salva as atualizações do usuário
+            // Adiciona o usuário ao array de completado_por do quiz
+            quiz.completado_por.push({
+                user: userId,
+                data: new Date(),
+                acertos: acertos,
+                total_questoes: totalQuestoes
+            });
+    
+            // Salva as atualizações do usuário e do quiz
             await user.save();
+            await quiz.save();
     
             // Verifica se o usuário desbloqueou alguma conquista
             await ConquistaController.verificarConquistas(userId);
