@@ -5,7 +5,8 @@ const VerifyToken = require('../helpers/verify-token'); // Middleware para verif
 const QuizController = require('../controllers/QuizController');
 const MateriaController = require('../controllers/MateriasControllers');
 const QuestaoController = require('../controllers/QuestionsController');
-const AdminController =require('../controllers/AdminController')
+const AdminController = require('../controllers/AdminController');
+const RankingController = require('../controllers/RankingController'); // Importar o RankingController
 
 // CRUD Matérias
 router.post('/materia', adminAuth, AdminController.checkAdminRole, MateriaController.create);
@@ -26,5 +27,10 @@ router.delete('/questao/:id', adminAuth, AdminController.checkAdminRole, Questao
 router.post('/register', AdminController.registerAdmin);
 router.post('/login', AdminController.loginAdmin);
 router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
+
+// CRUD Rankings (apenas admin)
+router.post('/ranking', adminAuth, AdminController.checkAdminRole, RankingController.createRanking); // Criar ranking
+router.patch('/ranking/:id', adminAuth, AdminController.checkAdminRole, RankingController.updateRanking); // Atualizar ranking
+router.delete('/ranking/:id', adminAuth, AdminController.checkAdminRole, RankingController.deleteRanking); // Deletar ranking
 
 module.exports = router;
