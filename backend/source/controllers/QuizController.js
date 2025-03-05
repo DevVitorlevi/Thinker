@@ -1,7 +1,7 @@
 const Quiz = require('../models/Quizes');
 const User = require('../models/User');
 const Materia = require('../models/Materias');
-
+const Ranking = require('../models/Ranking')
 
 module.exports = class QuizController {
     // Criar um novo quiz
@@ -110,21 +110,24 @@ module.exports = class QuizController {
             // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
             user.estatisticas.acertos += acertos;
-            user.estatisticas.questoes_feitas.push({ dificuldade: 'facil', quantidade: totalQuestoes }); // Exemplo: adiciona todas as questões como fáceis (ajuste conforme a dificuldade real)
+            user.estatisticas.questoes_feitas += totalQuestoes;
     
-            // Adiciona o quiz respondido ao array de quizzes respondidos do usuário
-            user.quizzes_respondidos.push({
-                quiz: quizId,
-                data: new Date(),
-                acertos: acertos,
-                total_questoes: totalQuestoes
-            });
+            // Adiciona pontos ao usuário (exemplo: 10 pontos por quiz completado)
+            const pontosPorQuiz = 10;
+            user.pontos += pontosPorQuiz;
+    
+            // Verifica e atualiza o ranking do usuário
+            const rankings = await Ranking.find().sort({ pontosNecessarios: 1 }); // Ordena os rankings por pontos necessários
+            for (const ranking of rankings) {
+                if (user.pontos >= ranking.pontosNecessarios) {
+                    user.ranking = ranking.nome;
+                }
+            }
     
             // Salva as atualizações do usuário
             await user.save();
     
-            // Verifica se o usuário desbloqueou alguma conquista
-            res.status(200).json({ message: 'Quiz completado com sucesso!', estatisticas: user.estatisticas });
+            res.status(200).json({ message: 'Quiz completado com sucesso!', estatisticas: user.estatisticas, pontos: user.pontos, ranking: user.ranking });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao completar quiz.', error });
         }
