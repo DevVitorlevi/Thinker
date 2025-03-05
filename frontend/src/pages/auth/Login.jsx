@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react'
-import image1 from '../../assets/image2.png'
-import image2 from '../../assets/image1.png'
+import empe from '../../assets/empe.png'
+import sentado from '../../assets/sentado.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form } from '../../styles/Form'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -67,8 +67,8 @@ const Login = () => {
             <Container>
                 <Imagediv>
                     <h1 className='font'>THINKER</h1>
-                    <img src={image2} className='mobile' />
-                    <img src={image1} alt="Thinker logo" className='desktop' />
+                    <img src={empe} className='mobile' />
+                    <img src={sentado} alt="Thinker logo" className='desktop' />
                 </Imagediv>
                 <Formdiv>
                     <div className="entre">
