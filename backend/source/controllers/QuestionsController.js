@@ -2,6 +2,7 @@ const Questao = require('../models/Questions');
 const User = require('../models/User');
 const Quiz = require('../models/Quizes')
 
+
 module.exports = class QuestaoController {
     // Criar uma nova questão
     static async create(req, res) {
