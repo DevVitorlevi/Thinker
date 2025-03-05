@@ -5,8 +5,6 @@ const VerifyToken = require('../helpers/verify-token'); // Middleware para verif
 const QuizController = require('../controllers/QuizController');
 const MateriaController = require('../controllers/MateriasControllers');
 const QuestaoController = require('../controllers/QuestionsController');
-const ConquistaController = require('../controllers/ConquistasController');
-
 const AdminController =require('../controllers/AdminController')
 
 // CRUD Matérias
@@ -23,11 +21,6 @@ router.delete('/quiz/:id', adminAuth, AdminController.checkAdminRole, QuizContro
 router.post('/questao', adminAuth, AdminController.checkAdminRole, QuestaoController.create);
 router.patch('/questao/:id', adminAuth, AdminController.checkAdminRole, QuestaoController.update);
 router.delete('/questao/:id', adminAuth, AdminController.checkAdminRole, QuestaoController.delete);
-
-// CRUD Conquistas
-router.post('/conquista', adminAuth, AdminController.checkAdminRole, ConquistaController.create);
-router.patch('/conquista/:id', adminAuth, AdminController.checkAdminRole, ConquistaController.update);
-router.delete('/conquista/:id', adminAuth, AdminController.checkAdminRole, ConquistaController.delete);
 
 // CRUD Admin
 router.post('/register', AdminController.registerAdmin);

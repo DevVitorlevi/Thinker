@@ -1,6 +1,5 @@
 const Questao = require('../models/Questions');
 const User = require('../models/User');
-const ConquistaController = require('./ConquistasController');
 const Quiz = require('../models/Quizes')
 
 module.exports = class QuestaoController {
@@ -111,20 +110,9 @@ module.exports = class QuestaoController {
             if (acertou) {
                 user.estatisticas.acertos += 1; // Incrementa o número de acertos
             }
-
-            // Adiciona o usuário ao array de respondida_por da questão
-            questao.respondida_por.push({
-            user: userId,
-            acertou: acertou,
-            data: new Date()
-            });
     
             // Salva as atualizações do usuário
             await user.save();
-    
-            // Verifica se o usuário desbloqueou alguma conquista
-            await ConquistaController.verificarConquistas(userId);
-    
             res.status(200).json({ message: 'Questão respondida com sucesso!', estatisticas: user.estatisticas });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao responder questão.', error });

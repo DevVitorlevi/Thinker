@@ -91,10 +91,9 @@ module.exports = class UserController {
         try {
             const id = req.params.id;
     
-            // Busca o usuário e popula as conquistas com título e descrição
+            // Busca o usuário
             const user = await User.findById(id)
                 .select('-senha') // Remove a senha da resposta
-                .populate('conquistas', 'titulo descricao'); // Popula as conquistas com título e descrição
     
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });

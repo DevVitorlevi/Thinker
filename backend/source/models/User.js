@@ -15,7 +15,6 @@ const UserSchema = new mongoose.Schema({
     senha: { type: String, required: true },
     image: { type: String },
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
-    conquistas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conquista' }],
     estatisticas: { type: EstatsticasSchema, default: () => ({}) },
     quizzes_respondidos: [{
         quiz: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' },
