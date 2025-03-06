@@ -1,5 +1,5 @@
 const Ranking = require('../models/Ranking');
-
+const User = require('../models/Ranking')
 module.exports = class RankingController {
     // Criar um novo ranking (apenas admin)
     static async createRanking(req, res) {
