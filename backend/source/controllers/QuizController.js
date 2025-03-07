@@ -95,23 +95,35 @@ module.exports = class QuizController {
             const { quizId } = req.body;
             const userId = req.user.id; // ID do usuário autenticado
     
-            // Busca o quiz no banco de dados
+            console.log(`Completando quiz ${quizId} para o usuário ${userId}`);
+    
+            // Busca o quiz no banco de dados e popula as questões
             const quiz = await Quiz.findById(quizId).populate('questoes');
             if (!quiz) {
+                console.log('Quiz não encontrado.');
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
+    
+            console.log(`Quiz encontrado: ${quiz.titulo}`);
     
             // Busca o usuário no banco de dados
             const user = await User.findById(userId);
             if (!user) {
+                console.log('Usuário não encontrado.');
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
     
+            console.log(`Usuário encontrado: ${user.nome}`);
+    
+            // Filtra as respostas temporárias do usuário para o quiz atual
+            const respostasQuiz = user.respostas_temporarias.filter(resposta => resposta.quiz.toString() === quizId);
+    
             // Calcula a pontuação do usuário
             let pontosObtidos = 0;
-            for (const questao of quiz.questoes) {
-                const respostaUsuario = questao.respondida_por.find(resposta => resposta.user.toString() === userId);
-                if (respostaUsuario && respostaUsuario.acertou) {
+            for (const resposta of respostasQuiz) {
+                const questao = quiz.questoes.find(q => q._id.toString() === resposta.questao.toString());
+                if (questao && resposta.acertou) {
+                    console.log(`Usuário acertou a questão: ${questao.pergunta}`);
                     switch (questao.dificuldade) {
                         case 'facil':
                             pontosObtidos += 5;
@@ -123,15 +135,20 @@ module.exports = class QuizController {
                             pontosObtidos += 15;
                             break;
                     }
+                } else {
+                    console.log(`Usuário não acertou a questão: ${questao.pergunta}`);
                 }
             }
     
+            console.log(`Pontos obtidos nas questões: ${pontosObtidos}`);
+    
             // Adiciona 50 pontos por completar o quiz
             pontosObtidos += 50;
+            console.log(`Pontos totais (com bônus de completar quiz): ${pontosObtidos}`);
     
             // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
-            user.estatisticas.acertos += quiz.questoes.filter(q => q.respondida_por.some(r => r.user.toString() === userId && r.acertou)).length;
+            user.estatisticas.acertos += respostasQuiz.filter(resposta => resposta.acertou).length;
             user.estatisticas.questoes_feitas += quiz.questoes.length;
             user.pontos += pontosObtidos;
     
@@ -143,17 +160,19 @@ module.exports = class QuizController {
                 }
             }
     
-            // Salva as atualizações do usuário
-            await user.save();
-    
             // Adiciona o quiz completado ao array de quizzes respondidos do usuário
             user.quizzes_respondidos.push({
                 quiz: quizId,
                 data: new Date(),
-                acertos: quiz.questoes.filter(q => q.respondida_por.some(r => r.user.toString() === userId && r.acertou)).length,
+                acertos: respostasQuiz.filter(resposta => resposta.acertou).length,
                 total_questoes: quiz.questoes.length,
                 pontos_obtidos: pontosObtidos
             });
+    
+            // Remove as respostas temporárias do quiz atual
+            user.respostas_temporarias = user.respostas_temporarias.filter(resposta => resposta.quiz.toString() !== quizId);
+    
+            // Salva as atualizações do usuário
             await user.save();
     
             res.status(200).json({
@@ -164,6 +183,7 @@ module.exports = class QuizController {
                 pontos_obtidos: pontosObtidos
             });
         } catch (error) {
+            console.error('Erro ao completar quiz:', error); // Adicione um log para depuração
             res.status(500).json({ message: 'Erro ao completar quiz.', error });
         }
     }

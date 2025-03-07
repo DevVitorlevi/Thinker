@@ -83,55 +83,35 @@ module.exports = class QuestaoController {
     }
     // Responder uma questão
     static async responderQuestao(req, res) {
-    try {
-        const { questaoId, acertou } = req.body;
-        const userId = req.user.id; // ID do usuário autenticado
-
-        // Busca a questão no banco de dados
-        const questao = await Questao.findById(questaoId);
-        if (!questao) {
-            return res.status(404).json({ message: 'Questão não encontrada.' });
-        }
-
-        // Busca o usuário no banco de dados
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: 'Usuário não encontrado.' });
-        }
-
-        // Adiciona a resposta do usuário à questão
-        questao.respondida_por.push({
-            user: userId,
-            acertou: acertou,
-            data: new Date()
-        });
-        await questao.save();
-
-        // Atualiza as estatísticas do usuário
-        user.estatisticas.questoes_feitas += 1;
-        if (acertou) {
-            user.estatisticas.acertos += 1;
-
-            // Adiciona pontos conforme a dificuldade da questão
-            switch (questao.dificuldade) {
-                case 'facil':
-                    user.pontos += 5;
-                    break;
-                case 'medio':
-                    user.pontos += 10;
-                    break;
-                case 'dificil':
-                    user.pontos += 15;
-                    break;
+        try {
+            const { questaoId, acertou } = req.body;
+            const userId = req.user.id; // ID do usuário autenticado
+    
+            // Busca a questão no banco de dados
+            const questao = await Questao.findById(questaoId);
+            if (!questao) {
+                return res.status(404).json({ message: 'Questão não encontrada.' });
             }
+    
+            // Busca o usuário no banco de dados
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'Usuário não encontrado.' });
+            }
+    
+            // Adiciona a resposta temporária ao usuário
+            user.respostas_temporarias.push({
+                quiz: questao.quiz, // ID do quiz associado à questão
+                questao: questaoId, // ID da questão
+                acertou: acertou // Indica se o usuário acertou
+            });
+    
+            // Salva as atualizações do usuário
+            await user.save();
+    
+            res.status(200).json({ message: 'Questão respondida com sucesso!' });
+        } catch (error) {
+            res.status(500).json({ message: 'Erro ao responder questão.', error });
         }
-
-        // Salva as atualizações do usuário
-        await user.save();
-
-        res.status(200).json({ message: 'Questão respondida com sucesso!', estatisticas: user.estatisticas, pontos: user.pontos });
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao responder questão.', error });
     }
-}
 };

@@ -32,6 +32,6 @@ router.post('/completar-quiz', VerifyToken, QuizController.completarQuiz);
 router.get('/ranking/list', VerifyToken, RankingController.getRankings);
 
 // Obter ranking do usuário
-router.get('/ranking/user', VerifyToken, RankingController.getUserRanking);
+router.get('/ranking', VerifyToken, RankingController.getUserRanking);
 
 module.exports = router;
