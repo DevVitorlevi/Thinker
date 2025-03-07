@@ -92,11 +92,11 @@ module.exports = class QuizController {
     // Completar um quiz
     static async completarQuiz(req, res) {
         try {
-            const { quizId, acertos, totalQuestoes } = req.body;
+            const { quizId } = req.body;
             const userId = req.user.id; // ID do usuário autenticado
     
             // Busca o quiz no banco de dados
-            const quiz = await Quiz.findById(quizId);
+            const quiz = await Quiz.findById(quizId).populate('questoes');
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
@@ -107,17 +107,36 @@ module.exports = class QuizController {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
     
+            // Calcula a pontuação do usuário
+            let pontosObtidos = 0;
+            for (const questao of quiz.questoes) {
+                const respostaUsuario = questao.respondida_por.find(resposta => resposta.user.toString() === userId);
+                if (respostaUsuario && respostaUsuario.acertou) {
+                    switch (questao.dificuldade) {
+                        case 'facil':
+                            pontosObtidos += 5;
+                            break;
+                        case 'medio':
+                            pontosObtidos += 10;
+                            break;
+                        case 'dificil':
+                            pontosObtidos += 15;
+                            break;
+                    }
+                }
+            }
+    
+            // Adiciona 50 pontos por completar o quiz
+            pontosObtidos += 50;
+    
             // Atualiza as estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
-            user.estatisticas.acertos += acertos;
-            user.estatisticas.questoes_feitas += totalQuestoes;
-    
-            // Adiciona pontos ao usuário (exemplo: 10 pontos por quiz completado)
-            const pontosPorQuiz = 10;
-            user.pontos += pontosPorQuiz;
+            user.estatisticas.acertos += quiz.questoes.filter(q => q.respondida_por.some(r => r.user.toString() === userId && r.acertou)).length;
+            user.estatisticas.questoes_feitas += quiz.questoes.length;
+            user.pontos += pontosObtidos;
     
             // Verifica e atualiza o ranking do usuário
-            const rankings = await Ranking.find().sort({ pontosNecessarios: 1 }); // Ordena os rankings por pontos necessários
+            const rankings = await Ranking.find().sort({ pontosNecessarios: 1 }); // Busca rankings ordenados por pontos necessários
             for (const ranking of rankings) {
                 if (user.pontos >= ranking.pontosNecessarios) {
                     user.ranking = ranking.nome;
@@ -127,7 +146,23 @@ module.exports = class QuizController {
             // Salva as atualizações do usuário
             await user.save();
     
-            res.status(200).json({ message: 'Quiz completado com sucesso!', estatisticas: user.estatisticas, pontos: user.pontos, ranking: user.ranking });
+            // Adiciona o quiz completado ao array de quizzes respondidos do usuário
+            user.quizzes_respondidos.push({
+                quiz: quizId,
+                data: new Date(),
+                acertos: quiz.questoes.filter(q => q.respondida_por.some(r => r.user.toString() === userId && r.acertou)).length,
+                total_questoes: quiz.questoes.length,
+                pontos_obtidos: pontosObtidos
+            });
+            await user.save();
+    
+            res.status(200).json({
+                message: 'Quiz completado com sucesso!',
+                estatisticas: user.estatisticas,
+                pontos: user.pontos,
+                ranking: user.ranking,
+                pontos_obtidos: pontosObtidos
+            });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao completar quiz.', error });
         }
