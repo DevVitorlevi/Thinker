@@ -5,12 +5,12 @@ import sentado from '../../assets/sentado.png'
 import { Container, Imagediv, Formdiv, Divider, Text, Form } from '../../styles/Form'
 import { Eye, EyeClosed } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
+import { Context } from '../../context/UserContext'
 
 const Register = () => {
     const [open, setopen] = useState(false)
     const inputPass = useRef()
-
+    const { register } = React.useContext(Context)
     const toggleEye = () => {
         if (!inputPass.current) return;
         inputPass.current.type = open ? "password" : "text";
@@ -52,7 +52,10 @@ const Register = () => {
 
         setError({ email: '', senha: '' })
         setFormdata({ name: '', email: '', senha: '' })
-
+        const result = await register(Formdata)
+        if (result) {
+            console.log(result);
+        }
 
     }
     const handleChange = (e) => {
