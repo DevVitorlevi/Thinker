@@ -8,16 +8,11 @@ const getUserbyToken = require('../helpers/get-user-by-token');
 module.exports = class UserController {
     // Registrar um novo usuário
     static async register(req, res) {
-        const { nome, email, senha, confirmesenha } = req.body;
+        const { name, email, senha} = req.body;
 
-        if (!nome || !email || !senha || !confirmesenha) {
+        if (!name || !email || !senha) {
             return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
-
-        if (senha !== confirmesenha) {
-            return res.status(422).json({ message: 'As senhas não coincidem.' });
-        }
-
         try {
             const userExist = await User.findOne({ email: email });
 
@@ -29,7 +24,7 @@ module.exports = class UserController {
             const hashPass = await bcrypt.hash(senha, salt);
 
             const userData = new User({
-                nome,
+                name,
                 email,
                 senha: hashPass,
                 role: 'user', // Define o papel como usuário comum
