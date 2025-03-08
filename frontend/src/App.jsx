@@ -7,15 +7,20 @@ import Home from './pages/home/Home';
 import { GlobalStyle } from "./styles/Global";
 // Components
 import Header from "./components/Header";
-
+//Context
+import { UserProvider } from "../src/context/UserContext";
+import { User } from "lucide-react";
 // App component
 function App() {
   return (
+
     <BrowserRouter>
-      <GlobalStyle />
-      <Routes>
-        <Route path="/*" element={<Layout />} />
-      </Routes>
+      <UserProvider>
+        <GlobalStyle />
+        <Routes>
+          <Route path="/*" element={<Layout />} />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }
