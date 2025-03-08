@@ -60,6 +60,7 @@ const Register = () => {
         setFormdata(prevData => (
             { ...prevData, [name]: value }
         ))
+
         setError({ email: '', senha: '' })
     }
     return (
