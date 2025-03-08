@@ -9,7 +9,6 @@ import { GlobalStyle } from "./styles/Global";
 import Header from "./components/Header";
 //Context
 import { UserProvider } from "../src/context/UserContext";
-import { User } from "lucide-react";
 // App component
 function App() {
   return (
