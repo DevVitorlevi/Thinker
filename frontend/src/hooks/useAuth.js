@@ -1,14 +1,14 @@
-//API
+// API
 import api from '../utils/api';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function useAuth() {
     async function register(user) {
         try {
-            const data = await api.post('/user/register', user).then((response) => response.data).catch((error) => error.response.data);
+            const response = await api.post('/user/register', user);
+            return response.data; // Retorna os dados da resposta
         } catch (error) {
-            console.log(error)
+            console.error("Erro ao registrar:", error.response?.data || error.message);
+            return null; // Retorna null ou pode lançar um erro personalizado
         }
     }
     
