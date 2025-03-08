@@ -7,7 +7,7 @@ const EstatsticasSchema = new mongoose.Schema({
 });
 
 const UserSchema = new mongoose.Schema({
-    nome: { type: String, required: true },
+    name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     senha: { type: String, required: true },
     image: { type: String },
