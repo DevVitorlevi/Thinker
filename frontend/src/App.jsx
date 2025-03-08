@@ -7,6 +7,7 @@ import Home from './pages/home/Home';
 import { GlobalStyle } from "./styles/Global";
 // Components
 import Header from "./components/Header";
+import Flash from "./components/Flash";
 //Context
 import { UserProvider } from "../src/context/UserContext";
 // App component
@@ -15,6 +16,7 @@ function App() {
 
     <BrowserRouter>
       <UserProvider>
+        <Flash />
         <GlobalStyle />
         <Routes>
           <Route path="/*" element={<Layout />} />
