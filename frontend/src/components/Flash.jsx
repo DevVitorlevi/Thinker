@@ -10,7 +10,6 @@ const Flash = () => {
     useEffect(() => {
 
         const handleFlash = ({ message, type }) => {
-            console.log("Evento recebido no Flash.js:", message, type);
             setMessage(message);
             setType(type);
             setVisible(true);
