@@ -7,7 +7,11 @@ const app = express();
 app.use(express.json());
 
 // CORS Middleware
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({
+    origin: "http://localhost:5173", // Permite apenas o frontend acessar
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true
+}));
 
 // Public Directory
 app.use(express.static('public'));
