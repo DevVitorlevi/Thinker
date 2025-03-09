@@ -16,7 +16,7 @@ const Flash = () => {
 
             setTimeout(() => {
                 setVisible(false);
-            }, 3000);
+            }, 4000);
         };
 
 
