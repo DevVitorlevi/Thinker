@@ -12,7 +12,7 @@ module.exports = class MateriaController {
 
             const novaMateria = new Materia({ nome, descricao });
             await novaMateria.save();
-
+            
             res.status(201).json({ message: 'Matéria criada com sucesso!', materia: novaMateria });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao criar matéria.', error });
