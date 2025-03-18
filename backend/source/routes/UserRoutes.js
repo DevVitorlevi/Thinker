@@ -34,4 +34,10 @@ router.get('/ranking/list', VerifyToken, RankingController.getRankings);
 // Obter ranking do usuário
 router.get('/ranking', VerifyToken, RankingController.getUserRanking);
 
+//Obter Conteúdo disponível
+router.get('/conteudo', ConteudoController.getAll);
+
+//Obter Conteúdo por ID
+router.get('/conteudo/:id', ConteudoController.getById);
+
 module.exports = router;
