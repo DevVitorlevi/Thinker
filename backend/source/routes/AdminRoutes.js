@@ -7,6 +7,8 @@ const MateriaController = require('../controllers/MateriasControllers');
 const QuestaoController = require('../controllers/QuestionsController');
 const AdminController = require('../controllers/AdminController');
 const RankingController = require('../controllers/RankingController'); // Importar o RankingController
+const ConteudoController = require("../controllers/ConteudoController")
+
 
 // CRUD Matérias
 router.post('/materia', adminAuth, AdminController.checkAdminRole, MateriaController.create);
@@ -33,4 +35,8 @@ router.post('/ranking', adminAuth, AdminController.checkAdminRole, RankingContro
 router.patch('/ranking/:id', adminAuth, AdminController.checkAdminRole, RankingController.updateRanking); // Atualizar ranking
 router.delete('/ranking/:id', adminAuth, AdminController.checkAdminRole, RankingController.deleteRanking); // Deletar ranking
 
+// CRUD Conteudo (apenas admin)
+router.post('/conteudo', adminAuth, AdminController.checkAdminRole, ConteudoController.createConteudo); // Criar conteudo
+router.patch('/conteudo/:id', adminAuth, AdminController.checkAdminRole, ConteudoController.updateConteudo); // Atualizar conteudo
+router.delete('/conteudo/:id', adminAuth, AdminController.checkAdminRole, ConteudoController.deleteConteudo); // Deletar conteudo
 module.exports = router;
