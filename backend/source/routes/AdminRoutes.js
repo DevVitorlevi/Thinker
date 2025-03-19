@@ -8,7 +8,7 @@ const QuestaoController = require('../controllers/QuestionsController');
 const AdminController = require('../controllers/AdminController');
 const RankingController = require('../controllers/RankingController'); // Importar o RankingController
 const ConteudoController = require("../controllers/ConteudoController")
-
+const ImageUpload = require('../helpers/image-up');
 
 // CRUD Matérias
 router.post('/materia', adminAuth, AdminController.checkAdminRole, MateriaController.create);
@@ -36,7 +36,8 @@ router.patch('/ranking/:id', adminAuth, AdminController.checkAdminRole, RankingC
 router.delete('/ranking/:id', adminAuth, AdminController.checkAdminRole, RankingController.deleteRanking); // Deletar ranking
 
 // CRUD Conteudo (apenas admin)
-router.post('/conteudo', adminAuth, AdminController.checkAdminRole, ConteudoController.createConteudo); // Criar conteudo
-router.patch('/conteudo/:id', adminAuth, AdminController.checkAdminRole, ConteudoController.updateConteudo); // Atualizar conteudo
+router.post('/conteudo', adminAuth, VerifyToken, ImageUpload.array('imagens', 10), ConteudoController.create);
+// Atualizar conteúdo (apenas admin)
+router.patch('/conteudo/:id', adminAuth, VerifyToken, ImageUpload.array('imagens', 10), ConteudoController.update);
 router.delete('/conteudo/:id', adminAuth, AdminController.checkAdminRole, ConteudoController.deleteConteudo); // Deletar conteudo
 module.exports = router;
