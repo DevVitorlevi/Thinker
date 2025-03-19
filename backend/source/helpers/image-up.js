@@ -1,10 +1,11 @@
+// helpers/image-up.js
 const fs = require("fs"); // Importa File System
 const multer = require("multer");
 const path = require("path");
 
 const Imagearmazenar = multer.diskStorage({
     destination: function (req, file, cb) {
-        let folder = "users"; // Define a pasta padrão
+        let folder = "conteudos"; // Define a pasta para imagens de conteúdos
 
         const uploadPath = path.join(__dirname, `../public/images/${folder}`);
 
@@ -24,8 +25,8 @@ const Imagearmazenar = multer.diskStorage({
 const ImageUpload = multer({
     storage: Imagearmazenar,
     fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(png|jpg)$/)) {
-            return cb(new Error("Por favor escolha somente PNG ou JPG"));
+        if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
+            return cb(new Error("Por favor, escolha somente PNG, JPG ou JPEG."));
         }
         cb(undefined, true);
     }
