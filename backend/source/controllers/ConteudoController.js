@@ -5,21 +5,23 @@ module.exports = class ConteudoController {
     // Criar um novo conteúdo
     static async create(req, res) {
         try {
-            const { titulo, conceitos, imagem, materia } = req.body;
-
-            if (!titulo || !conceitos || !imagem || !materia) {
-                return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
+            const { titulo, conceitos, materia } = req.body;
+    
+            if (!titulo || !conceitos || !materia || !req.files || req.files.length === 0) {
+                return res.status(422).json({ message: 'Todos os campos são obrigatórios, incluindo as imagens.' });
             }
-
-            const novoConteudo = new Conteudo({ titulo, conceitos, imagem, materia });
+    
+            // Extrai os caminhos das imagens
+            const imagens = req.files.map(file => `/images/conteudos/${file.filename}`);
+    
+            const novoConteudo = new Conteudo({ titulo, conceitos, imagens, materia });
             await novoConteudo.save();
-
+    
             res.status(201).json({ message: 'Conteúdo criado com sucesso!', conteudo: novoConteudo });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao criar conteúdo.', error });
         }
     }
-
     // Obter todos os conteúdos
     static async getAll(req, res) {
         try {
@@ -50,19 +52,27 @@ module.exports = class ConteudoController {
     static async update(req, res) {
         try {
             const { id } = req.params;
-            const { titulo, conceitos, imagem, materia } = req.body;
-
-            const conteudoAtualizado = await Conteudo.findByIdAndUpdate(
-                id,
-                { titulo, conceitos, imagem, materia },
-                { new: true } // Retorna o conteúdo atualizado
-            ).populate('materia'); // Popula a matéria associada
-
-            if (!conteudoAtualizado) {
+            const { titulo, conceitos, materia } = req.body;
+    
+            const conteudo = await Conteudo.findById(id);
+            if (!conteudo) {
                 return res.status(404).json({ message: 'Conteúdo não encontrado.' });
             }
-
-            res.status(200).json({ message: 'Conteúdo atualizado com sucesso!', conteudo: conteudoAtualizado });
+    
+            // Atualiza os campos
+            conteudo.titulo = titulo || conteudo.titulo;
+            conteudo.conceitos = conceitos || conteudo.conceitos;
+            conteudo.materia = materia || conteudo.materia;
+    
+            // Adiciona novas imagens, se houver
+            if (req.files && req.files.length > 0) {
+                const novasImagens = req.files.map(file => `/images/conteudos/${file.filename}`);
+                conteudo.imagens = [...conteudo.imagens, ...novasImagens];
+            }
+    
+            await conteudo.save();
+    
+            res.status(200).json({ message: 'Conteúdo atualizado com sucesso!', conteudo });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao atualizar conteúdo.', error });
         }
