@@ -8,7 +8,7 @@ const path = require('path');
 const Imagearmazenar = multer.diskStorage({
     // Define o diretório de destino para o armazenamento dos arquivos
     destination: function (req, file, cb) {
-        let folder = ""; // Inicializa a variável para armazenar o nome da pasta
+        let folder = req.user._id ? `users/${req.user._id}` : 'default';
 
         // Verifica a URL base da requisição para determinar a pasta de destino
         if (req.baseUrl.includes("users")) {
@@ -28,20 +28,17 @@ const Imagearmazenar = multer.diskStorage({
     }
 });
 
-// Configuração do middleware de upload de imagens
 const ImageUpload = multer({
-    storage: Imagearmazenar, // Utiliza o armazenamento configurado acima
+    storage: Imagearmazenar,
+    limits: { fileSize: 5 * 1024 * 1024 },  // Limite de tamanho do arquivo (5MB)
     fileFilter(req, file, cb) {
-        // Verifica se o arquivo possui extensão .png ou .jpg
         if (!file.originalname.match(/\.(png|jpg)$/)) {
-            // Se o arquivo não é válido, retorna um erro
-            return cb(new Error('Por favor Escolha somente png ou jpg'));
+            return cb(new Error('Por favor escolha somente arquivos .png ou .jpg'));
         }
-
-        // Se o arquivo é válido, permite o upload
         cb(undefined, true);
     }
 });
+
 
 // Exporta o middleware para ser utilizado em outras partes da aplicação
 module.exports = { ImageUpload };
