@@ -6,7 +6,8 @@ const { ImageUpload } = require('../helpers/image-up');
 const QuestaoController = require('../controllers/QuestionsController');
 const QuizController = require('../controllers/QuizController');
 const ConteudoController = require('../controllers/ConteudoController');
-
+const RankingController = require('../controllers/RankingController');
+ 
 // Auth
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
@@ -22,5 +23,9 @@ router.post('/completar-quiz', VerifyToken, QuizController.completarQuiz);
 
 router.get('/conteudos/:materiaId', VerifyToken, ConteudoController.getByMateria);
 router.get('/conteudo/:id', VerifyToken, ConteudoController.getById);
+
+// Ranking Routes
+router.get('/ranking', VerifyToken, RankingController.getRanking);
+router.get('/rankings', VerifyToken, RankingController.getAllRankings);
 
 module.exports = router;
