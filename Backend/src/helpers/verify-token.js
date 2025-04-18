@@ -1,38 +1,38 @@
-// Importa o módulo jsonwebtoken para trabalhar com tokens JWT
 const jwt = require('jsonwebtoken');
-
-// Importa a função que extrai o token do cabeçalho de autorização
 const getToken = require('./get-token');
 
-// Define o middleware CheckToken
-const CheckToken = (req, res, next) => {
-    // Verifica se o cabeçalho de autorização está presente na requisição
-    if (!req.headers.authorization) {
-        // Se não estiver, retorna status 401 (Não autorizado)
-        // com uma mensagem de "Acesso Negado"
-        return res.status(401).json({ message: 'Acesso Negado' });
-    }
-
-    // Extrai o token do cabeçalho de autorização usando a função getToken
-    const Token = getToken(req);
-
-    // Verifica se o token foi extraído corretamente
-    if (!Token) {
-        // Se não houver token, retorna status 401 com "Acesso Negado"
-        return res.status(401).json({ message: 'Acesso Negado' });
-    }
-
-    // Tenta verificar a validade do token
+const verifyToken = async (req, res, next) => {
     try {
-        // Decodifica e verifica o token usando a chave secreta
-        const verificado = jwt.verify(Token, process.env.JWT_SECRET);
-        // Adiciona os dados decodificados do token ao objeto da requisição
-        req.user = verificado;
-        // Chama o próximo middleware ou rota, pois o token foi validado com sucesso
+        const token = getToken(req);
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+            algorithms: ['HS256'],
+            issuer: 'thinker-api',
+            audience: 'thinker-client'
+        });
+
+        // Adiciona verificação de blacklist de tokens aqui (se necessário)
+        req.user = {
+            id: decoded.id,
+            role: decoded.role,
+            token // Útil para logout posterior
+        };
+
         next();
-    } catch (err) {
-        // Caso o token seja inválido, retorna status 400 com "Token Inválido"
-        return res.status(400).json({ message: 'Token Inválido' });
+    } catch (error) {
+        console.error('Token verification failed:', error.message);
+        
+        const status = error.name === 'TokenExpiredError' 
+            ? 401 
+            : 403;
+            
+        return res.status(status).json({
+            success: false,
+            message: error.name === 'TokenExpiredError'
+                ? 'Token expirado'
+                : 'Token inválido'
+        });
     }
 };
-module.exports = CheckToken
+
+module.exports = verifyToken;

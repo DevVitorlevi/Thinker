@@ -5,10 +5,23 @@ module.exports = async (token) => {
     if (!token) return null;
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);  // Use a variável de ambiente
-        return await User.findById(decoded.id);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+            algorithms: ['HS256'],
+            issuer: 'thinker-api',
+            audience: 'thinker-client'
+        });
+
+        const user = await User.findById(decoded.id)
+            .select('-senha -__v')
+            .lean();
+
+        if (!user || user.role !== decoded.role) {
+            throw new Error('Usuário não encontrado ou permissão alterada');
+        }
+
+        return user;
     } catch (error) {
-        return null;  // Caso o token seja inválido, retorna null
+        console.error('Erro na verificação do token:', error.message);
+        return null;
     }
 };
-    

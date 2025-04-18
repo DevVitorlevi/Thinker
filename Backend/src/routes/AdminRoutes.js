@@ -1,38 +1,58 @@
 const express = require('express');
 const router = express.Router();
-const AdminController = require('../controllers/AdminController'); // Verifique o caminho
+const AdminController = require('../controllers/AdminController');
 const VerifyToken = require('../helpers/verify-token');
+const { ImageUpload } = require('../helpers/image-up');
+
+// Importações dos controllers
 const QuizController = require('../controllers/QuizController');
 const MateriaController = require('../controllers/MateriasControllers');
 const QuestaoController = require('../controllers/QuestionsController');
-const ConteudoController = require('../controllers/ConteudoController'); // Adicionei
+const ConteudoController = require('../controllers/ConteudoController');
+const RankingController = require('../controllers/RankingController');
 
-// Certifique-se que todos esses middlewares estão sendo importados corretamente
-const adminAuth = require('../helpers/adminAuth');
+// ======================================
+// ROTAS PÚBLICAS (sem autenticação)
+// ======================================
+router.post('/login', AdminController.login);
 
-// Rotas de Admin Auth
-router.post('/register', AdminController.registerAdmin); // Modifiquei para referenciar o método correto
-router.post('/login', AdminController.loginAdmin);
-router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
+// ======================================
+// MIDDLEWARE DE AUTENTICAÇÃO
+// ======================================
+router.use(VerifyToken);
+router.use(AdminController.checkAdmin);
+
+// ======================================
+// ROTAS DE GERENCIAMENTO DE ADMINS
+// ======================================
+router.post('/admins', AdminController.createAdmin);
+router.get('/admins', AdminController.listAdmins);
+router.put('/admins/:id', AdminController.updateAdmin);
+router.patch('/admins/:id/deactivate', AdminController.deactivateAdmin);
+
+// ======================================
+// ROTAS DE GERENCIAMENTO DE CONTEÚDO
+// ======================================
 
 // CRUD Matérias
-router.post('/materia', VerifyToken, AdminController.checkAdminRole, MateriaController.create);
-router.patch('/materia/:id', VerifyToken, AdminController.checkAdminRole, MateriaController.update);
-router.delete('/materia/:id', VerifyToken, AdminController.checkAdminRole, MateriaController.delete);
+router.post('/materias', MateriaController.create);
+router.put('/materias/:id', MateriaController.update);
+router.delete('/materias/:id', MateriaController.delete);
 
 // CRUD Quizzes
-router.post('/quiz', VerifyToken, AdminController.checkAdminRole, QuizController.create);
-router.patch('/quiz/:id', VerifyToken, AdminController.checkAdminRole, QuizController.update);
-router.delete('/quiz/:id', VerifyToken, AdminController.checkAdminRole, QuizController.delete);
+router.post('/quizzes', QuizController.create);
+router.put('/quizzes/:id', QuizController.update);
+router.delete('/quizzes/:id', QuizController.delete);
 
 // CRUD Questões
-router.post('/questao', VerifyToken, AdminController.checkAdminRole, QuestaoController.create);
-router.patch('/questao/:id', VerifyToken, AdminController.checkAdminRole, QuestaoController.update);
-router.delete('/questao/:id', VerifyToken, AdminController.checkAdminRole, QuestaoController.delete);
+router.post('/questoes', QuestaoController.create);
+router.put('/questoes/:id', QuestaoController.update);
+router.delete('/questoes/:id', QuestaoController.delete);
 
 // CRUD Conteúdos
-router.post('/conteudo', VerifyToken, AdminController.checkAdminRole, ConteudoController.create);
-router.patch('/conteudo/:id', VerifyToken, AdminController.checkAdminRole, ConteudoController.update);
-router.delete('/conteudo/:id', VerifyToken, AdminController.checkAdminRole, ConteudoController.delete);
+router.post('/conteudos', ConteudoController.create);
+router.put('/conteudos/:id', ConteudoController.update);
+router.delete('/conteudos/:id', ConteudoController.delete);
+
 
 module.exports = router;

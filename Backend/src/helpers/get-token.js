@@ -1,7 +1,21 @@
 module.exports = (req) => {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) {
-        throw new Error("Token não fornecido");
+    // Verifica headers, cookies e query params
+    let token = req.headers['authorization'] || 
+                req.headers['x-access-token'] || 
+                req.cookies?.token || 
+                req.query?.token;
+
+    if (!token) {
+        throw new Error('Token não fornecido');
     }
-    return authHeader.split(' ')[1]; // Retorna o token (Bearer <token>)
+
+    if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+    }
+
+    if (!token || token.length < 50) { // Verificação básica de comprimento
+        throw new Error('Token malformado');
+    }
+
+    return token;
 };

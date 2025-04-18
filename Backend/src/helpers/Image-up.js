@@ -1,44 +1,71 @@
-// Importa o módulo 'multer' para fazer o upload de arquivos
 const multer = require('multer');
-
-// Importa o módulo 'path' para manipulação de caminhos de arquivos
 const path = require('path');
+const fs = require('fs');
 
-// Configuração de armazenamento para as imagens
-const Imagearmazenar = multer.diskStorage({
-    // Define o diretório de destino para o armazenamento dos arquivos
-    destination: function (req, file, cb) {
-        let folder = req.user._id ? `users/${req.user._id}` : 'default';
+// Garante que o diretório de upload existe
+const ensureDir = (path) => {
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, { recursive: true });
+    }
+};
 
-        // Verifica a URL base da requisição para determinar a pasta de destino
-        if (req.baseUrl.includes("users")) {
-            folder = "users"; // Se a URL base contém "users", a pasta será "users"
-        } else if (req.baseUrl.includes("content")) {
-            folder = "content"; // Se a URL base contém "pets", a pasta será "pets"
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        let folder = 'default';
+        
+        if (req.baseUrl.includes('users')) {
+            folder = `users/${req.user?._id || 'unknown'}`;
+        } else if (req.baseUrl.includes('content')) {
+            folder = 'content';
         }
 
-        // Define o caminho completo da pasta onde o arquivo será armazenado
-        cb(null, `public/images/${folder}`);
+        const uploadPath = path.join(__dirname, '..', 'public', 'images', folder);
+        ensureDir(uploadPath);
+        cb(null, uploadPath);
     },
-
-    // Define o nome do arquivo ao salvá-lo
-    filename: function (req, file, cb) {
-        // O nome do arquivo será o timestamp atual + a extensão original do arquivo
-        cb(null, Date.now() + String(Math.floor(Math.random() * 1000)) + path.extname(file.originalname));
+    filename: (req, file, cb) => {
+        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+        const ext = path.extname(file.originalname);
+        cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
     }
 });
 
-const ImageUpload = multer({
-    storage: Imagearmazenar,
-    limits: { fileSize: 5 * 1024 * 1024 },  // Limite de tamanho do arquivo (5MB)
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(png|jpg)$/)) {
-            return cb(new Error('Por favor escolha somente arquivos .png ou .jpg'));
-        }
-        cb(undefined, true);
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Tipo de arquivo inválido. Apenas JPEG, PNG e WEBP são permitidos.'), false);
     }
+};
+
+const upload = multer({
+    storage,
+    limits: {
+        fileSize: parseInt(process.env.MAX_FILE_SIZE_MB) * 1024 * 1024 || 5 * 1024 * 1024
+    },
+    fileFilter
 });
 
+// Middleware para tratamento de erros
+const handleUploadErrors = (err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        return res.status(400).json({
+            success: false,
+            message: err.code === 'LIMIT_FILE_SIZE' 
+                ? 'Arquivo muito grande' 
+                : 'Erro no upload do arquivo'
+        });
+    } else if (err) {
+        return res.status(400).json({ 
+            success: false, 
+            message: err.message 
+        });
+    }
+    next();
+};
 
-// Exporta o middleware para ser utilizado em outras partes da aplicação
-module.exports = { ImageUpload };
+module.exports = {
+    ImageUpload: upload,
+    handleUploadErrors
+};  
