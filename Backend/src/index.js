@@ -1,15 +1,10 @@
-require('dotenv').config(); // Carrega variáveis de ambiente
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
 // Importações de Rotas
-const ConteudoRoutes = require('./routes/ConteudoRoutes');
-const MateriaRoutes = require('./routes/MateriaRoutes');
-const QuizRoutes = require('./routes/QuizRoutes');
-const QuestaoRoutes = require('./routes/QuestaoRoutes');
-const RankingRoutes = require('./routes/RankingRoutes');
 const UserRoutes = require('./routes/UserRoutes');
 const AdminRoutes = require('./routes/AdminRoutes');
 
@@ -17,9 +12,9 @@ const AdminRoutes = require('./routes/AdminRoutes');
 const app = express();
 
 // Middlewares
-app.use(cors()); // Habilita CORS
-app.use(express.json()); // Parseia JSON no body das requisições
-app.use('/images', express.static(path.join(__dirname, 'public', 'images'))); // Serve arquivos estáticos
+app.use(cors());
+app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 
 // Conexão com o MongoDB
 mongoose.connect(process.env.MONGODB_URI)
