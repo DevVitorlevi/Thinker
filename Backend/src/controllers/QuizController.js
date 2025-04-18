@@ -1,52 +1,77 @@
-const Quiz = require('../models/Quiz');
+const Quiz = require('../models/Quizes');
+const Materia = require('../models/Materias');
 const User = require('../models/User');
-const Ranking = require('../models/Ranking');
 
 module.exports = class QuizController {
+    // Criar quiz
     static async create(req, res) {
+        const { titulo, materiaId, tempo_estimado } = req.body;
+
+        if (!titulo || !materiaId) {
+            return res.status(422).json({ message: 'Título e matéria são obrigatórios.' });
+        }
+
         try {
-            const { titulo, materiaId } = req.body;
-            if (!titulo || !materiaId) return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
-
-            const novoQuiz = new Quiz({ titulo, materia: materiaId });
-            await novoQuiz.save();
-
-            // Atualiza a matéria com o novo quiz
             const materia = await Materia.findById(materiaId);
-            if (materia) {
-                materia.quizzes.push(novoQuiz._id);
-                await materia.save();
+            if (!materia) {
+                return res.status(404).json({ message: 'Matéria não encontrada.' });
             }
 
-            res.status(201).json({ message: 'Quiz criado com sucesso!', quiz: novoQuiz });
+            const novoQuiz = new Quiz({
+                titulo,
+                materia: materiaId,
+                tempo_estimado: tempo_estimado || 0
+            });
+
+            await novoQuiz.save();
+            
+            // Atualiza a matéria com o novo quiz
+            materia.quizzes.push(novoQuiz._id);
+            await materia.save();
+
+            res.status(201).json({
+                message: 'Quiz criado!',
+                quiz: novoQuiz
+            });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao criar quiz.', error });
         }
     }
 
+    // Atualizar quiz
     static async update(req, res) {
+        const { id } = req.params;
+        const { titulo, materiaId, tempo_estimado } = req.body;
+
         try {
-            const { id } = req.params;
-            const { titulo, materiaId } = req.body;
+            const quiz = await Quiz.findById(id);
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz não encontrado.' });
+            }
 
-            const quizAtualizado = await Quiz.findByIdAndUpdate(
-                id,
-                { titulo, materia: materiaId },
-                { new: true }
-            );
+            if (titulo) quiz.titulo = titulo;
+            if (materiaId) quiz.materia = materiaId;
+            if (tempo_estimado) quiz.tempo_estimado = tempo_estimado;
 
-            if (!quizAtualizado) return res.status(404).json({ message: 'Quiz não encontrado.' });
-            res.status(200).json({ message: 'Quiz atualizado com sucesso!', quiz: quizAtualizado });
+            await quiz.save();
+            res.status(200).json({
+                message: 'Quiz atualizado!',
+                quiz
+            });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao atualizar quiz.', error });
+            res.status(500).json({ message: 'Erro ao atualizar.', error });
         }
     }
 
+    // Deletar quiz
     static async delete(req, res) {
+        const { id } = req.params;
+
         try {
-            const { id } = req.params;
-            const quiz = await Quiz.findByIdAndDelete(id);
-            if (!quiz) return res.status(404).json({ message: 'Quiz não encontrado.' });
+            const quiz = await Quiz.findById(id);
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz não encontrado.' });
+            }
 
             // Remove o quiz da matéria associada
             const materia = await Materia.findById(quiz.materia);
@@ -55,61 +80,89 @@ module.exports = class QuizController {
                 await materia.save();
             }
 
-            res.status(200).json({ message: 'Quiz deletado com sucesso!' });
+            await Quiz.findByIdAndDelete(id);
+            res.status(200).json({ message: 'Quiz removido!' });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao deletar quiz.', error });
+            res.status(500).json({ message: 'Erro ao deletar.', error });
         }
     }
 
+    // Completar quiz
     static async completarQuiz(req, res) {
-        try {
-            const { quizId } = req.body;
-            const userId = req.user.id;
+        const { quizId, acertos, totalQuestoes } = req.body;
+        const userId = req.user.id;
 
-            const quiz = await Quiz.findById(quizId).populate('questoes');
-            if (!quiz) return res.status(404).json({ message: 'Quiz não encontrado.' });
+        try {
+            const quiz = await Quiz.findById(quizId);
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz não encontrado.' });
+            }
 
             const user = await User.findById(userId);
-            if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
-
-            let pontosObtidos = 0;
-            for (const questao of quiz.questoes) {
-                const respostaUsuario = questao.respondida_por.find(resposta => resposta.user.toString() === userId);
-                if (respostaUsuario && respostaUsuario.acertou) {
-                    switch (questao.dificuldade) {
-                        case 'facil': pontosObtidos += 5; break;
-                        case 'medio': pontosObtidos += 10; break;
-                        case 'dificil': pontosObtidos += 15; break;
-                    }
-                }
+            if (!user) {
+                return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
 
-            pontosObtidos += 50; // Bônus por completar o quiz
+            // Registra a conclusão
+            quiz.completado_por.push({
+                user: userId,
+                acertos,
+                total_questoes: totalQuestoes,
+                data: new Date()
+            });
 
+            // Atualiza estatísticas do usuário
             user.estatisticas.quizzes_completos += 1;
-            user.estatisticas.acertos += quiz.questoes.filter(q => 
-                q.respondida_por.some(r => r.user.toString() === userId && r.acertou)
-            ).length;
-            user.estatisticas.questoes_feitas += quiz.questoes.length;
-            user.pontos += pontosObtidos;
+            user.estatisticas.acertos += acertos;
+            user.estatisticas.questoes_feitas += totalQuestoes;
 
-            // Atualiza o ranking
-            const rankings = await Ranking.find().sort({ pontosNecessarios: 1 });
-            for (const ranking of rankings) {
-                if (user.pontos >= ranking.pontosNecessarios) {
-                    user.ranking = ranking.nome;
-                }
-            }
+            // Registra no histórico do usuário
+            user.quizzes_respondidos.push({
+                quiz: quizId,
+                acertos,
+                total_questoes: totalQuestoes,
+                data: new Date()
+            });
 
-            await user.save();
-            res.status(200).json({ 
-                message: 'Quiz completado com sucesso!', 
-                estatisticas: user.estatisticas, 
-                pontos: user.pontos, 
-                ranking: user.ranking 
+            await Promise.all([quiz.save(), user.save()]);
+
+            res.status(200).json({
+                message: 'Quiz completado!',
+                estatisticas: user.estatisticas
             });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao completar quiz.', error });
+        }
+    }
+
+    // Listar quizzes por matéria (novo método adicionado)
+    static async getByMateria(req, res) {
+        const { materiaId } = req.params;
+
+        try {
+            const quizzes = await Quiz.find({ materia: materiaId }).populate('questoes');
+            res.status(200).json({ quizzes });
+        } catch (error) {
+            res.status(500).json({ message: 'Erro ao buscar quizzes.', error });
+        }
+    }
+
+    // Obter quiz com questões (novo método adicionado)
+    static async getWithQuestions(req, res) {
+        const { id } = req.params;
+
+        try {
+            const quiz = await Quiz.findById(id)
+                .populate('questoes')
+                .populate('materia', 'nome');
+
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz não encontrado.' });
+            }
+
+            res.status(200).json({ quiz });
+        } catch (error) {
+            res.status(500).json({ message: 'Erro ao buscar quiz.', error });
         }
     }
 };
