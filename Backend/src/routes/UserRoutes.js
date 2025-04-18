@@ -3,10 +3,10 @@ const router = express.Router();
 const UserController = require('../controllers/UserController');
 const VerifyToken = require('../helpers/verify-token'); // Middleware para verificar token
 const { ImageUpload } = require('../helpers/image-up'); // Middleware para upload de imagem
-const QuestaoController = require('../controllers/QuestionsController');
+const QuestaoController = require('../controllers/QuestaoController');
 const QuizController = require('../controllers/QuizController');
 const RankingController = require('../controllers/RankingController');
-const ConteudoController = require('../controllers/ConteudoController'); // Importado o ConteudoController
+const ConteudoController = require('../controllers/ConteudosController'); // Importado o ConteudoController
 
 // Registrar um novo usuário
 router.post('/register', UserController.register);

@@ -89,7 +89,9 @@ module.exports = class AdminController {
             const user = await getUserbyToken(token);
 
             if (!user || user.role !== 'admin') {
-                return res.status(403).json({ message: 'Acesso negado. Apenas administradores podem acessar esta rota.' });
+                return res.status(403).json({
+                    message: 'Acesso negado. Apenas administradores podem acessar esta rota.'
+                });
             }
 
             next();
