@@ -5,6 +5,7 @@ const VerifyToken = require('../helpers/verify-token');
 const { ImageUpload } = require('../helpers/image-up');
 const QuestaoController = require('../controllers/QuestionsController');
 const QuizController = require('../controllers/QuizController');
+const ConteudoController = require('../controllers/ConteudoController');
 
 // Auth
 router.post('/register', UserController.register);
@@ -18,5 +19,8 @@ router.patch('/edit/:id', VerifyToken, ImageUpload.single('image'), UserControll
 // Quiz Interactions
 router.post('/responder', VerifyToken, QuestaoController.responderQuestao);
 router.post('/completar-quiz', VerifyToken, QuizController.completarQuiz);
+
+router.get('/conteudos/:materiaId', VerifyToken, ConteudoController.getByMateria);
+router.get('/conteudo/:id', VerifyToken, ConteudoController.getById);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const AdminController = require('../controllers/AdminController');
 const VerifyToken = require('../helpers/verify-token');
 const QuizController = require('../controllers/QuizController');
 const MateriaController = require('../controllers/MateriasControllers');
+const ConteudoController = require('../controllers/ConteudoController');a
 const QuestaoController = require('../controllers/QuestionsController');
 
 // CRUD Matérias
@@ -25,5 +26,11 @@ router.delete('/questao/:id', VerifyToken, AdminController.checkAdminRole, Quest
 router.post('/register', AdminController.registerAdmin);
 router.post('/login', AdminController.loginAdmin);
 router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
+
+
+// CRUD Conteúdos
+router.post('/conteudo', VerifyToken, AdminController.checkAdminRole, ConteudoController.create);
+router.patch('/conteudo/:id', VerifyToken, AdminController.checkAdminRole, ConteudoController.update);
+router.delete('/conteudo/:id', VerifyToken, AdminController.checkAdminRole, ConteudoController.delete);
 
 module.exports = router;
