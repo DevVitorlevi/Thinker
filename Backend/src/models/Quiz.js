@@ -10,8 +10,7 @@ const Quiz = new mongoose.Schema({
         acertos: { type: Number, default: 0 },
         total_questoes: { type: Number, default: 0 }
     }],
-    tempo_estimado: { type: Number, default: 0 },
-    pontuacao_maxima: { type: Number, default: 250 }
+    tempo_estimado: { type: Number, default: 0 }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Quiz', Quiz);
