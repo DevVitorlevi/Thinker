@@ -46,9 +46,24 @@ mongoose.connection.on('disconnected', () => {
 
 // Resto da configuração do Express...
 const app = express();
+const cors = require('cors');
+const path = require('path');
 
-// ... outras configurações
+// Importações de Rotas
+const UserRoutes = require('./routes/UserRoutes');
+const AdminRoutes = require('./routes/AdminRoutes');
 
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+
+// Rotas
+app.use('/users', UserRoutes);
+app.use('/admin', AdminRoutes);
+
+// Inicia o servidor                                          
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);

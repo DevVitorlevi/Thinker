@@ -35,6 +35,10 @@ module.exports = class UserController {
 
             await user.save();
             await CreateUserToken(user, req, res);
+            
+            res.status(200).json({
+                message:'Usuário Cadastrado', user
+            })
         } catch (error) {
             res.status(500).json({ message: 'Erro ao registrar.', error });
         }
