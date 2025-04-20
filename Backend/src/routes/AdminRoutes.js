@@ -18,41 +18,36 @@ router.post('/login', AdminController.login);
 
 // ======================================
 // MIDDLEWARE DE AUTENTICAÇÃO
-// ======================================
-router.use(VerifyToken);
-router.use(AdminController.checkAdmin);
-
+// =====================================
 // ======================================
 // ROTAS DE GERENCIAMENTO DE ADMINS
 // ======================================
-router.post('/admins', AdminController.createAdmin);
-router.get('/admins', AdminController.listAdmins);
-router.put('/admins/:id', AdminController.updateAdmin);
-router.patch('/admins/:id/deactivate', AdminController.deactivateAdmin);
+router.post('/register',VerifyToken, AdminController.checkAdmin, AdminController.registerAdmin);
+router.patch('/delete/:id',VerifyToken,AdminController.checkAdmin, AdminController.deleteAdmin);
 
 // ======================================
 // ROTAS DE GERENCIAMENTO DE CONTEÚDO
 // ======================================
 
 // CRUD Matérias
-router.post('/materias', MateriaController.create);
-router.put('/materias/:id', MateriaController.update);
-router.delete('/materias/:id', MateriaController.delete);
+router.post('/materias',VerifyToken,AdminController.checkAdmin, MateriaController.create);
+router.put('/materias/:id',VerifyToken,AdminController.checkAdmin, MateriaController.update);
+router.delete('/materias/:id',VerifyToken,AdminController.checkAdmin, MateriaController.delete);
 
 // CRUD Quizzes
-router.post('/quizzes', QuizController.create);
-router.put('/quizzes/:id', QuizController.update);
-router.delete('/quizzes/:id', QuizController.delete);
+router.post('/quizzes', VerifyToken,AdminController.checkAdmin, QuizController.create);
+router.put('/quizzes/:id',VerifyToken,AdminController.checkAdmin, QuizController.update);
+router.delete('/quizzes/:id', VerifyToken,AdminController.checkAdmin,QuizController.delete);
 
 // CRUD Questões
-router.post('/questoes', QuestaoController.create);
-router.put('/questoes/:id', QuestaoController.update);
-router.delete('/questoes/:id', QuestaoController.delete);
+router.post('/questoes', VerifyToken,AdminController.checkAdmin,QuestaoController.create);
+router.put('/questoes/:id', VerifyToken,AdminController.checkAdmin,QuestaoController.update);
+router.delete('/questoes/:id', VerifyToken,AdminController.checkAdmin,QuestaoController.delete);
 
 // CRUD Conteúdos
-router.post('/conteudos', ConteudoController.create);
-router.put('/conteudos/:id', ConteudoController.update);
-router.delete('/conteudos/:id', ConteudoController.delete);
+router.post('/conteudos', VerifyToken,AdminController.checkAdmin,ConteudoController.create);
+router.put('/conteudos/:id', VerifyToken,AdminController.checkAdmin,ConteudoController.update);
+router.delete('/conteudos/:id', VerifyToken,AdminController.checkAdmin,ConteudoController.delete);
 
 
 module.exports = router;

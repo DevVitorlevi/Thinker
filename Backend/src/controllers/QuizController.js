@@ -93,7 +93,6 @@ module.exports = class QuizController {
     static async completarQuiz(req, res) {
         const { quizId, respostas } = req.body; // Agora recebe array de respostas
         const userId = req.user.id;
-
         try {
             const quiz = await Quiz.findById(quizId).populate('questoes');
             if (!quiz) {

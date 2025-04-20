@@ -24,8 +24,7 @@ module.exports = class UserController {
             }
 
             const salt = await bcrypt.genSalt(12);
-            const hashPass = await bcrypt.hash(senha, salt);
-
+            const hashPass = await bcrypt.hash(senha, salt);f
             const user = new User({
                 nome,
                 email,
@@ -36,8 +35,8 @@ module.exports = class UserController {
             await user.save();
             await CreateUserToken(user, req, res);
             
-            res.status(200).json({
-                message:'Usuário Cadastrado', user
+            res.status(201).json({
+                message:'Usuário Cadastrado', userq
             })
         } catch (error) {
             res.status(500).json({ message: 'Erro ao registrar.', error });
@@ -64,6 +63,9 @@ module.exports = class UserController {
             }
 
             await CreateUserToken(user, req, res);
+            res.status(200).json({
+                message:'Usuário Logado', user
+            })
         } catch (error) {
             res.status(500).json({ message: 'Erro ao logar.', error });
         }
@@ -173,32 +175,6 @@ module.exports = class UserController {
             res.status(200).json({ estatisticas: user.estatisticas });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao buscar estatísticas.', error });
-        }
-    }
-
-    static async completarQuiz(req, res) {
-        const { quizId, acertos, totalQuestoes } = req.body;
-        const userId = req.user.id;
-
-        try {
-            // ... (código existente)
-
-            // Calcula pontos (10 pontos por questão acertada)
-            const pointsEarned = acertos * 10;
-
-            // Atualiza ranking
-            await RankingController.updateUserPoints(
-                { body: { userId, pointsEarned } }, 
-                { status: () => {}, json: () => {} }
-            );
-
-            res.status(200).json({
-                message: 'Quiz completado!',
-                estatisticas: user.estatisticas,
-                pointsEarned
-            });
-        } catch (error) {
-            res.status(500).json({ message: 'Erro ao completar quiz.', error });
         }
     }
 };
