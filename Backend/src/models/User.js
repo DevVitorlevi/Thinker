@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
     senha: { 
         type: String, 
         required: [true, 'A senha é obrigatória'],
-        minlength: [6, 'A senha deve ter no mínimo 6 caracteres'],
+        minlength: [8, 'A senha deve ter no mínimo 8 caracteres'],
         select: false
     },
     role: { 
