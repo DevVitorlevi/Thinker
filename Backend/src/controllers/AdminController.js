@@ -1,10 +1,10 @@
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const generateToken = require('../helpers/Create-token'); // Importação correta
+const generateToken = require('../helpers/Create-token');
 const getToken = require('../helpers/get-token');
 const getUserByToken = require('../helpers/get-user-by-token');
 
 module.exports = class AdminController {
+    
     // Middleware para verificar admin
     static async checkAdmin(req, res, next) {
         try {
@@ -21,6 +21,7 @@ module.exports = class AdminController {
             req.admin = user;
             next();
         } catch (error) {
+            console.error('Erro no middleware checkAdmin:', error);
             return res.status(401).json({
                 success: false,
                 message: 'Token inválido ou expirado'
@@ -47,6 +48,13 @@ module.exports = class AdminController {
             });
         }
 
+        if (senha.length < 8) {
+            return res.status(422).json({
+                success: false,
+                message: 'A senha deve ter no mínimo 8 caracteres'
+            });
+        }
+
         try {
             const userExist = await User.findOne({ email });
             if (userExist) {
@@ -56,26 +64,22 @@ module.exports = class AdminController {
                 });
             }
 
-            const salt = await bcrypt.genSalt(12);
-            const hashPass = await bcrypt.hash(senha, salt);
-
             const admin = new User({
                 nome,
                 email,
-                senha: hashPass,
+                senha,
                 role: 'admin'
             });
 
             await admin.save();
             
-            // Gera token usando a nova função
             const token = generateToken(admin);
 
             return res.status(201).json({
                 success: true,
                 message: 'Admin criado com sucesso',
                 token,
-                adminId: admin._id
+                userId: admin._id
             });
 
         } catch (error) {
@@ -100,30 +104,44 @@ module.exports = class AdminController {
         }
 
         try {
-            const user = await User.findOne({ email, role: 'admin' });
+            const user = await User.findOne({ email }).select('+senha');
             
             if (!user) {
                 return res.status(404).json({
                     success: false,
-                    message: 'Admin não encontrado'
+                    message: 'Usuário não encontrado'
                 });
             }
 
-            const checkPass = await bcrypt.compare(senha, user.senha);
-            if (!checkPass) {
+            if (user.role !== 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Acesso restrito a administradores'
+                });
+            }
+
+            const isMatch = await user.verificarSenha(senha);
+            
+            if (!isMatch) {
                 return res.status(401).json({
                     success: false,
                     message: 'Credenciais inválidas'
                 });
             }
 
-            const token = await generateToken(user,req,res)
+            await user.atualizarUltimoLogin();
+            const token = generateToken(user);
+
             return res.status(200).json({
                 success: true,
                 message: 'Login realizado com sucesso',
                 token,
-                userId: user._id,
-                role: user.role
+                user: {
+                    id: user._id,
+                    nome: user.nome,
+                    email: user.email,
+                    role: user.role
+                }
             });
 
         } catch (error) {
@@ -157,7 +175,8 @@ module.exports = class AdminController {
                 });
             }
 
-            const adminToDelete = await User.findOne({ _id: id, role: 'admin' });
+            const adminToDelete = await User.findOneAndDelete({ _id: id, role: 'admin' });
+            
             if (!adminToDelete) {
                 return res.status(404).json({ 
                     success: false,
@@ -165,7 +184,6 @@ module.exports = class AdminController {
                 });
             }
 
-            await User.findByIdAndDelete(id);
             return res.status(200).json({ 
                 success: true,
                 message: 'Administrador excluído com sucesso.' 

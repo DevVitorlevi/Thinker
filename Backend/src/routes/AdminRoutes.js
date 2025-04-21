@@ -22,7 +22,7 @@ router.post('/login', AdminController.login);
 // ======================================
 // ROTAS DE GERENCIAMENTO DE ADMINS
 // ======================================
-router.post('/register',VerifyToken, AdminController.checkAdmin, AdminController.registerAdmin);
+router.post('/register', AdminController.registerAdmin);
 router.patch('/delete/:id',VerifyToken,AdminController.checkAdmin, AdminController.deleteAdmin);
 
 // ======================================
