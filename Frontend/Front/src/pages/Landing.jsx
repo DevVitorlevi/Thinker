@@ -35,14 +35,36 @@ export const Landing = () => {
             </MenuMobile>
 
             <Cta>
-                <h1>Suba de nível. Supere limites. Pense como um <span>Thinker</span></h1>
+                <h1>Suba de nível. Supere limites. Pense como um <span className="thinker">Thinker</span></h1>
                 <Link to='/register'>
                     <ButtonCall>Comece Sua Jornada No Conhecimento</ButtonCall>
                 </Link>
             </Cta>
 
             <Presentation>
-                <h1 className="title">Aprender nunca foi tão divertido</h1>
+                <div>
+                    <h1 className="title">Explore a lista de matérias e prepare-se para o ENEM no Thinker</h1>
+                    <p className="subtitle">
+                        No Thinker, acesse matérias essenciais para o ENEM e estude de forma focada e eficaz, preparando-se para o exame com confiança.
+                    </p>
+                    <img src="" alt="" />
+                </div>
+                <div>
+                    <h1 className="title">
+                        Complete quizzes e acumule pontos
+                    </h1>
+                    <p className="subtitle">
+                        No Thinker, ao completar quizzes, você ganha pontos que refletem seu desempenho, tornando o aprendizado mais motivador.
+                    </p>
+                    <img src="" alt="" />
+                </div>
+                <div>
+                    <h1 className="title">
+                        Acompanhe seu progresso no ranking
+                    </h1>
+                    <p className="subtitle">O Thinker exibe seu progresso em um ranking apenas entre seus amigos, incentivando a comparação e a melhoria contínua de forma mais pessoal e competitiva.</p>
+                    <img src="" alt="" />
+                </div>
             </Presentation>
         </>
     )

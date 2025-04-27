@@ -2,8 +2,6 @@ import styled from 'styled-components';
 export const Header = styled.header`
     display:inline-flex;
     background-color:#006BCF;
-    position: sticky;
-    top: 0;
     width: 100%;
     padding: 1rem;
     #logo {
@@ -13,6 +11,9 @@ export const Header = styled.header`
         #logo{
             width: 15rem;
         }
+        position: sticky;
+        top: 0;
+        z-index: 9999;
     }
 `
 export const MenuMobile = styled.div`
@@ -123,7 +124,7 @@ export const Cta = styled.div `
     
     font-family: "Josefin Sans", sans-serif;
 
-    span{
+    .thinker{
         font-family:'Dalek';
         font-size: 3rem;
         color: gold;
