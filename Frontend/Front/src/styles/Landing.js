@@ -155,14 +155,100 @@ export const Content = styled.div `
     gap: 1.4rem;
 
     .title{
-            font-size: 1.2rem;
+            font-size: 1.8rem;
             font-family: 'Dalek';
             margin-top:1rem
     }
     .subtitle{
             font-size: 1rem;
     }
+`
 
+export const Cards = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centraliza os cards */
+  gap: 2rem;
+  font-family: 'Josefin Sans';
+  margin: 1rem;
+  width: 90%;
+  padding: 0.4rem;
 
+  h1 {
+    font-family: 'Dalek';
+    font-size: 1.8rem;
+    width: 100%;
+    text-align: center; /* Centraliza o título */
+}
 
+`;
+export const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  border-radius: 2rem;
+  background-color: whitesmoke;
+  width: 100%;
+  box-shadow: 0px 2px 18px rgba(0,0,0,0.2);
+  transition: all 0.4s ease;
+
+    .icon{
+        text-align: center;
+        padding: 2rem;
+        border-top-right-radius: 2rem;
+        border-top-left-radius: 2rem;
+        border-bottom-left-radius:80% ;
+        border-bottom-right-radius: 80%;
+        background-color: gold;
+        font-size: 3rem;
+    }
+    .title{
+        font-size: 1.6rem;
+        text-align: center;
+        font-family: 'Dalek';
+        padding: 1rem;
+    }
+    .subtitle{
+        font-size: 1.4rem;
+        padding: 1rem;
+    }
+
+    &:hover{
+        transform: scale(1.03);
+    }
+`
+export const ScrollRevealLeft = styled.div`
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 1s ease-out;
+  width: 100%; 
+  
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+export const ScrollRevealRight = styled.div`
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 1s ease-out;
+  width: 100%; 
+  
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+export const ScrollReveal = styled.div`
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
 `
