@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 export const Header = styled.header`
     display:inline-flex;
     background-color:#006BCF;
@@ -9,6 +8,11 @@ export const Header = styled.header`
     padding: 1rem;
     #logo {
     width: 10rem;
+    }
+    @media screen and (min-width:769px){
+        #logo{
+            width: 15rem;
+        }
     }
 `
 export const MenuMobile = styled.div`
@@ -64,6 +68,9 @@ export const MenuMobile = styled.div`
             }
         }
     }
+    @media screen and (min-width:769px){
+        display: none;
+    }
 `
 
 export const MenuIcon = styled.div`
@@ -83,6 +90,10 @@ export const MenuIcon = styled.div`
         height: 3rem;
         color: white;
     }
+
+    @media screen and (min-width:769px){
+        display: none;
+    }
 `
 export const ButtonRegister = styled.button`
     background-color:transparent;
@@ -99,4 +110,40 @@ export const ButtonRegister = styled.button`
         background-color: goldenrod;
         transform: scale(1.1);
     }
+
+`
+
+export const Cta = styled.div `
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    margin-top: 2rem;
+    font-size:1rem;
+    
+    font-family: "Josefin Sans", sans-serif;
+
+    span{
+        font-family:'Dalek';
+        font-size: 3rem;
+        color: gold;
+    }
+`
+export const ButtonCall = styled.button `
+    background-color: #004888;
+    padding: 1.3rem;
+    border-radius: 1rem;
+    width: 90%;
+    color: white;
+    font-family: 'Josefin Sans';
+    font-size: 1.1rem;
+    border: 0;
+    transition: ease-in-out .3s;
+    &:hover{
+        transform: scale(1.02);
+    }
+`
+
+export const Presentation = styled.div `
+    
 `
