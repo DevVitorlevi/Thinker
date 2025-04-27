@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Header, ButtonRegister, MenuMobile, Overlay, MenuIcon } from "../styles/Landing";
+import { Header, ButtonRegister, MenuMobile, MenuIcon } from "../styles/Landing";
 import { Menu, X } from 'lucide-react';
 import Logo from '../assets/Logo.png';
 
@@ -16,17 +16,12 @@ export const Landing = () => {
             <Header>
                 <img src={Logo} alt="Logo do Thinker" id="logo" />
                 <MenuIcon onClick={toggleMenu}>
-                    <Menu color="white" size={32} />
+                    {menuOpen ? <X /> : <Menu />}
                 </MenuIcon>
             </Header>
 
-            <Overlay open={menuOpen} onClick={toggleMenu} />
-
             {/* Menu Mobile */}
             <MenuMobile open={menuOpen}>
-                <div onClick={toggleMenu}>
-                    <X color="white" size={32} />
-                </div>
                 <nav>
                     <ul>
                         <li className="menu-itens"><a href="">Inicio</a></li>
