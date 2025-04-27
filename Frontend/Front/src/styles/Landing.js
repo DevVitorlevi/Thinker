@@ -166,9 +166,9 @@ export const Content = styled.div `
 
 export const Cards = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* Centraliza os cards */
+  flex-wrap: wrap;
+  justify-content: center; 
+  align-items: center; 
   gap: 2rem;
   font-family: 'Josefin Sans';
   margin: 1rem;
@@ -179,45 +179,49 @@ export const Cards = styled.div`
     font-family: 'Dalek';
     font-size: 1.8rem;
     width: 100%;
-    text-align: center; /* Centraliza o título */
-}
-
+    text-align: center;
+  }
 `;
+
+
 export const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
   border-radius: 2rem;
   background-color: whitesmoke;
-  width: 100%;
   box-shadow: 0px 2px 18px rgba(0,0,0,0.2);
   transition: all 0.4s ease;
+  margin: 0 auto;
 
-    .icon{
-        text-align: center;
-        padding: 2rem;
-        border-top-right-radius: 2rem;
-        border-top-left-radius: 2rem;
-        border-bottom-left-radius:80% ;
-        border-bottom-right-radius: 80%;
-        background-color: gold;
-        font-size: 3rem;
-    }
-    .title{
-        font-size: 1.6rem;
-        text-align: center;
-        font-family: 'Dalek';
-        padding: 1rem;
-    }
-    .subtitle{
-        font-size: 1.4rem;
-        padding: 1rem;
-    }
+  .icon {
+    text-align: center;
+    padding: 2rem;
+    border-top-right-radius: 2rem;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 80%;
+    border-bottom-right-radius: 80%;
+    background-color: gold;
+    font-size: 3rem;
+  }
 
-    &:hover{
-        transform: scale(1.03);
-    }
-`
+  .title {
+    font-size: 1.6rem;
+    text-align: center;
+    font-family: 'Dalek';
+    padding: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.4rem;
+    padding: 1rem;
+  }
+
+  &:hover {
+    transform: scale(1.03);
+  }
+`;
+
 export const ScrollRevealLeft = styled.div`
   opacity: 0;
   transform: translateX(-50px);
@@ -251,4 +255,17 @@ export const ScrollReveal = styled.div`
     opacity: 1;
     transform: translateY(0);
   }
+`
+
+export const Footer = styled.footer `
+    background-color: #006BCF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    color: white;
+    font-family: 'Josefin Sans';
+    img{
+        width: 8rem;
+    }
 `

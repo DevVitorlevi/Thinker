@@ -12,7 +12,8 @@ import {
     Cards,
     Card,
     ScrollRevealLeft,
-    ScrollRevealRight
+    ScrollRevealRight,
+    Footer
 } from "../styles/Landing";
 import { Menu, X } from 'lucide-react';
 import Logo from '../assets/Logo.png';
@@ -186,6 +187,12 @@ export const Landing = () => {
                     </Card>
                 </ScrollRevealRight>
             </Cards>
+
+            <Footer>
+                <img src={Logo} alt="" />
+
+                <p>© THINKER 2025</p>
+            </Footer>
         </>
     );
 };
