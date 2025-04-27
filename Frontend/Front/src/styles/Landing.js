@@ -18,21 +18,18 @@ export const Header = styled.header`
 `
 export const MenuMobile = styled.div`
     background-color: #006BCF;
-    position: absolute;
-    top: 5rem;
+    position: fixed;
+    top: 6rem;
     right: 0;
     width: 250px;
     overflow: hidden;
-    border-radius: 0 0 0.5rem 0.5rem;
+    border-radius: 0 0 1rem 1rem;
     z-index: 1000;
     transition: all 0.4s ease;
     height: ${({ open }) => (open ? '250px' : '0')};
     opacity: ${({ open }) => (open ? '1' : '0')};
     padding: ${({ open }) => (open ? '20px' : '0 20px')};
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: ${({ open }) => (open ? '1.5rem' : '0')};
+    pointer-events: ${({ open }) => (open ? 'auto' : 'none')}; // Só recebe clicks quando aberto
 
     nav, ul {
         width: 100%;
@@ -96,6 +93,21 @@ export const MenuIcon = styled.div`
         display: none;
     }
 `
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color:transparent;
+  z-index: 998; // Garanta que está abaixo do menu (que tem z-index: 1000)
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  transition: all 0.3s ease-in-out;
+  pointer-events: ${({ isOpen }) => (isOpen ? 'auto' : 'none')}; // Só recebe clicks quando aberto
+`;
+
 export const ButtonRegister = styled.button`
     background-color:transparent;
     border: 1px solid white;
@@ -269,3 +281,35 @@ export const Footer = styled.footer `
         width: 8rem;
     }
 `
+export const ButtonTop = styled.button`
+  position: fixed;
+  bottom: 5rem;
+  right: .5rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: #006BCF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  opacity: ${({ show }) => (show ? '1' : '0')};
+  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
+  transform: ${({ show }) => (show ? 'translateY(0)' : 'translateY(100px)')};
+  
+  &:hover {
+    background-color: #004888;
+    transform: ${({ show }) => (show ? 'translateY(-5px)' : 'translateY(100px)')};
+  }
+  
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+`;
+

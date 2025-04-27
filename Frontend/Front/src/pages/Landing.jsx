@@ -13,9 +13,11 @@ import {
     Card,
     ScrollRevealLeft,
     ScrollRevealRight,
-    Footer
+    Footer,
+    ButtonTop,
+    Overlay
 } from "../styles/Landing";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowUp } from 'lucide-react';
 import Logo from '../assets/Logo.png';
 import Materiascell from '../assets/Materias-Cell.png';
 import Quiz from '../assets/Quiz.png';
@@ -23,13 +25,43 @@ import Rank from '../assets/Ranking.png';
 
 export const Landing = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [showButton, setShowButton] = useState(false);
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
+    const handleMenuClick = () => {
+        closeMenu();
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     useEffect(() => {
-        const animateOnScroll = (elements) => {
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setShowButton(true);
+            } else {
+                setShowButton(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('[data-animate]');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -50,7 +82,7 @@ export const Landing = () => {
             return () => observer.disconnect();
         };
 
-        animateOnScroll(document.querySelectorAll('[data-animate]'));
+        animateOnScroll();
     }, []);
 
     return (
@@ -62,15 +94,23 @@ export const Landing = () => {
                 </MenuIcon>
             </Header>
 
+            <Overlay isOpen={menuOpen} onClick={closeMenu} />
+
             <MenuMobile open={menuOpen}>
                 <nav>
                     <ul>
-                        <li className="menu-itens"><a href="home">Inicio</a></li>
-                        <li className="menu-itens"><a href="#">Como Funciona</a></li>
-                        <li className="menu-itens"><a href="#">Beneficios</a></li>
+                        <li className="menu-itens">
+                            <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                        </li>
+                        <li className="menu-itens">
+                            <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                        </li>
+                        <li className="menu-itens">
+                            <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                        </li>
                     </ul>
                 </nav>
-                <Link to='/register'>
+                <Link to='/register' onClick={handleMenuClick}>
                     <ButtonRegister>Entre</ButtonRegister>
                 </Link>
             </MenuMobile>
@@ -80,7 +120,7 @@ export const Landing = () => {
                 data-animate
                 data-delay="100"
             >
-                <Cta>
+                <Cta id="home">
                     <h1>Suba de nível. Supere limites. Pense como um <span className="thinker">Thinker</span></h1>
                     <Link to='/register'>
                         <ButtonCall>Comece Sua Jornada No Conhecimento</ButtonCall>
@@ -93,7 +133,7 @@ export const Landing = () => {
                 data-animate
                 data-delay="200"
             >
-                <Presentation>
+                <Presentation id="como">
                     <Content>
                         <h1 className="title">Explore a lista de matérias e prepare-se para o ENEM no Thinker</h1>
                         <p className="subtitle">
@@ -136,7 +176,7 @@ export const Landing = () => {
                 </Presentation>
             </ScrollRevealRight>
 
-            <Cards>
+            <Cards id="beneficios">
                 <h1 data-animate>Veja os Beneficios Do Thinker</h1>
 
                 <ScrollRevealLeft
@@ -188,9 +228,12 @@ export const Landing = () => {
                 </ScrollRevealRight>
             </Cards>
 
-            <Footer>
-                <img src={Logo} alt="" />
+            <ButtonTop show={showButton} onClick={scrollToTop} aria-label="Voltar ao topo">
+                <ArrowUp />
+            </ButtonTop>
 
+            <Footer>
+                <img src={Logo} alt="Logo do Thinker" />
                 <p>© THINKER 2025</p>
             </Footer>
         </>
