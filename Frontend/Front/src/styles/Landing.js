@@ -146,5 +146,23 @@ export const ButtonCall = styled.button `
 `
 
 export const Presentation = styled.div `
-    
+    margin: 1rem;
+    font-family: 'Josefin Sans';
+`
+export const Content = styled.div `
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+
+    .title{
+            font-size: 1.2rem;
+            font-family: 'Dalek';
+            margin-top:1rem
+    }
+    .subtitle{
+            font-size: 1rem;
+    }
+
+
+
 `

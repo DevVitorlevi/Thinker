@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Header, ButtonRegister, MenuMobile, MenuIcon, Cta, ButtonCall, Presentation } from "../styles/Landing";
+import { Header, ButtonRegister, MenuMobile, MenuIcon, Cta, ButtonCall, Presentation, Content } from "../styles/Landing";
 import { Menu, X } from 'lucide-react';
 import Logo from '../assets/Logo.png';
+import Materiascell from '../assets/Materias-Cell.png'
+import Quiz from '../assets/Quiz.png'
+import Rank from '../assets/Ranking.png'
 
 export const Landing = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -42,29 +45,29 @@ export const Landing = () => {
             </Cta>
 
             <Presentation>
-                <div>
+                <Content>
                     <h1 className="title">Explore a lista de matérias e prepare-se para o ENEM no Thinker</h1>
                     <p className="subtitle">
                         No Thinker, acesse matérias essenciais para o ENEM e estude de forma focada e eficaz, preparando-se para o exame com confiança.
                     </p>
-                    <img src="" alt="" />
-                </div>
-                <div>
+                    <img src={Materiascell} alt="" />
+                </Content>
+                <Content>
                     <h1 className="title">
                         Complete quizzes e acumule pontos
                     </h1>
                     <p className="subtitle">
                         No Thinker, ao completar quizzes, você ganha pontos que refletem seu desempenho, tornando o aprendizado mais motivador.
                     </p>
-                    <img src="" alt="" />
-                </div>
-                <div>
+                    <img src={Quiz} alt="" />
+                </Content>
+                <Content>
                     <h1 className="title">
                         Acompanhe seu progresso no ranking
                     </h1>
                     <p className="subtitle">O Thinker exibe seu progresso em um ranking apenas entre seus amigos, incentivando a comparação e a melhoria contínua de forma mais pessoal e competitiva.</p>
-                    <img src="" alt="" />
-                </div>
+                    <img src={Rank} alt="" />
+                </Content>
             </Presentation>
         </>
     )
