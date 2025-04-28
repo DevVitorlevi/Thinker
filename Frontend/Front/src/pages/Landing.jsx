@@ -16,13 +16,15 @@ import {
     ButtonTop,
     Overlay,
     MenuDesktop,
-    ContentReverse
+    ContentReverse,
+    Shape
 } from "../styles/Landing";
 import { Menu, X, ArrowUp } from 'lucide-react';
 import Logo from '../assets/Logo.png';
 import Materiascell from '../assets/Materias-Cell.png';
 import Quiz from '../assets/Quiz.png';
 import Rank from '../assets/Ranking.png';
+import Templo from '../assets/templo.jpg'
 
 export const Landing = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -131,12 +133,18 @@ export const Landing = () => {
 
 
             <Cta id="home">
-                <h1>Suba de nível. Supere limites. Pense como um <p className="thinker">Thinker</p></h1>
-                <Link to='/register'>
-                    <ButtonCall>Comece Sua Jornada No Conhecimento</ButtonCall>
-                </Link>
+                <div className="cta-content">
+                    <div className="text-content">
+                        <h1>Suba de nível. Supere limites. Pense como um <p className="thinker">Thinker</p></h1>
+                        <Link to='/register'>
+                            <ButtonCall>Comece Sua Jornada No Conhecimento</ButtonCall>
+                        </Link>
+                    </div>
+                    <Shape>
+                        <img src={Templo} alt="" />
+                    </Shape>
+                </div>
             </Cta>
-
 
             <Presentation id="como">
                 <Content>
@@ -226,6 +234,9 @@ export const Landing = () => {
                 <img src={Logo} alt="Logo do Thinker" />
                 <p>© THINKER 2025</p>
             </Footer>
+
+
+
         </>
     );
 };

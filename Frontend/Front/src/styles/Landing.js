@@ -143,28 +143,56 @@ export const MenuDesktop = styled.div`
         }
 `
 
-export const Cta = styled.div `
+export const Cta = styled.div`
+  font-family: "Josefin Sans", sans-serif;
+
+  .cta-content {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .text-content {
+    max-width: 600px;
+    text-align: left;
+    z-index: 2;
+    margin: 2rem;
+  }
+
+  h1 {
+    font-size: 1rem;
     text-align: center;
-    margin-top: 2rem;
-    font-size:1rem;
-    
-    font-family: "Josefin Sans", sans-serif;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
 
-    .thinker{
-        font-family:'Dalek';
-        font-size: 3rem;
-        color: gold;
-    }
+  .thinker {
+    font-family: 'Dalek';
+    font-size: 3rem;
+    color: gold;
+    text-align: center;
+  }
 
-    @media screen and (min-width:768px){
-      .thinker{
-        font-size: 4rem;
+  @media screen and (min-width: 768px) {
+    h1 {
+      font-size: 3rem;
     }
+    .thinker {
+      font-size: 4rem;
     }
-`
+  }
+
+  @media screen and (max-width: 768px) {
+    .cta-content {
+      flex-direction: column;
+    }
+    .text-content {
+      order: 2;
+      text-align: center;
+    }
+  }
+`;
 export const ButtonCall = styled.button `
     background-color: #004888;
     padding: 1.3rem;
@@ -187,23 +215,26 @@ export const ButtonCall = styled.button `
         width: 60%;
         font-size: 1.6rem;
     }
-
+    @media screen and (min-width:1280px){
+      width:100%;
+    }
 `
 
-export const Presentation = styled.div `
-    margin: 1rem;
-    font-family: 'Josefin Sans';
+export const Presentation = styled.div`
+  margin: 3rem 1rem; /* Aumente a margem superior */
+  font-family: 'Josefin Sans';
+  position: relative; /* Garante que fique abaixo do Cta */
+  z-index: 1; /* Fica acima de qualquer elemento com z-index menor */
 
-
-    @media screen and (min-width:768px) and (max-width:992px){
-        width: 80%;
-        margin: auto;
-    }
-    @media screen and (min-width:992px){
-        margin: auto;
-        width: 80%;
-    }
-    
+  @media screen and (min-width:768px) and (max-width:992px) {
+    width: 80%;
+    margin: 3rem auto; /* Mantém o espaçamento */
+  }
+  
+  @media screen and (min-width:992px) {
+    margin: 3rem auto; /* Mantém o espaçamento */
+    width: 80%;
+  }
 `
 export const Content = styled.div `
     display: flex;
@@ -442,3 +473,21 @@ export const ButtonTop = styled.button`
   }
 `;
 
+export const Shape = styled.div`
+
+  @media screen and (min-width: 1280px) {
+    background-color: #004888;
+    width: 700px;
+    height:700px;
+    border-radius: 40% 30% 0 20%;
+    position: relative;
+    z-index: 1;
+    img{
+      position: absolute;
+      top: 15rem;
+      left: 6rem;
+      transform: translate(0%);
+      width: 600px;
+    }
+  }
+`;
