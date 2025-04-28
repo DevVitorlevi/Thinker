@@ -1,21 +1,28 @@
 import styled from 'styled-components';
 export const Header = styled.header`
-    display:flex;
+    display: flex;
     font-family: 'Josefin Sans';
     align-items: center;
     justify-content: space-between;
-    background-color:#006BCF;
+    background-color: #006BCF;
     width: 100%;
     padding: 1rem;
+    position: sticky;
+    top: -1px;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+
     #logo {
-    width: 10rem;
+        width: 10rem;
     }
-    @media screen and (min-width:768px){
-        #logo{
+
+    @media screen and (min-width: 768px) {
+        #logo {
             width: 12rem;
         }
     }
-`
+`;
 export const MenuMobile = styled.div`
     background-color: #006BCF;
     position: fixed;
@@ -151,19 +158,18 @@ export const Cta = styled.div`
     align-items: center;
     justify-content: space-between;
     position: relative;
+    min-height: 200px;
+    background-color: white;
   }
 
   .text-content {
-    max-width: 600px;
     text-align: left;
     z-index: 2;
     margin: 2rem;
   }
 
   h1 {
-    font-size: 1rem;
     text-align: center;
-    line-height: 1.2;
     margin-bottom: 2rem;
   }
 
@@ -171,16 +177,19 @@ export const Cta = styled.div`
     font-family: 'Dalek';
     font-size: 3rem;
     color: gold;
-    text-align: center;
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 768px) and (max-width:1194px) {
     h1 {
       font-size: 3rem;
     }
     .thinker {
       font-size: 4rem;
     }
+    .text-content {
+      min-width:10px;
+      margin: 3rem;
+  }
   }
 
   @media screen and (max-width: 768px) {
@@ -192,47 +201,62 @@ export const Cta = styled.div`
       text-align: center;
     }
   }
+
+  @media screen and (min-width:1194px){
+    .cta-content {
+    min-height: 700px;
+  }
+
+  .text-content {
+    max-width: 550px;
+    margin: 2rem;
+  }
+  }
+  @media screen and (min-width:1280px){
+    .text-content {
+    max-width: 550px;
+    font-size:1.5rem;
+  }
+  }
+  @media screen and (min-width: 1440px){
+    .cta-content {
+    min-height: 850px;
+  }
+  .text-content {
+    max-width: 750px;
+    margin: 10rem;
+  }
+  }
 `;
 export const ButtonCall = styled.button `
     background-color: #004888;
     padding: 1.3rem;
     border-radius: 1rem;
-    width:90%;
+    width:100%;
     color: white;
     font-family: 'Josefin Sans';
-    font-size: 1rem;
+    font-size: 1.1rem;
     border: 0;
     transition: ease-in-out .3s;
     margin-bottom: 3rem;
     &:hover{
         transform: scale(1.02);
     }
-    @media screen and (min-width:768px) and (max-width:992px){
+    @media screen and (min-width:768px){
         font-size: 1.6rem;
-        width: 80%;
-    }
-    @media screen and (min-width:992px) {
-        width: 60%;
-        font-size: 1.6rem;
-    }
-    @media screen and (min-width:1280px){
-      width:100%;
     }
 `
 
 export const Presentation = styled.div`
-  margin: 3rem 1rem; /* Aumente a margem superior */
+  margin: 2rem 1rem; 
   font-family: 'Josefin Sans';
-  position: relative; /* Garante que fique abaixo do Cta */
-  z-index: 1; /* Fica acima de qualquer elemento com z-index menor */
 
   @media screen and (min-width:768px) and (max-width:992px) {
     width: 80%;
-    margin: 3rem auto; /* Mantém o espaçamento */
+    margin: 3rem auto; 
   }
-  
   @media screen and (min-width:992px) {
-    margin: 3rem auto; /* Mantém o espaçamento */
+    margin: 3rem auto; 
     width: 80%;
   }
 `
@@ -329,12 +353,12 @@ export const Cards = styled.div`
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
-  }
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
     h1{
       font-size: 2.4rem;
     }
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
   }
   `;
 
@@ -474,20 +498,31 @@ export const ButtonTop = styled.button`
 `;
 
 export const Shape = styled.div`
-
-  @media screen and (min-width: 1280px) {
-    background-color: #004888;
-    width: 700px;
-    height:700px;
+    @media screen and (min-width:1194px) {background-color: #004888;
+    width: 50%;
+    height:90%;
     border-radius: 40% 30% 0 20%;
-    position: relative;
+    position: absolute;
+    top: 0;
+    right: 0;
     z-index: 1;
+    display: flex; 
+    align-items:center;
+    justify-content: center;
+      img{
+      width: 30rem;
+    }}
+
+  @media screen and (max-width: 1193px) {
+    display: none;
     img{
-      position: absolute;
-      top: 15rem;
-      left: 6rem;
-      transform: translate(0%);
-      width: 600px;
+      display: none;
+    }
+  }
+  @media screen and (min-width: 1440px){
+    width: 40%;
+    img{
+      width: 40rem;
     }
   }
 `;

@@ -24,7 +24,7 @@ import Logo from '../assets/Logo.png';
 import Materiascell from '../assets/Materias-Cell.png';
 import Quiz from '../assets/Quiz.png';
 import Rank from '../assets/Ranking.png';
-import Templo from '../assets/templo.jpg'
+import Templo from '../assets/boneco.png'
 
 export const Landing = () => {
     const [menuOpen, setMenuOpen] = useState(false);
