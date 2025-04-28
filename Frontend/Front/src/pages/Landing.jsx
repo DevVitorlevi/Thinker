@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
     Header,
-    ButtonRegister,
     MenuMobile,
     MenuIcon,
     Cta,
@@ -15,7 +14,9 @@ import {
     ScrollRevealRight,
     Footer,
     ButtonTop,
-    Overlay
+    Overlay,
+    MenuDesktop,
+    ContentReverse
 } from "../styles/Landing";
 import { Menu, X, ArrowUp } from 'lucide-react';
 import Logo from '../assets/Logo.png';
@@ -92,90 +93,79 @@ export const Landing = () => {
                 <MenuIcon onClick={toggleMenu}>
                     {menuOpen ? <X /> : <Menu />}
                 </MenuIcon>
+
+                <Overlay isOpen={menuOpen} onClick={closeMenu} />
+
+                <MenuMobile open={menuOpen}>
+                    <nav>
+                        <ul>
+                            <li className="menu-itens">
+                                <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </MenuMobile>
+
+                <MenuDesktop>
+                    <nav>
+                        <ul>
+                            <li className="menu-itens">
+                                <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </MenuDesktop>
             </Header>
 
-            <Overlay isOpen={menuOpen} onClick={closeMenu} />
 
-            <MenuMobile open={menuOpen}>
-                <nav>
-                    <ul>
-                        <li className="menu-itens">
-                            <a href="#home" onClick={handleMenuClick}>Inicio</a>
-                        </li>
-                        <li className="menu-itens">
-                            <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
-                        </li>
-                        <li className="menu-itens">
-                            <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
-                        </li>
-                    </ul>
-                </nav>
-                <Link to='/register' onClick={handleMenuClick}>
-                    <ButtonRegister>Entre</ButtonRegister>
+            <Cta id="home">
+                <h1>Suba de nível. Supere limites. Pense como um <p className="thinker">Thinker</p></h1>
+                <Link to='/register'>
+                    <ButtonCall>Comece Sua Jornada No Conhecimento</ButtonCall>
                 </Link>
-            </MenuMobile>
+            </Cta>
 
-            <ScrollRevealLeft
-                className="scroll-reveal-left"
-                data-animate
-                data-delay="100"
-            >
-                <Cta id="home">
-                    <h1>Suba de nível. Supere limites. Pense como um <span className="thinker">Thinker</span></h1>
-                    <Link to='/register'>
-                        <ButtonCall>Comece Sua Jornada No Conhecimento</ButtonCall>
-                    </Link>
-                </Cta>
-            </ScrollRevealLeft>
 
-            <ScrollRevealRight
-                className="scroll-reveal-right"
-                data-animate
-                data-delay="200"
-            >
-                <Presentation id="como">
-                    <Content>
-                        <h1 className="title">Explore a lista de matérias e prepare-se para o ENEM no Thinker</h1>
+            <Presentation id="como">
+                <Content>
+                    <div><h1 className="title">Explore a lista de matérias e prepare-se para o ENEM no Thinker</h1>
                         <p className="subtitle">
                             No Thinker, acesse matérias essenciais para o ENEM e estude de forma focada e eficaz, preparando-se para o exame com confiança.
-                        </p>
-                        <img src={Materiascell} alt="Matérias do ENEM" />
-                    </Content>
-                </Presentation>
-            </ScrollRevealRight>
+                        </p></div>
+                    <img src={Materiascell} alt="Matérias do ENEM" />
+                </Content>
+            </Presentation>
 
-            <ScrollRevealLeft
-                className="scroll-reveal-left"
-                data-animate
-                data-delay="300"
-            >
-                <Presentation>
-                    <Content>
-                        <h1 className="title">Complete quizzes e acumule pontos</h1>
+            <Presentation>
+                <ContentReverse>
+                    <div> <h1 className="title">Complete quizzes e acumule pontos</h1>
                         <p className="subtitle">
                             No Thinker, ao completar quizzes, você ganha pontos que refletem seu desempenho, tornando o aprendizado mais motivador.
-                        </p>
-                        <img src={Quiz} alt="Quiz do Thinker" />
-                    </Content>
-                </Presentation>
-            </ScrollRevealLeft>
-
-            <ScrollRevealRight
-                className="scroll-reveal-right"
-                data-animate
-                data-delay="400"
-            >
-                <Presentation>
-                    <Content>
-                        <h1 className="title">Acompanhe seu progresso no ranking</h1>
+                        </p></div>
+                    <img src={Quiz} alt="Quiz do Thinker" />
+                </ContentReverse>
+            </Presentation>
+            <Presentation>
+                <Content>
+                    <div><h1 className="title">Acompanhe seu progresso no ranking</h1>
                         <p className="subtitle">
                             O Thinker exibe seu progresso em um ranking apenas entre seus amigos, incentivando a comparação e a melhoria contínua de forma mais pessoal e competitiva.
-                        </p>
-                        <img src={Rank} alt="Ranking do Thinker" />
-                    </Content>
-                </Presentation>
-            </ScrollRevealRight>
-
+                        </p></div>
+                    <img src={Rank} alt="Ranking do Thinker" />
+                </Content>
+            </Presentation>
             <Cards id="beneficios">
                 <h1 data-animate>Veja os Beneficios Do Thinker</h1>
 
