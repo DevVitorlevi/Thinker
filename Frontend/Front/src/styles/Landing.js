@@ -14,9 +14,6 @@ export const Header = styled.header`
         #logo{
             width: 12rem;
         }
-        position: sticky;
-        top: -1px;
-        z-index: 9999;
     }
 `
 export const MenuMobile = styled.div`
@@ -178,6 +175,7 @@ export const ButtonCall = styled.button `
     font-size: 1rem;
     border: 0;
     transition: ease-in-out .3s;
+    margin-bottom: 3rem;
     &:hover{
         transform: scale(1.02);
     }
@@ -193,15 +191,29 @@ export const ButtonCall = styled.button `
 `
 
 export const Presentation = styled.div `
-    padding: 2rem;
-    margin: auto;
+    margin: 1rem;
     font-family: 'Josefin Sans';
+
+
+    @media screen and (min-width:768px) and (max-width:992px){
+        width: 80%;
+        margin: auto;
+    }
+    @media screen and (min-width:992px){
+        margin: auto;
+        width: 80%;
+    }
     
 `
 export const Content = styled.div `
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
+    div{
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
     .title{
             font-size: 1.8rem;
             font-family: 'Dalek';
@@ -210,38 +222,24 @@ export const Content = styled.div `
     .subtitle{
             font-size: 1rem;
     }
-
-    @media screen and (min-width:768px){
-        flex-direction: row;
-        gap: 3rem;
-        .subtitle{
-          font-size:1.3rem ;
-        }
-        .title{
+    @media screen and (min-width:768px) and (max-width:992px){
+      .subtitle{
             font-size: 1.5rem;
-            font-family: 'Dalek';
-            margin-top:1rem
-      }
-        img{
-          width: 25rem;
-        }
-        div{
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-
     }
-      }
-      @media screen and (min-width:992px) {
-       .subtitle{
-          font-size: 1.8rem;
-       }
-       .title{
-          font-size: 2.2rem;
-       }
-       img{
-          width: 35rem;
-       }
+    }
+    @media screen and (min-width:992px){
+      .subtitle{
+            font-size: 1.8rem;
+          }
+          div{  
+            gap: 1rem;
+          }
+          img{
+            width: 35rem;
+          }
+      flex-direction: row;
+      gap: 3rem;
+      
     }
       
       `
@@ -258,36 +256,26 @@ export const ContentReverse = styled.div `
             font-size: 1rem;
     }
 
-    @media screen and (min-width:768px){
-        flex-direction: row-reverse;
-        gap: 3rem;
-        .subtitle{
-          font-size:1.3rem ;
-        }
-        .title{
-            font-size: 1.5rem;
-      }
-        img{
-          width: 25rem;
-        }
-        div{
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-
+    @media screen and (min-width:768px) and (max-width:992px){
+      .subtitle{
+            font-size: 1.5rem;}
     }
-      }
-      @media screen and (min-width:992px) {
-        .subtitle{
-          font-size: 1.8rem;
-       }
-       .title{
-          font-size: 2.2rem;
-       }
-       img{
-          width: 35rem;
-       }
+    @media screen and (min-width:992px){
+      .subtitle{
+            font-size: 1.8rem;
+          }
+          div{  
+            gap: 1rem;
+          }
+          img{
+            width: 35rem;
+          }
+      flex-direction: row-reverse;
+      gap: 3rem;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
     }
+  
 `
 export const Cards = styled.div`
   display: grid;
