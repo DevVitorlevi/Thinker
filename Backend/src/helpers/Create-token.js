@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const generateToken = (user) => {
+const CreateUserToken = (user) => {
     if (!user || !user._id || !user.role) {
         throw new Error('Dados do usuário inválidos para geração do token');
     }
@@ -11,8 +11,12 @@ const generateToken = (user) => {
             role: user.role
         },
         process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+        {
+            expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+            audience: 'thinker-client',
+            issuer: 'thinker-api'       
+        }
     );
 };
 
-module.exports = generateToken; // Exportação direta da função
+module.exports = CreateUserToken; // Exportação direta da função
