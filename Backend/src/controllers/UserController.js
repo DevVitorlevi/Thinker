@@ -1,313 +1,134 @@
+
+
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const CreateUserToken = require('../helpers/Create-token');
 const getToken = require('../helpers/get-token');
-const getUserByToken = require('../helpers/get-user-by-token');
+const getUserbyToken = require('../helpers/get-user-by-token');
 
 module.exports = class UserController {
-    // Registrar usuário
+    // Registrar um novo usuário
     static async register(req, res) {
         const { nome, email, senha, confirmesenha } = req.body;
 
-        // Validações
         if (!nome || !email || !senha || !confirmesenha) {
-            return res.status(422).json({ 
-                success: false,
-                message: 'Todos os campos são obrigatórios.' 
-            });
+            return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
 
         if (senha !== confirmesenha) {
-            return res.status(422).json({ 
-                success: false,
-                message: 'As senhas não coincidem.' 
-            });
-        }
-
-        if (senha.length < 8) {
-            return res.status(422).json({
-                success: false,
-                message: 'A senha deve ter no mínimo 8 caracteres.'
-            });
+            return res.status(422).json({ message: 'As senhas não coincidem.' });
         }
 
         try {
-            // Verifica se usuário já existe (case insensitive)
-            const userExist = await User.findOne({ email: email.toLowerCase() });
+            const userExist = await User.findOne({ email: email });
+
             if (userExist) {
-                return res.status(409).json({ 
-                    success: false,
-                    message: 'Email já cadastrado.' 
-                });
+                return res.status(422).json({ message: 'Usuário já existe.' });
             }
 
-            // Cria hash da senha
             const salt = await bcrypt.genSalt(12);
             const hashPass = await bcrypt.hash(senha, salt);
 
-            // Cria novo usuário
-            const user = new User({
+            const userData = new User({
                 nome,
-                email: email.toLowerCase(),
+                email,
                 senha: hashPass,
-                role: 'user'
+                role: 'user', // Define o papel como usuário comum
             });
 
-            // Salva no banco de dados
-            await user.save();
-
-            // Gera token JWT
-            const token = jwt.sign(
-                { id: user._id, role: user.role },
-                process.env.JWT_SECRET || 'nossosecret',
-                { expiresIn: '7d' }
-            );
-
-            return res.status(201).json({
-                success: true,
-                message: 'Usuário cadastrado com sucesso!',
-                token,
-                user: {
-                    id: user._id,
-                    nome: user.nome,
-                    email: user.email,
-                    role: user.role
-                }
-            });
-
+            const userSave = await userData.save();
+            await CreateUserToken(userSave, req, res);
+            res.status(201).json({ message: 'Sucesso ao registrar usuário.', userData });
         } catch (error) {
-            console.error('Erro no registro:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao registrar usuário.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(500).json({ message: 'Erro ao registrar usuário.', error });
         }
     }
 
-    // Login usuário
+    // Autenticar um usuário
     static async login(req, res) {
         const { email, senha } = req.body;
 
-        // Validações
         if (!email || !senha) {
-            return res.status(422).json({ 
-                success: false,
-                message: 'Email e senha são obrigatórios.' 
-            });
+            return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
 
         try {
-            // Busca usuário incluindo a senha (case insensitive)
-            const user = await User.findOne({ email: email.toLowerCase() }).select('+senha');
-            
+            const user = await User.findOne({ email: email });
+
             if (!user) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuário não encontrado.' 
-                });
+                return res.status(422).json({ message: 'Usuário não encontrado.' });
             }
 
-            // Verifica senha
-            const isPasswordValid = await bcrypt.compare(senha, user.senha);
-            if (!isPasswordValid) {
-                return res.status(401).json({ 
-                    success: false,
-                    message: 'Credenciais inválidas.' 
-                });
+            const checkPass = await bcrypt.compare(senha, user.senha);
+
+            if (!checkPass) {
+                return res.status(422).json({ message: 'Senha incorreta.' });
             }
 
-            // Atualiza último login
-            user.ultimoLogin = new Date();
-            await user.save();
-
-            // Gera novo token JWT
-            const token = jwt.sign(
-                { id: user._id, role: user.role },
-                process.env.JWT_SECRET || 'nossosecret',
-                { expiresIn: '7d' }
-            );
-
-            // Remove a senha antes de retornar
-            const userResponse = user.toObject();
-            delete userResponse.senha;
-
-            return res.status(200).json({
-                success: true,
-                message: 'Login realizado com sucesso!',
-                token,
-                user: userResponse
-            });
-
+            await CreateUserToken(user, req, res);
+            res.status(200).json({ message: 'Sucesso ao logar usuário.', user });
         } catch (error) {
-            console.error('Erro no login:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao realizar login.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(500).json({ message: 'Erro ao autenticar usuário.', error });
         }
     }
 
     // Verificar usuário autenticado
     static async checkUser(req, res) {
-        try {
-            let currentUser = null;
+        let userAtual;
 
-            if (req.headers.authorization) {
-                const token = getToken(req);
-                const decoded = jwt.verify(token, process.env.JWT_SECRET || 'nossosecret');
-                currentUser = await User.findById(decoded.id).select('-senha');
-            }
+        if (req.headers.authorization) {
+            const token = getToken(req);
+            const decoded = jwt.verify(token, 'nossosecret');
 
-            return res.status(200).json({
-                success: true,
-                user: currentUser
-            });
-
-        } catch (error) {
-            console.error('Erro ao verificar usuário:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao verificar usuário.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            userAtual = await User.findById(decoded.id);
+            userAtual.senha = undefined;
+        } else {
+            userAtual = null;
         }
+
+        res.status(200).send(userAtual);
     }
 
-    // Obter usuário por ID
+    // Obter informações de um usuário
     static async getUser(req, res) {
-        const { id } = req.params;
-
         try {
+            const id = req.params.id;
+
+            // Busca o usuário
             const user = await User.findById(id)
-                .select('-senha')
-                .populate('quizzes_respondidos.quiz', 'titulo');
+                .select('-senha') // Remove a senha da resposta
 
             if (!user) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuário não encontrado.' 
-                });
+                return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
 
-            return res.status(200).json({ 
-                success: true,
-                user 
-            });
-
+            res.status(200).json({ user });
         } catch (error) {
-            console.error('Erro ao buscar usuário:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao buscar usuário.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(500).json({ message: 'Erro ao obter usuário.', error });
         }
     }
 
-    // Editar imagem do usuário
+    // Editar informações do usuário
     static async editUser(req, res) {
         try {
+            const id = req.params.id;
             const token = getToken(req);
-            const user = await getUserByToken(token);
+            const user = await getUserbyToken(token);
 
             if (!user) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuário não encontrado.' 
-                });
+                return res.status(404).json({ message: 'Usuário não encontrado.' });
             }
 
             if (req.file) {
                 user.image = req.file.filename;
                 await user.save();
-                
-                return res.status(200).json({ 
-                    success: true,
-                    message: 'Imagem atualizada com sucesso!',
-                    image: user.image 
-                });
+                return res.status(200).json({ message: 'Foto atualizada com sucesso!', image: user.image });
             }
 
-            return res.status(400).json({ 
-                success: false,
-                message: 'Nenhuma imagem enviada.' 
-            });
-
+            return res.status(400).json({ message: 'Nenhuma imagem foi enviada.' });
         } catch (error) {
-            console.error('Erro ao atualizar imagem:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao atualizar imagem.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
-        }
-    }
-
-    // Atualizar perfil
-    static async updateProfile(req, res) {
-        const { nome } = req.body;
-        
-        try {
-            const token = getToken(req);
-            const user = await getUserByToken(token);
-            
-            if (!user) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuário não encontrado.' 
-                });
-            }
-
-            if (nome) user.nome = nome;
-            await user.save();
-
-            // Remove a senha antes de retornar
-            const userResponse = user.toObject();
-            delete userResponse.senha;
-
-            return res.status(200).json({ 
-                success: true,
-                message: 'Perfil atualizado com sucesso!',
-                user: userResponse
-            });
-
-        } catch (error) {
-            console.error('Erro ao atualizar perfil:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao atualizar perfil.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
-        }
-    }
-
-    // Obter estatísticas do usuário
-    static async getStats(req, res) {
-        try {
-            const token = getToken(req);
-            const user = await getUserByToken(token);
-            
-            if (!user) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuário não encontrado.' 
-                });
-            }
-
-            return res.status(200).json({ 
-                success: true,
-                estatisticas: user.estatisticas 
-            });
-
-        } catch (error) {
-            console.error('Erro ao buscar estatísticas:', error);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro ao buscar estatísticas.',
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
+            res.status(500).json({ message: 'Erro ao atualizar foto.', error });
         }
     }
 };
