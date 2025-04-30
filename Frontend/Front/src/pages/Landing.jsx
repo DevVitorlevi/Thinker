@@ -17,7 +17,8 @@ import {
     Overlay,
     MenuDesktop,
     ContentReverse,
-    Shape
+    Shape,
+    Wrapper
 } from "../styles/Landing";
 import { Menu, X, ArrowUp } from 'lucide-react';
 import Logo from '../assets/Logo.png';
@@ -90,6 +91,7 @@ export const Landing = () => {
 
     return (
         <>
+
             <Header>
                 <img src={Logo} alt="Logo do Thinker" id="logo" />
                 <MenuIcon onClick={toggleMenu}>
@@ -145,6 +147,7 @@ export const Landing = () => {
                     </Shape>
                 </div>
             </Cta>
+            <Wrapper>
 
             <Presentation id="como">
                 <Content>
@@ -181,7 +184,7 @@ export const Landing = () => {
                     className="scroll-reveal-left"
                     data-animate
                     data-delay="100"
-                >
+                    >
                     <Card>
                         <div className="icon">🚀</div>
                         <h2 className="title">Aprendizado rápido e dinâmico</h2>
@@ -193,7 +196,7 @@ export const Landing = () => {
                     className="scroll-reveal-right"
                     data-animate
                     data-delay="200"
-                >
+                    >
                     <Card>
                         <div className="icon">🎮</div>
                         <h2 className="title">Sistema de gamificação que motiva</h2>
@@ -205,7 +208,7 @@ export const Landing = () => {
                     className="scroll-reveal-left"
                     data-animate
                     data-delay="300"
-                >
+                    >
                     <Card>
                         <div className="icon">📚</div>
                         <h2 className="title">Conteúdo atualizado e de qualidade</h2>
@@ -217,7 +220,7 @@ export const Landing = () => {
                     className="scroll-reveal-right"
                     data-animate
                     data-delay="400"
-                >
+                    >
                     <Card>
                         <div className="icon">🏆</div>
                         <h2 className="title">Ranking para desafiar seus amigos</h2>
@@ -225,6 +228,7 @@ export const Landing = () => {
                     </Card>
                 </ScrollRevealRight>
             </Cards>
+            </Wrapper>
 
             <ButtonTop show={showButton} onClick={scrollToTop} aria-label="Voltar ao topo">
                 <ArrowUp />

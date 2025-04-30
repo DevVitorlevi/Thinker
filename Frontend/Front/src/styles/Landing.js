@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+export const Wrapper = styled.div`
+    background-color:rgba(169, 235, 236, 0.4);
+`
 export const Header = styled.header`
     display: flex;
     font-family: 'Josefin Sans';
