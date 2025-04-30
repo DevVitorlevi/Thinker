@@ -1,10 +1,11 @@
-const mongoose = require('mongoose')
+require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
+console.log('🧪 DB_URI:', process.env.DB_URI); // ADICIONE ISTO AQUI
 
-async function main(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/thinker')
-    console.log('Conectado')
+const mongoose = require('mongoose');
+
+async function main() {
+  await mongoose.connect(process.env.DB_URI);
+  console.log('✅ Conectado ao MongoDB!');
 }
 
-main().catch(err=>console.error(err))
-
-module.exports = mongoose
+main().catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
