@@ -2,52 +2,28 @@ const express = require('express');
 const router = express.Router();
 const AdminController = require('../controllers/AdminController');
 const VerifyToken = require('../helpers/verify-token');
-const { ImageUpload } = require('../helpers/image-up');
-
-// Importações dos controllers
 const QuizController = require('../controllers/QuizController');
 const MateriaController = require('../controllers/MateriasControllers');
 const QuestaoController = require('../controllers/QuestionsController');
-const ConteudoController = require('../controllers/ConteudoController');
-const RankingController = require('../controllers/RankingController');
-
-// ======================================
-// ROTAS PÚBLICAS (sem autenticação)
-// ======================================
-router.post('/login', AdminController.login);
-
-// ======================================
-// MIDDLEWARE DE AUTENTICAÇÃO
-// =====================================
-// ======================================
-// ROTAS DE GERENCIAMENTO DE ADMINS
-// ======================================
-router.post('/register', AdminController.registerAdmin);
-router.patch('/delete/:id',VerifyToken,AdminController.checkAdmin, AdminController.deleteAdmin);
-
-// ======================================
-// ROTAS DE GERENCIAMENTO DE CONTEÚDO
-// ======================================
 
 // CRUD Matérias
-router.post('/materias',VerifyToken,AdminController.checkAdmin, MateriaController.create);
-router.put('/materias/:id',VerifyToken,AdminController.checkAdmin, MateriaController.update);
-router.delete('/materias/:id',VerifyToken,AdminController.checkAdmin, MateriaController.delete);
+router.post('/materia', VerifyToken, AdminController.checkAdminRole, MateriaController.create);
+router.patch('/materia/:id', VerifyToken, AdminController.checkAdminRole, MateriaController.update);
+router.delete('/materia/:id', VerifyToken, AdminController.checkAdminRole, MateriaController.delete);
 
 // CRUD Quizzes
-router.post('/quizzes', VerifyToken,AdminController.checkAdmin, QuizController.create);
-router.put('/quizzes/:id',VerifyToken,AdminController.checkAdmin, QuizController.update);
-router.delete('/quizzes/:id', VerifyToken,AdminController.checkAdmin,QuizController.delete);
+router.post('/quiz', VerifyToken, AdminController.checkAdminRole, QuizController.create);
+router.patch('/quiz/:id', VerifyToken, AdminController.checkAdminRole, QuizController.update);
+router.delete('/quiz/:id', VerifyToken, AdminController.checkAdminRole, QuizController.delete);
 
 // CRUD Questões
-router.post('/questoes', VerifyToken,AdminController.checkAdmin,QuestaoController.create);
-router.put('/questoes/:id', VerifyToken,AdminController.checkAdmin,QuestaoController.update);
-router.delete('/questoes/:id', VerifyToken,AdminController.checkAdmin,QuestaoController.delete);
+router.post('/questao', VerifyToken, AdminController.checkAdminRole, QuestaoController.create);
+router.patch('/questao/:id', VerifyToken, AdminController.checkAdminRole, QuestaoController.update);
+router.delete('/questao/:id', VerifyToken, AdminController.checkAdminRole, QuestaoController.delete);
 
-// CRUD Conteúdos
-router.post('/conteudos', VerifyToken,AdminController.checkAdmin,ConteudoController.create);
-router.put('/conteudos/:id', VerifyToken,AdminController.checkAdmin,ConteudoController.update);
-router.delete('/conteudos/:id', VerifyToken,AdminController.checkAdmin,ConteudoController.delete);
-
+// Admin Auth
+router.post('/register', AdminController.registerAdmin);
+router.post('/login', AdminController.loginAdmin);
+router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
 
 module.exports = router;
