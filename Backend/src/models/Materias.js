@@ -6,4 +6,4 @@ const Materia = new mongoose.Schema({
     quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }],
 }, { timestamps: true });
 
-module.exports = mongoose.model('Materia', Materia);    
+module.exports = mongoose.model('Materia', Materia);
