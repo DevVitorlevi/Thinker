@@ -38,8 +38,8 @@ module.exports = class UserController {
             });
 
             const userSave = await userData.save();
-            await CreateUserToken(userSave, req, res);
-            res.status(201).json({ message: 'Sucesso ao registrar usuário.', userData });
+            const token = await CreateUserToken(userSave, req, res);
+            res.status(201).json({ message: 'Sucesso ao registrar usuário.', userData, token });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao registrar usuário.', error });
         }
@@ -66,8 +66,8 @@ module.exports = class UserController {
                 return res.status(422).json({ message: 'Senha incorreta.' });
             }
 
-            await CreateUserToken(user, req, res);
-            res.status(200).json({ message: 'Sucesso ao logar usuário.', user });
+            const token = await CreateUserToken(user, req, res);
+            res.status(200).json({ message: 'Sucesso ao logar usuário.', user , token });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao autenticar usuário.', error });
         }

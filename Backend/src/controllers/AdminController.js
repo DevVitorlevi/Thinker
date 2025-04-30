@@ -35,8 +35,8 @@ module.exports = class AdminController   {
             });
 
             const userSave = await userData.save();
-            await CreateUserToken(userSave, req, res);
-            res.status(201).json({ message: 'Sucesso ao registrar administrador.', userData });
+            const token = await CreateUserToken(userSave, req, res);
+            res.status(201).json({ message: 'Sucesso ao registrar administrador.', userData,token });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao registrar administrador.', error });
         }
@@ -67,8 +67,8 @@ module.exports = class AdminController   {
                 return res.status(422).json({ message: 'Senha incorreta.' });
             }
 
-            await CreateUserToken(user, req, res);
-            res.status(200).json({ message: 'Sucesso ao Logar administrador.', user});
+            const token = await CreateUserToken(user, req, res);
+            res.status(200).json({ message: 'Sucesso ao Logar administrador.', user,token});
         } catch (error) {
             res.status(500).json({ message: 'Erro ao autenticar administrador.', error });
         }
