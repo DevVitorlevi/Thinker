@@ -7,7 +7,9 @@ export const Wrapper = styled.div`
   font-family: 'Josefin Sans', sans-serif;
   display: flex;
   flex-direction: column;
-
+  @media screen and (min-width:1180px){
+    flex-direction: row;
+  }
 
 `;
 
@@ -19,9 +21,38 @@ export const ImageContent = styled.div`
   font-size: 1.4rem;
   text-align: center;
 
-  img {
+  img{
     display: none;
   }
+
+ @media screen and (min-width:1180px) and (max-width:1440px){
+    width: 40vw;
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+    gap:10rem;
+    padding: 1rem;
+
+  img{
+    display: block;
+    margin-right: 7rem;
+    width: 35rem;
+  }
+ }
+
+ @media screen and (min-width:1440px){
+  width: 50vw;
+    display: flex;
+    align-items: center;
+    flex-direction:column;
+    gap:10rem;
+    padding: 1rem;
+  img{
+    display: block;
+    margin-right: 7rem;
+    width: 55rem;
+ }
+}
 `;
 
 export const FormSpace = styled.div`
@@ -31,9 +62,18 @@ export const FormSpace = styled.div`
   justify-content: center;
   gap: 2rem;
   margin: 1rem;
-  @media screen and (min-width: 768px){
+  @media screen and (min-width: 768px) and (max-width:1180px){
     gap: 2.4rem;
     margin: 2rem;
+}
+@media screen and (min-width: 1180px){
+  width: 60vw;
+  margin: 0;
+
+}
+@media screen and (min-width:1440px){
+  width: 50vw;
+  margin: 0;
 }
 
 `;
@@ -43,8 +83,12 @@ export const Head = styled.div`
     font-family: 'Dalek', sans-serif;
     color: #ffd700;
   }
-  @media screen and (min-width: 768px){
+  color: #5A6582;
+  @media screen and (min-width: 768px) and (max-width:1180px){
     font-size: 2rem;
+}
+@media screen and (min-width:1180px){
+  font-size: 1.6rem;
 }
 `;
 
@@ -65,13 +109,14 @@ export const FormContainer = styled.div`
     a:hover{
         color:  #ffd700;
     }
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 768px) and (max-width:1180px){
         form{
             gap: 2.4rem;
         }
         a{
         font-size: 2rem;
     }
+    
 }
 `;
 
@@ -124,7 +169,7 @@ export const InputContent = styled.div`
     color: #1884f7;
   }
 
-  @media screen and (min-width: 768px){
+  @media screen and (min-width: 768px) and (max-width:1180px){
     .input{
         font-size: 2rem;
         text-indent: 2rem;
@@ -149,6 +194,18 @@ export const InputContent = styled.div`
     font-size: 1.8rem;
   }
 }
+
+@media screen and (min-width:1180px) and (max-width:1440px) {
+
+    .input{
+      width: 50vw;
+    }
+ }
+ @media screen and (min-width:1440px){
+    .input{
+      width: 40vw;
+    }
+ }
 `;
 
 export const ButtonSubmit = styled.button`
@@ -167,7 +224,7 @@ export const ButtonSubmit = styled.button`
         background-color:#1884f7;
     }
 
-    @media screen and (min-width: 768px)    {
+    @media screen and (min-width: 768px) and (max-width:1180px)  {
         font-size: 2.4rem;
     }
 `;
