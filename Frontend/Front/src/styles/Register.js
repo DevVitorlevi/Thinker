@@ -167,7 +167,7 @@ export const ButtonSubmit = styled.button`
         background-color:#1884f7;
     }
 
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 768px)    {
         font-size: 2.4rem;
     }
 `;
