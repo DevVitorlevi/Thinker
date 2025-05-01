@@ -14,7 +14,7 @@ const CreateUserToken = (user) => {
         {
             expiresIn: process.env.JWT_EXPIRES_IN || '1d',
             audience: 'thinker-client',
-            issuer: 'thinker-api'       
+            issuer: 'thinker-api'    
         }
     );
 };
