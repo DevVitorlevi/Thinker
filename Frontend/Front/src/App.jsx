@@ -3,19 +3,26 @@ import { GlobalStyle } from "./styles/Global"
 import { Landing } from "./pages/Landing"
 import { Register } from './pages/Register'
 import { Login } from "./pages/Login"
+import { Home } from "./pages/Home"
+import { UserProvider } from "./context/UserContext"
 function App() {
 
 
   return (
     <>
       <GlobalStyle />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
-        </Routes>
-      </BrowserRouter>
+      <UserProvider>
+
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/home' element={<Home />} />
+
+          </Routes>
+        </BrowserRouter>
+      </UserProvider>
     </>
   )
 }
