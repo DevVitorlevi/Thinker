@@ -7,6 +7,8 @@ export const Wrapper = styled.div`
   font-family: 'Josefin Sans', sans-serif;
   display: flex;
   flex-direction: column;
+
+
 `;
 
 export const ImageContent = styled.div`
@@ -29,6 +31,11 @@ export const FormSpace = styled.div`
   justify-content: center;
   gap: 2rem;
   margin: 1rem;
+  @media screen and (min-width: 768px){
+    gap: 2.4rem;
+    margin: 2rem;
+}
+
 `;
 
 export const Head = styled.div`
@@ -36,6 +43,9 @@ export const Head = styled.div`
     font-family: 'Dalek', sans-serif;
     color: #ffd700;
   }
+  @media screen and (min-width: 768px){
+    font-size: 2rem;
+}
 `;
 
 export const FormContainer = styled.div`
@@ -55,6 +65,14 @@ export const FormContainer = styled.div`
     a:hover{
         color:  #ffd700;
     }
+    @media screen and (min-width: 768px){
+        form{
+            gap: 2.4rem;
+        }
+        a{
+        font-size: 2rem;
+    }
+}
 `;
 
 export const InputContent = styled.div`
@@ -105,6 +123,32 @@ export const InputContent = styled.div`
     font-size: 1.4rem;
     color: #1884f7;
   }
+
+  @media screen and (min-width: 768px){
+    .input{
+        font-size: 2rem;
+        text-indent: 2rem;
+    }
+    .icon{
+        top: 15px;
+        left: 10px;
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+    ::placeholder{
+    font-size: 2rem;
+    
+  }
+  .eye, .eye-c {
+    right: 10px;
+    top: 15px;
+    width:2.8rem;
+    height:2.8rem;
+  }
+    .error-message {
+    font-size: 1.8rem;
+  }
+}
 `;
 
 export const ButtonSubmit = styled.button`
@@ -121,6 +165,10 @@ export const ButtonSubmit = styled.button`
 
     &:hover{
         background-color:#1884f7;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 2.4rem;
     }
 `;
 
