@@ -19,4 +19,4 @@ const CreateUserToken = (user) => {
     );
 };
 
-module.exports = CreateUserToken; // Exportação direta da função
+module.exports = CreateUserToken; 

@@ -1,7 +1,127 @@
+// styles/Register.js
 import styled from 'styled-components';
 
-
-export const Main = styled.div`
-    height: 100vh;
-
+export const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Josefin Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
 `;
+
+export const ImageContent = styled.div`
+  background-color: #085AA0;
+  color: #ffd700;
+  padding: 2rem;
+  font-family: 'Dalek', sans-serif;
+  font-size: 1.4rem;
+  text-align: center;
+
+  img {
+    display: none;
+  }
+`;
+
+export const FormSpace = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 1rem;
+`;
+
+export const Head = styled.div`
+  span {
+    font-family: 'Dalek', sans-serif;
+    color: #ffd700;
+  }
+`;
+
+export const FormContainer = styled.div`
+    form{
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    a{
+        font-size: 1.6rem;
+        transition: all .5s;
+        color: #085AA0;
+    }
+    a:hover{
+        color:  #ffd700;
+    }
+`;
+
+export const InputContent = styled.div`
+  position: relative;
+
+  .input {
+    padding: 1rem;
+    border-radius: 0.8rem;
+    border: 2px solid #005BBB;
+    text-indent: 1.5rem;
+    outline: none;
+    width: 80vw;
+    color:#1884f7;
+    font-size:1.4rem;
+  }
+
+  .icon {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    width: 1.8rem;
+    height: 1.8rem;
+    color: #daa520;
+  }
+
+
+  .input:focus {
+    border: 2px solid #f57f17;
+  }
+
+  .eye, .eye-c {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    width: 2rem;
+    height: 2rem;
+    color: #daa520;
+    cursor: pointer;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  ::placeholder{
+    font-size: 1.4rem;
+    color: #1884f7;
+  }
+`;
+
+export const ButtonSubmit = styled.button`
+    width: 100%;
+    padding: 1rem;
+    border-radius: .5rem;
+    border: 0;
+    font-size: 1.6rem;
+    cursor: pointer;
+    background-color:  #005BBB;
+    color: #ffd700;
+    font-family:'Josefin Sans';
+    transition: ease-in-out .4s;
+
+    &:hover{
+        background-color:#1884f7;
+    }
+`;
+
+
