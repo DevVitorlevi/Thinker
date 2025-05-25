@@ -9,9 +9,10 @@ import {
     ButtonSubmit,
     InputContent,
 } from '../../styles/Form';
-import Platão from '../assets/plastão.png';
+import Platão from '../../assets/plastão.png';
 import { User, AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';  // <-- import axios
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ export const Register = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const inputNameRef = useRef(null);
 
@@ -50,7 +52,7 @@ export const Register = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newErrors = {};
@@ -72,22 +74,35 @@ export const Register = () => {
         }
 
         setErrors(newErrors);
+        setServerError('');
 
         if (Object.keys(newErrors).length === 0) {
-            // Submit form or perform desired actions
-            console.log('Formulário enviado:', formData);
+            try {
+                // Chamada para o backend (ajuste a URL conforme seu backend)
+                await axios.post('http://localhost:5000/auth/register', {
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                });
 
-            // Reset form
-            setFormData({
-                name: '',
-                email: '',
-                password: '',
-                confirm: ''
-            });
+                alert('Cadastro realizado com sucesso!');
 
-            // Focus on the name input
-            if (inputNameRef.current) {
-                inputNameRef.current.focus();
+                // Reset form
+                setFormData({
+                    name: '',
+                    email: '',
+                    password: '',
+                    confirm: ''
+                });
+
+                if (inputNameRef.current) {
+                    inputNameRef.current.focus();
+                }
+
+            } catch (error) {
+                // Caso o backend retorne um erro
+                const msg = error.response?.data?.message || 'Erro no cadastro';
+                setServerError(msg);
             }
         }
     };
@@ -168,9 +183,10 @@ export const Register = () => {
                                 placeholder='Confirme Senha'
                             />
                             <Lock className="icon" />
-
                             {errors.confirm && <p className="error-message">{errors.confirm}</p>}
                         </InputContent>
+
+                        {serverError && <p className="error-message">{serverError}</p>}
 
                         <ButtonSubmit type="submit">Cadastrar</ButtonSubmit>
                         <Link to="/login">

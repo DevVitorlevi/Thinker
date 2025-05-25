@@ -1,4 +1,4 @@
-// components/Register.js
+// components/Login.js
 import React, { useState, useRef, useEffect } from 'react';
 import {
     ImageContent,
@@ -9,9 +9,10 @@ import {
     ButtonSubmit,
     InputContent,
 } from '../../styles/Form';
-import Platão from '../assets/plastão.png';
-import { User, AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Platão from '../../assets/plastão.png';
+import { AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -20,12 +21,14 @@ export const Login = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const inputNameRef = useRef(null);
+    const inputEmailRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (inputNameRef.current) {
-            inputNameRef.current.focus();
+        if (inputEmailRef.current) {
+            inputEmailRef.current.focus();
         }
     }, []);
 
@@ -39,7 +42,6 @@ export const Login = () => {
             [name]: value
         }));
 
-        // Real-time validation
         if (name === 'email') {
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -48,7 +50,7 @@ export const Login = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newErrors = {};
@@ -62,16 +64,25 @@ export const Login = () => {
         }
 
         setErrors(newErrors);
+        setServerError('');
 
         if (Object.keys(newErrors).length === 0) {
-            // Submit form or perform desired actions
-            console.log('Formulário enviado:', formData);
+            try {
+                const response = await axios.post('http://localhost:5000/auth/login', formData);
 
-            // Reset form
-            setFormData({
-                email: '',
-                password: '',
-            });
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+
+                alert('Login realizado com sucesso!');
+                setFormData({ email: '', password: '' });
+
+                // Redireciona para a home/dashboard após login
+                navigate('/dashboard');
+
+            } catch (error) {
+                const msg = error.response?.data?.message || 'Erro ao fazer login';
+                setServerError(msg);
+            }
         }
     };
 
@@ -94,11 +105,11 @@ export const Login = () => {
                 </Head>
                 <FormContainer>
                     <form onSubmit={handleSubmit}>
-
                         <InputContent>
                             <input
                                 type="email"
                                 name="email"
+                                ref={inputEmailRef}
                                 className="input"
                                 required
                                 value={formData.email}
@@ -126,7 +137,9 @@ export const Login = () => {
                             {errors.password && <p className="error-message">{errors.password}</p>}
                         </InputContent>
 
-                        <ButtonSubmit type="submit">Cadastrar</ButtonSubmit>
+                        {serverError && <p className="error-message">{serverError}</p>}
+
+                        <ButtonSubmit type="submit">Entrar</ButtonSubmit>
                         <Link to="/register">
                             Novo no THINKER? Cadastre-se
                         </Link>
