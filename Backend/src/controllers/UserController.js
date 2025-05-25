@@ -9,47 +9,52 @@ const getUserbyToken = require('../helpers/get-user-by-token');
 
 module.exports = class UserController {
     // Registrar um novo usuário
-    static async register(req, res) {
-        const { nome, email, senha, confirmesenha } = req.body;
+   static async register(req, res) {
+  const { name, email, password } = req.body;
 
-        if (!nome || !email || !senha || !confirmesenha) {
-            return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
-        }
+  if (!name || !email || !password) {
+    return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
+  }
 
-        if (senha !== confirmesenha) {
-            return res.status(422).json({ message: 'As senhas não coincidem.' });
-        }
+  try {
+    const userExist = await User.findOne({ email: email });
 
-        try {
-            const userExist = await User.findOne({ email: email });
-
-            if (userExist) {
-                return res.status(422).json({ message: 'Usuário já existe.' });
-            }
-
-            const salt = await bcrypt.genSalt(12);
-            const hashPass = await bcrypt.hash(senha, salt);
-
-            const userData = new User({
-                nome,
-                email,
-                senha: hashPass,
-                role: 'user', // Define o papel como usuário comum
-            });
-
-            const userSave = await userData.save();
-            const token = await CreateUserToken(userSave, req, res);
-            res.status(201).json({ message: 'Sucesso ao registrar usuário.', userData, token });
-        } catch (error) {
-            res.status(500).json({ message: 'Erro ao registrar usuário.', error });
-        }
+    if (userExist) {
+      return res.status(422).json({ message: 'Usuário já existe.' });
     }
 
+    const salt = await bcrypt.genSalt(12);
+    const hashPass = await bcrypt.hash(password, salt);
+
+    const userData = new User({
+      name,
+      email,
+      password: hashPass,
+      role: 'user',
+    });
+
+    const userSave = await userData.save();
+    const token = await CreateUserToken(userSave, req, res);
+
+    res.status(201).json({
+      message: 'Sucesso ao registrar usuário.',
+      user: {
+        id: userSave._id,
+        name: userSave.name,
+        email: userSave.email,
+        role: userSave.role,
+      },
+      token
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao registrar usuário.', error });
+  }
+}
     // Autenticar um usuário
     static async login(req, res) {
-        const { email, senha } = req.body;
+        const { email, password } = req.body;
 
-        if (!email || !senha) {
+        if (!email || password) {
             return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
 
@@ -60,7 +65,7 @@ module.exports = class UserController {
                 return res.status(422).json({ message: 'Usuário não encontrado.' });
             }
 
-            const checkPass = await bcrypt.compare(senha, user.senha);
+            const checkPass = await bcrypt.compare(password, user.password);
 
             if (!checkPass) {
                 return res.status(422).json({ message: 'Senha incorreta.' });
@@ -82,7 +87,7 @@ module.exports = class UserController {
             const decoded = jwt.verify(token, 'nossosecret');
 
             userAtual = await User.findById(decoded.id);
-            userAtual.senha = undefined;
+            userAtual.password = undefined;
         } else {
             userAtual = null;
         }
@@ -97,7 +102,7 @@ module.exports = class UserController {
 
             // Busca o usuário
             const user = await User.findById(id)
-                .select('-senha') // Remove a senha da resposta
+                .select('-password') // Remove a senha da resposta
 
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado.' });

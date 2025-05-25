@@ -12,14 +12,13 @@ import {
 import Platão from '../../assets/plastão.png';
 import { User, AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';  // <-- import axios
-
+import axios from 'axios';
+import api from '../../services/api'
 export const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        confirm: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -69,40 +68,43 @@ export const Register = () => {
             newErrors.password = 'Senha muito curta';
         }
 
-        if (formData.password !== formData.confirm) {
-            newErrors.confirm = 'As senhas não coincidem';
-        }
-
         setErrors(newErrors);
         setServerError('');
 
         if (Object.keys(newErrors).length === 0) {
             try {
-                // Chamada para o backend (ajuste a URL conforme seu backend)
-                await axios.post('http://localhost:5000/auth/register', {
+                const response = await api.post('/users/register', {
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password,
+                    password: formData.password
                 });
 
-                alert('Cadastro realizado com sucesso!');
+                const { message, token, user } = response.data;
 
-                // Reset form
+                alert(message); // mostra mensagem do backend
+
+                localStorage.setItem('token', token); // salva token JWT
+
+                console.log('Usuário cadastrado com sucesso:', user);
+
+                // limpa o form e foca no nome
                 setFormData({
                     name: '',
                     email: '',
                     password: '',
-                    confirm: ''
                 });
 
-                if (inputNameRef.current) {
-                    inputNameRef.current.focus();
+                if (inputNameRef.current) inputNameRef.current.focus();
+            } catch (err) {
+                // Caso erro de validação vindo do backend
+                if (err.response && err.response.data && err.response.data.message) {
+                    setServerError(err.response.data.message);
+                    alert(err.response.data.message);
+                } else {
+                    setServerError('Erro ao cadastrar usuário');
+                    alert('Erro ao cadastrar usuário');
                 }
-
-            } catch (error) {
-                // Caso o backend retorne um erro
-                const msg = error.response?.data?.message || 'Erro no cadastro';
-                setServerError(msg);
+                console.error('Erro no cadastro:', err);
             }
         }
     };
@@ -170,20 +172,6 @@ export const Register = () => {
                                 {showPassword ? <EyeClosed className="eye-c" /> : <Eye className="eye" />}
                             </span>
                             {errors.password && <p className="error-message">{errors.password}</p>}
-                        </InputContent>
-
-                        <InputContent>
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                name="confirm"
-                                className="input"
-                                required
-                                value={formData.confirm}
-                                onChange={handleChange}
-                                placeholder='Confirme Senha'
-                            />
-                            <Lock className="icon" />
-                            {errors.confirm && <p className="error-message">{errors.confirm}</p>}
                         </InputContent>
 
                         {serverError && <p className="error-message">{serverError}</p>}
