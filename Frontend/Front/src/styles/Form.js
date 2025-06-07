@@ -42,6 +42,7 @@ export const FormSpace = styled.div`
   justify-content: center;
   gap: 2rem;
   margin: 1rem;
+  height: 100vh;
   @media screen and (min-width: 768px) and (max-width:1180px){
     gap: 2.4rem;
     margin: 2rem;
@@ -82,7 +83,7 @@ export const FormContainer = styled.div`
         width: 100%;
     }
     a{
-        font-size: 1.6rem;
+        font-size: 1.3rem;
         transition: all .5s;
         color: #085AA0;
     }
@@ -109,7 +110,7 @@ export const InputContent = styled.div`
     border: 2px solid #005BBB;
     text-indent: 1.5rem;
     outline: none;
-    width: 80vw;
+    width: 90vw;
     color:#1884f7;
     font-size:1.4rem;
   }
@@ -193,7 +194,7 @@ export const ButtonSubmit = styled.button`
     padding: 1rem;
     border-radius: .5rem;
     border: 0;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     cursor: pointer;
     background-color:  #005BBB;
     color: #ffd700;
