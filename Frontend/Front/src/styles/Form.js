@@ -197,7 +197,7 @@ export const ButtonSubmit = styled.button`
     font-size: 1.4rem;
     cursor: pointer;
     background-color:  #005BBB;
-    color: #ffd700;
+    color: white;
     font-family:'Josefin Sans';
     transition: ease-in-out .4s;
 
