@@ -1,4 +1,3 @@
-// components/Register.js
 import React, { useState, useRef, useEffect } from 'react';
 import {
     ImageContent,
@@ -11,9 +10,10 @@ import {
 } from '../../styles/Form';
 import { User, AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import api from '../../services/api'
+import api from '../../services/api';
 import { ImageSlider } from '../../components/ImageSlide';
+import { FlashMessage } from '../../components/FlashMessage';
+
 export const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -24,6 +24,8 @@ export const Register = () => {
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [flash, setFlash] = useState({ type: '', message: '' });
+
     const inputNameRef = useRef(null);
 
     useEffect(() => {
@@ -39,14 +41,14 @@ export const Register = () => {
 
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value
+            [name]: value,
         }));
 
         // Real-time validation
         if (name === 'email') {
             setErrors((prevErrors) => ({
                 ...prevErrors,
-                email: emailRegex.test(value) ? '' : 'E-mail inválido'
+                email: emailRegex.test(value) ? '' : 'E-mail inválido',
             }));
         }
     };
@@ -70,20 +72,22 @@ export const Register = () => {
 
         setErrors(newErrors);
         setServerError('');
+        setFlash({ type: '', message: '' });
 
         if (Object.keys(newErrors).length === 0) {
             try {
                 const response = await api.post('/users/register', {
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password
+                    password: formData.password,
                 });
 
                 const { message, token, user } = response.data;
 
-                alert(message); // mostra mensagem do backend
+                // Mostrar flash message de sucesso
+                setFlash({ type: 'success', message });
 
-                localStorage.setItem('token', token); // salva token JWT
+                localStorage.setItem('token', token);
 
                 console.log('Usuário cadastrado com sucesso:', user);
 
@@ -96,14 +100,14 @@ export const Register = () => {
 
                 if (inputNameRef.current) inputNameRef.current.focus();
             } catch (err) {
-                // Caso erro de validação vindo do backend
-                if (err.response && err.response.data && err.response.data.message) {
-                    setServerError(err.response.data.message);
-                    alert(err.response.data.message);
-                } else {
-                    setServerError('Erro ao cadastrar usuário');
-                    alert('Erro ao cadastrar usuário');
-                }
+                const errorMsg =
+                    err.response?.data?.message || 'Erro ao cadastrar usuário';
+
+                setServerError(errorMsg);
+
+                // Mostrar flash message de erro
+                setFlash({ type: 'error', message: errorMsg });
+
                 console.error('Erro no cadastro:', err);
             }
         }
@@ -114,74 +118,85 @@ export const Register = () => {
     };
 
     return (
-        <Wrapper>
-            <ImageContent>
-                <ImageSlider />
-            </ImageContent>
+        <>
+            {flash.message && (
+                <FlashMessage
+                    type={flash.type}
+                    message={flash.message}
+                    onClose={() => setFlash({ type: '', message: '' })}
+                />
+            )}
 
-            <FormSpace>
-                <Head>
-                    <h1>
-                        Junte-se ao <span>THINKER</span>
-                    </h1>
-                </Head>
-                <FormContainer>
-                    <form onSubmit={handleSubmit}>
-                        <InputContent>
-                            <input
-                                type="text"
-                                name="name"
-                                ref={inputNameRef}
-                                className="input"
-                                required
-                                value={formData.name}
-                                onChange={handleChange}
-                                placeholder='Nome'
-                            />
-                            <User className="icon" />
-                            {errors.name && <p className="error-message">{errors.name}</p>}
-                        </InputContent>
+            <Wrapper>
+                <ImageContent>
+                    <ImageSlider />
+                </ImageContent>
 
-                        <InputContent>
-                            <input
-                                type="email"
-                                name="email"
-                                className="input"
-                                required
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder='Email'
-                            />
-                            <AtSign className="icon" />
-                            {errors.email && <p className="error-message">{errors.email}</p>}
-                        </InputContent>
+                <FormSpace>
+                    <Head>
+                        <h1>
+                            Junte-se ao <span>THINKER</span>
+                        </h1>
+                    </Head>
+                    <FormContainer>
+                        <form onSubmit={handleSubmit}>
+                            <InputContent>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    ref={inputNameRef}
+                                    className="input"
+                                    required
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    placeholder="Nome"
+                                />
+                                <User className="icon" />
+                                {errors.name && <p className="error-message">{errors.name}</p>}
+                            </InputContent>
 
-                        <InputContent>
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                name="password"
-                                className="input"
-                                required
-                                value={formData.password}
-                                onChange={handleChange}
-                                placeholder='Senha'
-                            />
-                            <Lock className="icon" />
-                            <span onClick={togglePasswordVisibility}>
-                                {showPassword ? <EyeClosed className="eye-c" /> : <Eye className="eye" />}
-                            </span>
-                            {errors.password && <p className="error-message">{errors.password}</p>}
-                        </InputContent>
+                            <InputContent>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    className="input"
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="Email"
+                                />
+                                <AtSign className="icon" />
+                                {errors.email && <p className="error-message">{errors.email}</p>}
+                            </InputContent>
 
-                        {serverError && <p className="error-message">{serverError}</p>}
-
-                        <ButtonSubmit type="submit">Cadastrar</ButtonSubmit>
-                        <Link to="/login">
-                            Já possui conta? Entre
-                        </Link>
-                    </form>
-                </FormContainer>
-            </FormSpace>
-        </Wrapper>
+                            <InputContent>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    className="input"
+                                    required
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    placeholder="Senha"
+                                />
+                                <Lock className="icon" />
+                                <span onClick={togglePasswordVisibility}>
+                                    {showPassword ? (
+                                        <EyeClosed className="eye-c" />
+                                    ) : (
+                                        <Eye className="eye" />
+                                    )}
+                                </span>
+                                {errors.password && (
+                                    <p className="error-message">{errors.password}</p>
+                                )}
+                            </InputContent>
+                            <ButtonSubmit type="submit">Cadastrar</ButtonSubmit>
+                            <Link to="/login">Já possui conta? Entre</Link>
+                        </form>
+                    </FormContainer>
+                </FormSpace>
+            </Wrapper>
+        </>
     );
 };

@@ -209,5 +209,3 @@ export const ButtonSubmit = styled.button`
         font-size: 2.4rem;
     }
 `;
-
-
