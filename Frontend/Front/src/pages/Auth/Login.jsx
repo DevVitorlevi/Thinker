@@ -13,6 +13,7 @@ import {
 import { AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ImageSlider } from '../../components/ImageSlide';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -93,8 +94,7 @@ export const Login = () => {
     return (
         <Wrapper>
             <ImageContent>
-                <h1>THINKER</h1>
-                <img src={Platão} alt="Platão" />
+                <ImageSlider />
             </ImageContent>
 
             <FormSpace>
