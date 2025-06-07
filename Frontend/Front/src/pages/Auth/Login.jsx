@@ -9,7 +9,7 @@ import {
     ButtonSubmit,
     InputContent,
 } from '../../styles/Form';
-import Platão from '../../assets/plastão.png';
+
 import { AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';

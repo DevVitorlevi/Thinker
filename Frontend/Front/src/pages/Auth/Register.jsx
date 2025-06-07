@@ -9,11 +9,11 @@ import {
     ButtonSubmit,
     InputContent,
 } from '../../styles/Form';
-import Platão from '../../assets/plastão.png';
 import { User, AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import api from '../../services/api'
+import { ImageSlider } from '../../components/ImageSlide';
 export const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -116,8 +116,7 @@ export const Register = () => {
     return (
         <Wrapper>
             <ImageContent>
-                <h1>THINKER</h1>
-                <img src={Platão} alt="Platão" />
+                <ImageSlider />
             </ImageContent>
 
             <FormSpace>

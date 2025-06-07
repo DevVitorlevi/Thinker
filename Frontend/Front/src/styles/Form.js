@@ -15,42 +15,22 @@ export const Wrapper = styled.div`
 
 export const ImageContent = styled.div`
   background-color: #085AA0;
-  color: #ffd700;
-  padding: 2rem;
-  font-family: 'Dalek', sans-serif;
-  font-size: 1.4rem;
-  text-align: center;
-
   img{
     display: none;
   }
 
  @media screen and (min-width:1180px) and (max-width:1440px){
     width: 40vw;
-    display: flex;
-    align-items: center;
-    flex-direction:column;
-    gap:10rem;
-    padding: 1rem;
 
   img{
     display: block;
-    margin-right: 7rem;
-    width: 35rem;
   }
  }
 
  @media screen and (min-width:1440px){
   width: 50vw;
-    display: flex;
-    align-items: center;
-    flex-direction:column;
-    gap:10rem;
-    padding: 1rem;
   img{
     display: block;
-    margin-right: 7rem;
-    width: 55rem;
  }
 }
 `;
