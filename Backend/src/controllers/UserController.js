@@ -54,7 +54,7 @@ module.exports = class UserController {
     static async login(req, res) {
         const { email, password } = req.body;
 
-        if (!email || password) {
+        if (!email || !password) {
             return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
 
