@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import Dalek from '../assets/DalekPinpointBold.ttf'
-import styled from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Dalek';
@@ -29,10 +28,4 @@ export const GlobalStyle = createGlobalStyle`
   }
 
 
-`
-
-export const StyledContainer = styled.div `
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
 `

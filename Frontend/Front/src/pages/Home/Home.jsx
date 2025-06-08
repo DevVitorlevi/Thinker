@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
-import { Container } from '../../components/Container'
-import { Footer, Header, MenuIcon, Overlay, MenuDesktop, MenuMobile } from '../../styles/Landing'
-import Logo from '../../assets/Logo.png'
-import { X, Menu } from 'lucide-react'
+import React, { useState } from 'react';
+import {
+    Footer,
+    Header,
+    MenuIcon,
+    Overlay,
+    MenuDesktop,
+    MenuMobile,
+} from '../../styles/Landing';
+import { BackgroundContainer } from '../../components/BackgroundContainer';
+import Logo from '../../assets/Logo.png';
+import { X, Menu } from 'lucide-react';
 
 export const Home = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +25,7 @@ export const Home = () => {
     const handleMenuClick = () => {
         closeMenu();
     };
+
     return (
         <>
             <Header>
@@ -28,18 +36,17 @@ export const Home = () => {
 
                 <Overlay $isOpen={menuOpen} onClick={closeMenu} />
 
-
                 <MenuMobile open={menuOpen}>
                     <nav>
                         <ul>
                             <li className="menu-itens">
-                                <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                                <a href="#home" onClick={handleMenuClick}>Início</a>
                             </li>
                             <li className="menu-itens">
-                                <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                                <a href="#materias" onClick={handleMenuClick}>Matérias</a>
                             </li>
                             <li className="menu-itens">
-                                <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                                <a href="#quizzes" onClick={handleMenuClick}>Quizzes</a>
                             </li>
                         </ul>
                     </nav>
@@ -49,26 +56,27 @@ export const Home = () => {
                     <nav>
                         <ul>
                             <li className="menu-itens">
-                                <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                                <a href="#home">Início</a>
                             </li>
                             <li className="menu-itens">
-                                <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                                <a href="#materias">Matérias</a>
                             </li>
                             <li className="menu-itens">
-                                <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                                <a href="#quizzes">Quizzes</a>
                             </li>
                         </ul>
                     </nav>
                 </MenuDesktop>
             </Header>
-            <Container>
-                <h1>ola</h1>
-            </Container>
+
+            <BackgroundContainer>
+                <h1 style={{ color: 'white', padding: '2rem' }}>Oi</h1>
+            </BackgroundContainer>
+
             <Footer>
                 <img src={Logo} alt="Logo do Thinker" />
                 <p>© THINKER 2025</p>
             </Footer>
-
         </>
-    )
-}
+    );
+};
