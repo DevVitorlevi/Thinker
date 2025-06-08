@@ -110,13 +110,14 @@ export const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color:transparent;
+  background-color: transparent;
   z-index: 998; // Garanta que está abaixo do menu (que tem z-index: 1000)
-  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease-in-out;
-  pointer-events: ${({ isOpen }) => (isOpen ? 'auto' : 'none')}; // Só recebe clicks quando aberto
+  pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')}; // Só recebe clicks quando aberto
 `;
+
 export const MenuDesktop = styled.div`
     ul{
       display: flex;

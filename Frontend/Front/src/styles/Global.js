@@ -27,4 +27,11 @@ export const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
+
+`
+
+export const StyledContainer = styled.div `
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 `

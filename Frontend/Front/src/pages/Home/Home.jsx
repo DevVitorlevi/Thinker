@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Fundo from '../../components/Fundo'
+import Container from '../../components/Container'
 import { Footer, Header, MenuIcon, Overlay, MenuDesktop, MenuMobile } from '../../styles/Landing'
 import Logo from '../../assets/Logo.png'
 import { X, Menu } from 'lucide-react'
@@ -26,7 +26,8 @@ export const Home = () => {
                     {menuOpen ? <X /> : <Menu />}
                 </MenuIcon>
 
-                <Overlay isOpen={menuOpen} onClick={closeMenu} />
+                <Overlay $isOpen={menuOpen} onClick={closeMenu} />
+
 
                 <MenuMobile open={menuOpen}>
                     <nav>
@@ -60,9 +61,9 @@ export const Home = () => {
                     </nav>
                 </MenuDesktop>
             </Header>
-            <Fundo>
+            <Container>
                 <h1>ola</h1>
-            </Fundo>
+            </Container>
             <Footer>
                 <img src={Logo} alt="Logo do Thinker" />
                 <p>© THINKER 2025</p>
