@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import HomeMobile from '../assets/HomeMobile.png';
+import HomeMobile from '../assets/Homepage.png';
 
 export const BackgroundContainer = styled.div`
   width: 100%;
@@ -8,5 +8,4 @@ export const BackgroundContainer = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border: 2px solid lime;
 `;
