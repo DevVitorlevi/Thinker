@@ -1,10 +1,73 @@
-import React from 'react'
-import Header from '../../components/Header'
+import React, { useState } from 'react'
+import Fundo from '../../components/Fundo'
+import { Footer, Header, MenuIcon, Overlay, MenuDesktop, MenuMobile } from '../../styles/Landing'
+import Logo from '../../assets/Logo.png'
+import { X, Menu } from 'lucide-react'
+
 export const Home = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
+    const handleMenuClick = () => {
+        closeMenu();
+    };
     return (
         <>
-            <Header />
-            <h1>ola</h1>
+            <Header>
+                <img src={Logo} alt="Logo do Thinker" id="logo" />
+                <MenuIcon onClick={toggleMenu}>
+                    {menuOpen ? <X /> : <Menu />}
+                </MenuIcon>
+
+                <Overlay isOpen={menuOpen} onClick={closeMenu} />
+
+                <MenuMobile open={menuOpen}>
+                    <nav>
+                        <ul>
+                            <li className="menu-itens">
+                                <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </MenuMobile>
+
+                <MenuDesktop>
+                    <nav>
+                        <ul>
+                            <li className="menu-itens">
+                                <a href="#home" onClick={handleMenuClick}>Inicio</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#como" onClick={handleMenuClick}>Como Funciona</a>
+                            </li>
+                            <li className="menu-itens">
+                                <a href="#beneficios" onClick={handleMenuClick}>Beneficios</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </MenuDesktop>
+            </Header>
+            <Fundo>
+                <h1>ola</h1>
+            </Fundo>
+            <Footer>
+                <img src={Logo} alt="Logo do Thinker" />
+                <p>© THINKER 2025</p>
+            </Footer>
+
         </>
     )
 }

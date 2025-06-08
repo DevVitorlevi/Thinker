@@ -14,7 +14,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ImageSlider } from '../../components/ImageSlide';
 import { FlashMessage } from '../../components/FlashMessage';  // Importa aqui
-import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -85,6 +84,7 @@ export const Login = () => {
                 setTimeout(() => {
                     navigate('/home');
                 }, 1500);
+
             } catch (error) {
                 const msg = error.response?.data?.message || 'Erro ao fazer login';
                 setServerError(msg);
