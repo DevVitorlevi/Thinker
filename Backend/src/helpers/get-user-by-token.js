@@ -5,7 +5,7 @@ module.exports = async (token) => {
     if (!token) return null;
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || seu_segredo_super_secreto_jwt, {
             algorithms: ['HS256'],
             issuer: 'thinker-api',
             audience: 'thinker-client'

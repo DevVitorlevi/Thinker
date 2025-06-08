@@ -5,7 +5,7 @@ const verifyToken = async (req, res, next) => {
     try {
         const token = getToken(req);
         
-        const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || seu_segredo_super_secreto_jwt, {
             algorithms: ['HS256'],
             issuer: 'thinker-api',
             audience: 'thinker-client'
