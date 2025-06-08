@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import Dalek from '../assets/DalekPinpointBold.ttf'
+import styled from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Dalek';

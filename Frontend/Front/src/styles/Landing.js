@@ -472,7 +472,7 @@ export const Footer = styled.footer `
 export const ButtonTop = styled.button`
   position: fixed;
   bottom: 5rem;
-  right: .5rem;
+  right: 0.5rem;
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
@@ -486,20 +486,22 @@ export const ButtonTop = styled.button`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   z-index: 1000;
-  opacity: ${({ show }) => (show ? '1' : '0')};
-  visibility: ${({ show }) => (show ? 'visible' : 'hidden')};
-  transform: ${({ show }) => (show ? 'translateY(0)' : 'translateY(100px)')};
-  
+
+  opacity: ${({ $show }) => ($show ? '1' : '0')};
+  visibility: ${({ $show }) => ($show ? 'visible' : 'hidden')};
+  transform: ${({ $show }) => ($show ? 'translateY(0)' : 'translateY(100px)')};
+
   &:hover {
     background-color: #004888;
-    transform: ${({ show }) => (show ? 'translateY(-5px)' : 'translateY(100px)')};
+    transform: ${({ $show }) => ($show ? 'translateY(-5px)' : 'translateY(100px)')};
   }
-  
+
   svg {
     width: 2rem;
     height: 2rem;
   }
 `;
+
 
 export const Shape = styled.div`
     @media screen and (min-width:1194px) {background-color: #004888;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Container from '../../components/Container'
+import { Container } from '../../components/Container'
 import { Footer, Header, MenuIcon, Overlay, MenuDesktop, MenuMobile } from '../../styles/Landing'
 import Logo from '../../assets/Logo.png'
 import { X, Menu } from 'lucide-react'
