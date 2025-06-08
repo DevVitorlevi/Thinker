@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { ImageSlider } from '../../components/ImageSlide';
 import { FlashMessage } from '../../components/FlashMessage';
+import { useNavigate } from 'react-router-dom';
+
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -20,6 +22,8 @@ export const Register = () => {
         email: '',
         password: '',
     });
+    const navigate = useNavigate();
+
 
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
@@ -99,6 +103,11 @@ export const Register = () => {
                 });
 
                 if (inputNameRef.current) inputNameRef.current.focus();
+
+                // Redireciona para a Home após 1.5s
+                setTimeout(() => {
+                    navigate('/home');
+                }, 1500);
             } catch (err) {
                 const errorMsg =
                     err.response?.data?.message || 'Erro ao cadastrar usuário';
@@ -112,6 +121,7 @@ export const Register = () => {
             }
         }
     };
+
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevShow) => !prevShow);

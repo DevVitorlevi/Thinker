@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ImageSlider } from '../../components/ImageSlide';
 import { FlashMessage } from '../../components/FlashMessage';  // Importa aqui
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -25,7 +26,6 @@ export const Login = () => {
     const [serverError, setServerError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [flash, setFlash] = useState({ type: '', message: '' }); // estado do flash
-
     const inputEmailRef = useRef(null);
     const navigate = useNavigate();
 
@@ -80,6 +80,11 @@ export const Login = () => {
                 setFlash({ type: 'success', message: 'Login realizado com sucesso!' });
 
                 setFormData({ email: '', password: '' });
+
+                // Redireciona após 1.5s para dar tempo da animação da flash message aparecer
+                setTimeout(() => {
+                    navigate('/home');
+                }, 1500);
             } catch (error) {
                 const msg = error.response?.data?.message || 'Erro ao fazer login';
                 setServerError(msg);
