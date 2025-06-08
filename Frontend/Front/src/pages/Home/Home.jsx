@@ -14,7 +14,11 @@ import {
     Materias,
     Titulo,
     MateriaCards,
-    MateriaCard
+    MateriaCard,
+    Quizzes,
+    QuizCard,
+    QuizzesCards,
+    ButtonQuiz
 } from '../../styles/Home';
 import {
     FunctionSquare,
@@ -103,12 +107,21 @@ export const Home = () => {
                     </MateriaCards>
                 </Materias>
 
-                <Quizzes>
+                <Quizzes id="quizzes">
                     <Titulo>
                         <h1>Quizzes</h1>
                     </Titulo>
+
+                    <QuizzesCards>
+                        {materiasData.map((materia, index) => (
+                            <QuizCard className={materia.cor} key={index}>
+                                <h3>{materia.titulo}</h3>
+                                <ButtonQuiz className={materia.cor}>Iniciar</ButtonQuiz>
+                            </QuizCard>
+                        ))}
+                    </QuizzesCards>
                 </Quizzes>
-            </BackgroundContainer>
+            </BackgroundContainer >
 
             <Footer>
                 <img src={Logo} alt="Logo do Thinker" />
