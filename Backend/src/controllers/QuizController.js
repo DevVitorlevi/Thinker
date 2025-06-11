@@ -1,6 +1,15 @@
+const mongoose = require('mongoose');
 const Quiz = require('../models/Quiz');
 const User = require('../models/User');
 const Materia = require('../models/Materias');
+
+function calcularPatente(pontos) {
+    if (pontos >= 1000) return 'Lendário';
+    if (pontos >= 700) return 'Épico';
+    if (pontos >= 400) return 'Raro';
+    if (pontos >= 200) return 'Incomum';
+    return 'Comum';
+}
 
 module.exports = class QuizController {
     // Criar um novo quiz
@@ -12,20 +21,25 @@ module.exports = class QuizController {
                 return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
             }
 
+            if (!mongoose.Types.ObjectId.isValid(materiaId)) {
+                return res.status(400).json({ message: 'ID da matéria inválido.' });
+            }
+
             // Cria o novo quiz
-            const novoQuiz = new Quiz({ titulo, materia: materiaId });
+            const novoQuiz = new Quiz({ titulo, materia: materiaId, questoes: [] });
             await novoQuiz.save();
 
             // Atualiza o array `quizzes` da Matéria correspondente
             const materia = await Materia.findById(materiaId);
             if (materia) {
-                materia.quizzes.push(novoQuiz._id); // Adiciona o ID do quiz ao array
-                await materia.save(); // Salva a atualização da Matéria
+                materia.quizzes.push(novoQuiz._id);
+                await materia.save();
             }
 
             res.status(201).json({ message: 'Quiz criado com sucesso!', quiz: novoQuiz });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao criar quiz.', error });
+            console.error('Erro ao criar quiz:', error);
+            res.status(500).json({ message: 'Erro ao criar quiz.', error: error.message || 'Erro desconhecido.' });
         }
     }
 
@@ -33,11 +47,11 @@ module.exports = class QuizController {
     static async update(req, res) {
         try {
             const { id } = req.params;
-            const { titulo, questoes, materiaId,tempo_estimado } = req.body;
+            const { titulo, questoes, materiaId, tempo_estimado } = req.body;
 
             const quizAtualizado = await Quiz.findByIdAndUpdate(
                 id,
-                { titulo, questoes, materia: materiaId,tempo_estimado },
+                { titulo, questoes, materia: materiaId, tempo_estimado },
                 { new: true }
             );
 
@@ -47,7 +61,8 @@ module.exports = class QuizController {
 
             res.status(200).json({ message: 'Quiz atualizado com sucesso!', quiz: quizAtualizado });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao atualizar quiz.', error });
+            console.error('Erro ao atualizar quiz:', error);
+            res.status(500).json({ message: 'Erro ao atualizar quiz.', error: error.message || 'Erro desconhecido.' });
         }
     }
 
@@ -56,20 +71,17 @@ module.exports = class QuizController {
         try {
             const { id } = req.params;
 
-            // Busca o quiz no banco de dados
             const quiz = await Quiz.findById(id);
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
 
-            // Remove o ID do quiz do array `quizzes` da Matéria correspondente
             const materia = await Materia.findById(quiz.materia);
             if (materia) {
-                // Verifica se o ID do quiz está no array `quizzes`
                 const index = materia.quizzes.indexOf(quiz._id);
                 if (index !== -1) {
-                    materia.quizzes.pull(quiz._id); // Remove o ID do quiz do array
-                    await materia.save(); // Salva a atualização da Matéria
+                    materia.quizzes.pull(quiz._id);
+                    await materia.save();
                     console.log(`Quiz ${quiz._id} removido da Matéria ${materia._id}.`);
                 } else {
                     console.log(`Quiz ${quiz._id} não encontrado no array quizzes da Matéria ${materia._id}.`);
@@ -78,29 +90,26 @@ module.exports = class QuizController {
                 console.log(`Matéria ${quiz.materia} não encontrada.`);
             }
 
-            // Deleta o quiz do banco de dados
             await Quiz.findByIdAndDelete(id);
 
             res.status(200).json({ message: 'Quiz deletado com sucesso!' });
         } catch (error) {
             console.error('Erro ao deletar quiz:', error);
-            res.status(500).json({ message: 'Erro ao deletar quiz.', error });
+            res.status(500).json({ message: 'Erro ao deletar quiz.', error: error.message || 'Erro desconhecido.' });
         }
     }
 
     // Completar um quiz
-static async completarQuiz(req, res) {
+    static async completarQuiz(req, res) {
         try {
-            const { quizId, respostas } = req.body; // { questaoId: '123', resposta: 'A' }
+            const { quizId, respostas } = req.body;
             const userId = req.user.id;
 
-            // Busca o quiz e suas questões
             const quiz = await Quiz.findById(quizId).populate('questoes');
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
 
-            // Contabiliza acertos e pontos
             let acertos = 0;
             let pontosQuiz = 0;
 
@@ -108,22 +117,17 @@ static async completarQuiz(req, res) {
                 const respostaUsuario = respostas.find(r => r.questaoId === questao._id.toString());
                 if (respostaUsuario && respostaUsuario.resposta === questao.respostaCorreta) {
                     acertos++;
-                    // Pontos por dificuldade
                     if (questao.dificuldade === 'facil') pontosQuiz += 5;
                     else if (questao.dificuldade === 'medio') pontosQuiz += 10;
                     else if (questao.dificuldade === 'dificil') pontosQuiz += 20;
                 }
             });
 
-            // Bônus por completar (+20 pontos)
-            pontosQuiz += 20;
-
-            // Bônus por gabaritar (+100 pontos extras, totalizando 220)
+            pontosQuiz += 20; // bônus por completar
             if (acertos === quiz.questoes.length) {
-                pontosQuiz += 100;
+                pontosQuiz += 100; // bônus por gabaritar
             }
 
-            // Atualiza o usuário
             const user = await User.findById(userId);
             user.pontos += pontosQuiz;
             user.patente = calcularPatente(user.pontos);
@@ -131,7 +135,6 @@ static async completarQuiz(req, res) {
             user.estatisticas.acertos += acertos;
             user.estatisticas.questoes_feitas += quiz.questoes.length;
 
-            // Registra o quiz respondido
             user.quizzes_respondidos.push({
                 quiz: quizId,
                 acertos,
@@ -149,7 +152,8 @@ static async completarQuiz(req, res) {
                 patenteAtual: user.patente
             });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao completar quiz.', error });
+            console.error('Erro ao completar quiz:', error);
+            res.status(500).json({ message: 'Erro ao completar quiz.', error: error.message || 'Erro desconhecido.' });
         }
     }
 };
