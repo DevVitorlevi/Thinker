@@ -4,6 +4,8 @@ const EstatsticasSchema = new mongoose.Schema({
     questoes_feitas: { type: Number, default: 0 },
     acertos: { type: Number, default: 0 },
     quizzes_completos: { type: Number, default: 0 },
+    pontos: { type: Number, default: 0 }, // Adicionado campo de pontos
+    patente: { type: String, default: 'Aprendiz do Conhecimento' } // Adicionado campo de patente
 });
 
 const UserSchema = new mongoose.Schema({
@@ -17,7 +19,8 @@ const UserSchema = new mongoose.Schema({
         quiz: { type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' },
         data: { type: Date, default: Date.now },
         acertos: { type: Number, default: 0 },
-        total_questoes: { type: Number, default: 0 }
+        total_questoes: { type: Number, default: 0 },
+        pontos_ganhos: { type: Number, default: 0 } // Adicionado pontos ganhos por quiz
     }]
 }, { timestamps: true });
 
