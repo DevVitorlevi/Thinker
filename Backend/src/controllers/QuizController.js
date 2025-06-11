@@ -89,34 +89,65 @@ module.exports = class QuizController {
     }
 
     // Completar um quiz
-    static async completarQuiz(req, res) {
+static async completarQuiz(req, res) {
         try {
-            const { quizId, acertos, totalQuestoes } = req.body;
-            const userId = req.user.id; // ID do usuário autenticado
+            const { quizId, respostas } = req.body; // { questaoId: '123', resposta: 'A' }
+            const userId = req.user.id;
 
-            // Busca o quiz no banco de dados
-            const quiz = await Quiz.findById(quizId);
+            // Busca o quiz e suas questões
+            const quiz = await Quiz.findById(quizId).populate('questoes');
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz não encontrado.' });
             }
 
-            // Busca o usuário no banco de dados
-            const user = await User.findById(userId);
-            if (!user) {
-                return res.status(404).json({ message: 'Usuário não encontrado.' });
+            // Contabiliza acertos e pontos
+            let acertos = 0;
+            let pontosQuiz = 0;
+
+            quiz.questoes.forEach(questao => {
+                const respostaUsuario = respostas.find(r => r.questaoId === questao._id.toString());
+                if (respostaUsuario && respostaUsuario.resposta === questao.respostaCorreta) {
+                    acertos++;
+                    // Pontos por dificuldade
+                    if (questao.dificuldade === 'facil') pontosQuiz += 5;
+                    else if (questao.dificuldade === 'medio') pontosQuiz += 10;
+                    else if (questao.dificuldade === 'dificil') pontosQuiz += 20;
+                }
+            });
+
+            // Bônus por completar (+20 pontos)
+            pontosQuiz += 20;
+
+            // Bônus por gabaritar (+100 pontos extras, totalizando 220)
+            if (acertos === quiz.questoes.length) {
+                pontosQuiz += 100;
             }
 
-            // Atualiza as estatísticas do usuário
+            // Atualiza o usuário
+            const user = await User.findById(userId);
+            user.pontos += pontosQuiz;
+            user.patente = calcularPatente(user.pontos);
             user.estatisticas.quizzes_completos += 1;
             user.estatisticas.acertos += acertos;
-            user.estatisticas.questoes_feitas += totalQuestoes;
+            user.estatisticas.questoes_feitas += quiz.questoes.length;
 
-            // Salva as atualizações do usuário
+            // Registra o quiz respondido
+            user.quizzes_respondidos.push({
+                quiz: quizId,
+                acertos,
+                total_questoes: quiz.questoes.length,
+                pontos_ganhos: pontosQuiz
+            });
+
             await user.save();
 
-            
-
-            res.status(200).json({ message: 'Quiz completado com sucesso!', estatisticas: user.estatisticas });
+            res.status(200).json({
+                message: 'Quiz completado!',
+                acertos,
+                total: quiz.questoes.length,
+                pontosGanhos: pontosQuiz,
+                patenteAtual: user.patente
+            });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao completar quiz.', error });
         }
