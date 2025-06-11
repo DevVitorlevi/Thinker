@@ -4,12 +4,13 @@ const User = require('../models/User');
 const Materia = require('../models/Materias');
 
 function calcularPatente(pontos) {
-    if (pontos >= 1000) return 'Lendário';
-    if (pontos >= 700) return 'Épico';
-    if (pontos >= 400) return 'Raro';
-    if (pontos >= 200) return 'Incomum';
-    return 'Comum';
+    if (pontos >= 1000) return '🧠 O THINKER';
+    if (pontos >= 700) return 'Gênio da Mente Dourada';
+    if (pontos >= 400) return 'Mestre dos Quizzes';
+    if (pontos >= 200) return 'Decifrador de Desafios';
+    return 'Aprendiz do Conhecimento';
 }
+
 
 module.exports = class QuizController {
     // Criar um novo quiz
