@@ -4,17 +4,13 @@ const CreateUserToken = require('../helpers/Create-token');
 const getToken = require('../helpers/get-token');
 const getUserbyToken = require('../helpers/get-user-by-token');
 
-module.exports = class AdminController   {
+module.exports = class AdminController {
     // Registrar um novo administrador
     static async registerAdmin(req, res) {
-        const { nome, email, senha, confirmesenha } = req.body;
+        const { name, email, password } = req.body;
 
-        if (!nome || !email || !senha || !confirmesenha) {
+        if (!name || !email || !password) {
             return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
-        }
-
-        if (senha !== confirmesenha) {
-            return res.status(422).json({ message: 'As senhas não coincidem.' });
         }
 
         try {
@@ -25,28 +21,36 @@ module.exports = class AdminController   {
             }
 
             const salt = await bcrypt.genSalt(12);
-            const hashPass = await bcrypt.hash(senha, salt);
+            const hashPass = await bcrypt.hash(password, salt);
 
             const userData = new User({
-                nome,
+                name,
                 email,
-                senha: hashPass,
-                role: 'admin', // Define o papel como admin
+                password: hashPass,
+                role: 'admin',
             });
 
             const userSave = await userData.save();
             const token = await CreateUserToken(userSave, req, res);
-            res.status(201).json({ message: 'Sucesso ao registrar administrador.', userData,token });
+
+            res.status(201).json({
+                message: 'Sucesso ao registrar administrador.',
+                userData,
+                token
+            });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao registrar administrador.', error });
+            res.status(500).json({
+                message: 'Erro ao registrar administrador.',
+                error: error.message || error
+            });
         }
     }
 
     // Autenticar um administrador
     static async loginAdmin(req, res) {
-        const { email, senha } = req.body;
+        const { email, password } = req.body;
 
-        if (!email || !senha) {
+        if (!email || !password) {
             return res.status(422).json({ message: 'Todos os campos são obrigatórios.' });
         }
 
@@ -61,16 +65,23 @@ module.exports = class AdminController   {
                 return res.status(403).json({ message: 'Acesso negado. Usuário não é administrador.' });
             }
 
-            const checkPass = await bcrypt.compare(senha, user.senha);
+            const checkPass = await bcrypt.compare(password, user.password);
 
             if (!checkPass) {
                 return res.status(422).json({ message: 'Senha incorreta.' });
             }
 
             const token = await CreateUserToken(user, req, res);
-            res.status(200).json({ message: 'Sucesso ao Logar administrador.', user,token});
+            res.status(200).json({
+                message: 'Sucesso ao logar administrador.',
+                user,
+                token
+            });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao autenticar administrador.', error });
+            res.status(500).json({
+                message: 'Erro ao autenticar administrador.',
+                error: error.message || error
+            });
         }
     }
 
@@ -105,7 +116,10 @@ module.exports = class AdminController   {
 
             res.status(200).json({ message: 'Administrador excluído com sucesso.' });
         } catch (error) {
-            res.status(500).json({ message: 'Erro ao excluir administrador.', error });
+            res.status(500).json({
+                message: 'Erro ao excluir administrador.',
+                error: error.message || error
+            });
         }
     }
 
@@ -121,7 +135,10 @@ module.exports = class AdminController   {
 
             next();
         } catch (error) {
-            res.status(401).json({ message: 'Acesso não autorizado.' });
+            res.status(401).json({
+                message: 'Acesso não autorizado.',
+                error: error.message || error
+            });
         }
     }
 };
