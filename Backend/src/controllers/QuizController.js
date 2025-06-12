@@ -157,4 +157,51 @@ module.exports = class QuizController {
             res.status(500).json({ message: 'Erro ao completar quiz.', error: error.message || 'Erro desconhecido.' });
         }
     }
+    static async getAll(req, res) {
+    try {
+        // Popula a matéria e as questões de cada quiz
+        const quizzes = await Quiz.find()
+            .populate('materia', 'nome descricao')
+            .populate({
+                path: 'questoes',
+                select: 'pergunta dificuldade',
+                options: { 
+                    sort: { dificuldade: 1 }, // Ordena por dificuldade
+                    limit: 5 // Limita a 5 questões por quiz (para performance)
+                }
+            })
+            .sort({ createdAt: -1 }); // Ordena do mais recente
+
+        // Contagem de questões por dificuldade
+        const quizzesComStats = await Promise.all(quizzes.map(async (quiz) => {
+            const counts = await Questao.aggregate([
+                { $match: { quiz: quiz._id } },
+                { $group: { 
+                    _id: '$dificuldade', 
+                    count: { $sum: 1 } 
+                }}
+            ]);
+            
+            return {
+                ...quiz.toObject(),
+                stats: {
+                    facil: counts.find(c => c._id === 'facil')?.count || 0,
+                    medio: counts.find(c => c._id === 'medio')?.count || 0,
+                    dificil: counts.find(c => c._id === 'dificil')?.count || 0
+                }
+            };
+        }));
+
+        res.status(200).json({
+            message: 'Quizzes recuperados com sucesso!',
+            count: quizzes.length,
+            quizzes: quizzesComStats
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Erro ao buscar quizzes.',
+            error: error.message 
+        });
+    }
+}
 };
