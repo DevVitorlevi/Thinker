@@ -26,10 +26,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/admin', adminRoutes);
 app.use('/users', userRoutes);
 
-// Rota de teste
-app.get('/', (req, res) => {
-  res.json({ message: 'API funcionando!' });
-});
 
 // Middleware de erro
 app.use((err, req, res, next) => {
