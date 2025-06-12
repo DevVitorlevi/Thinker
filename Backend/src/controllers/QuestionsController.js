@@ -115,4 +115,35 @@ module.exports = class QuestaoController {
             res.status(500).json({ message: 'Erro ao responder questão.', error });
         }
     }
+
+    static async getAll(req, res) {
+    try {
+        const { quizId, dificuldade, page = 1, limit = 10 } = req.query;
+        
+        const filter = {};
+        if (quizId) filter.quiz = quizId;
+        if (dificuldade) filter.dificuldade = dificuldade;
+
+        const questoes = await Questao.find(filter)
+            .populate('quiz', 'titulo')
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        const total = await Questao.countDocuments(filter);
+
+        res.status(200).json({
+            message: 'Questões recuperadas com sucesso!',
+            total,
+            page: parseInt(page),
+            pages: Math.ceil(total / limit),
+            questoes
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Erro ao buscar questões.',
+            error: error.message 
+        });
+    }
+}
 };
