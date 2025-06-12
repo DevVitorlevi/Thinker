@@ -57,4 +57,28 @@ module.exports = class MateriaController {
             res.status(500).json({ message: 'Erro ao deletar matéria.', error });
         }
     }
+
+    static async getAll(req, res) {
+    try {
+        // Popula os quizzes associados a cada matéria
+        const materias = await Materia.find()
+            .populate({
+                path: 'quizzes',
+                select: 'titulo tempo_estimado',
+                options: { sort: { createdAt: -1 } } // Ordena do mais novo para o mais antigo
+            })
+            .sort({ nome: 1 }); // Ordena por nome A-Z
+
+        res.status(200).json({
+            message: 'Matérias recuperadas com sucesso!',
+            count: materias.length,
+            materias
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Erro ao buscar matérias.',
+            error: error.message 
+        });
+    }
+}
 };
