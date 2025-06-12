@@ -141,4 +141,39 @@ module.exports = class AdminController {
             });
         }
     }
+
+    static async getCurrentAdmin(req, res) {
+  try {
+    const token = getToken(req);
+    const user = await getUserbyToken(token);
+
+    if (!user || user.role !== 'admin') {
+      return res.status(403).json({ message: 'Acesso negado. Apenas administradores podem acessar esta rota.' });
+    }
+
+    res.status(200).json({
+      message: 'Usuário administrador autenticado.',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(401).json({
+      message: 'Acesso não autorizado.',
+      error: error.message || error,
+    });
+  }
+}
+static async getAllUsers(req, res) {
+  try {
+    const users = await User.find(); // Pega todos os usuários (admin e normais)
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao buscar usuários.', error: error.message || error });
+  }
+}
+
 };

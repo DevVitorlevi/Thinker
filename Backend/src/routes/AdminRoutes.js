@@ -25,12 +25,14 @@ router.delete('/questao/:id', VerifyToken, AdminController.checkAdminRole, Quest
 router.post('/register', AdminController.registerAdmin);
 router.post('/login', AdminController.loginAdmin);
 router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
-
+router.get('/checkuser', VerifyToken, AdminController.getCurrentAdmin);
 
 // Consultas Admin
 router.get('/materias', VerifyToken, AdminController.checkAdminRole, MateriaController.getAll);
 router.get('/quizzes', VerifyToken, AdminController.checkAdminRole, QuizController.getAll);
 router.get('/questoes', VerifyToken, AdminController.checkAdminRole, QuestaoController.getAll)
+router.get('/users', VerifyToken, AdminController.checkAdminRole, AdminController.getAllUsers);
+
 
 
 module.exports = router;
