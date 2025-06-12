@@ -26,4 +26,11 @@ router.post('/register', AdminController.registerAdmin);
 router.post('/login', AdminController.loginAdmin);
 router.delete('/delete/:id', VerifyToken, AdminController.checkAdminRole, AdminController.deleteAdmin);
 
+
+// Consultas Admin
+router.get('/materias', VerifyToken, AdminController.checkAdminRole, MateriaController.getAll);
+router.get('/quizzes', VerifyToken, AdminController.checkAdminRole, QuizController.getAll);
+router.get('/questoes', VerifyToken, AdminController.checkAdminRole, QuestaoController.getAll)
+
+
 module.exports = router;
