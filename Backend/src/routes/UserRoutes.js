@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/User')
 const UserController = require('../controllers/UserController');
 const VerifyToken = require('../helpers/verify-token');
-const { ImageUpload } = require('../helpers/image-up');
+const { ImageUpload } = require('../helpers/Image-up');
 const QuestaoController = require('../controllers/QuestionsController');
 const QuizController = require('../controllers/QuizController');
 
