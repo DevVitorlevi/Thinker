@@ -1,26 +1,51 @@
-import styled,{keyframes} from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Materias = styled.div`
     padding: 5rem;
 `;
 
+export const TituloContainer = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10rem;
+`;
+
+export const DecorImage = styled.img`
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 50px;
+    &.left {
+        left: 0;
+    }
+
+    &.right {
+        right: 0;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export const Titulo = styled.div`
     font-family: 'Dalek';
     text-align: center;
-    margin-bottom: 10rem;
 
     h1 {
         color: #517BA1;
         font-size: 5rem;
         letter-spacing: 1rem;
-        text-shadow:1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
+        text-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
     }
 
     p {
         color: #D9C732;
         font-size: 3rem;
         letter-spacing: 1rem;
-        text-shadow:1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
+        text-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
     }
 `;
 
@@ -48,6 +73,7 @@ export const MateriaCards = styled.div`
         grid-template-columns: repeat(3, 1fr);
     }
 `;
+
 export const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -58,6 +84,7 @@ export const fadeInUp = keyframes`
     transform: translateY(0);
   }
 `;
+
 export const MateriaCard = styled.div`
     background-color: #fff;
     border: 2px solid;
@@ -67,6 +94,7 @@ export const MateriaCard = styled.div`
     transition: transform 0.2s ease;
     animation: ${fadeInUp} 0.6s ease both;
     cursor: pointer;
+
     .icon {
         margin-bottom: 0.8rem;
     }
@@ -83,69 +111,31 @@ export const MateriaCard = styled.div`
     }
 
     &:hover {
-       outline:3px solid gold;
+        outline: 3px solid gold;
     }
 
     /* Cores específicas */
-    &.matematica {
-        border-color: #003869;
-         color: #003869;
-    }
-    &.portugues {
-        border-color: #930004;
-        color: #930004; 
-    }
-    &.fisica {
-        border-color: #001F9C;
-        color: #001F9C; 
-    }
-    &.quimica {
-        border-color: #780B76;
-         color: #780B76; 
-    }
-    &.biologia {
-        border-color: #418600;
-        color: #418600;
-    }
-    &.geografia {
-        border-color: #CF761C;
-         color: #CF761C; 
-    }
-    &.historia {
-        border-color: #B39025;
-        color: #B39025; 
-    }
-    &.filosofia {
-        border-color: #5B3312;
-         color: #5B3312; 
-    }
-    &.sociologia {
-        border-color: #B75EB6;
-         color: #B75EB6; 
-    }
-    &.espanhol {
-        border-color: #B10508;
-        color: #B10508; 
-    }
-    &.educacao {
-        border-color: #3CC0A8;
-        color: #3CC0A8;
-    }
-    &.ingles {
-        border-color: #2D51A6;
-        color: #2D51A6;
-    }
+    &.matematica { border-color: #003869; color: #003869; }
+    &.portugues { border-color: #930004; color: #930004; }
+    &.fisica { border-color: #001F9C; color: #001F9C; }
+    &.quimica { border-color: #780B76; color: #780B76; }
+    &.biologia { border-color: #418600; color: #418600; }
+    &.geografia { border-color: #CF761C; color: #CF761C; }
+    &.historia { border-color: #B39025; color: #B39025; }
+    &.filosofia { border-color: #5B3312; color: #5B3312; }
+    &.sociologia { border-color: #B75EB6; color: #B75EB6; }
+    &.espanhol { border-color: #B10508; color: #B10508; }
+    &.educacao { border-color: #3CC0A8; color: #3CC0A8; }
+    &.ingles { border-color: #2D51A6; color: #2D51A6; }
 
     @media (min-width: 769px) {
         min-width: unset;
     }
-
-
 `;
 
 export const Quizzes = styled.div`
     padding: 5rem;
-    padding-bottom:30rem;
+    padding-bottom: 30rem;
 `;
 
 export const QuizzesCards = styled.div`
@@ -172,6 +162,7 @@ export const QuizzesCards = styled.div`
         grid-template-columns: repeat(3, 1fr);
     }
 `;
+
 export const QuizCard = styled.div`
     background-color: #fff;
     border: 2px solid;
@@ -181,6 +172,7 @@ export const QuizCard = styled.div`
     transition: transform 0.2s ease;
     animation: ${fadeInUp} 0.6s ease both;
     cursor: pointer;
+
     .icon {
         margin-bottom: 0.8rem;
     }
@@ -197,111 +189,48 @@ export const QuizCard = styled.div`
     }
 
     &:hover {
-       outline:3px solid gold;
+        outline: 3px solid gold;
     }
 
     /* Cores específicas */
-    &.matematica {
-        border-color: #003869;
-         color: #003869;
-    }
-    &.portugues {
-        border-color: #930004;
-        color: #930004; 
-    }
-    &.fisica {
-        border-color: #001F9C;
-        color: #001F9C; 
-    }
-    &.quimica {
-        border-color: #780B76;
-         color: #780B76; 
-    }
-    &.biologia {
-        border-color: #418600;
-        color: #418600;
-    }
-    &.geografia {
-        border-color: #CF761C;
-         color: #CF761C; 
-    }
-    &.historia {
-        border-color: #B39025;
-        color: #B39025; 
-    }
-    &.filosofia {
-        border-color: #5B3312;
-         color: #5B3312; 
-    }
-    &.sociologia {
-        border-color: #B75EB6;
-         color: #B75EB6; 
-    }
-    &.espanhol {
-        border-color: #B10508;
-        color: #B10508; 
-    }
-    &.educacao {
-        border-color: #3CC0A8;
-        color: #3CC0A8;
-    }
-    &.ingles {
-        border-color: #2D51A6;
-        color: #2D51A6;
-    }
+    &.matematica { border-color: #003869; color: #003869; }
+    &.portugues { border-color: #930004; color: #930004; }
+    &.fisica { border-color: #001F9C; color: #001F9C; }
+    &.quimica { border-color: #780B76; color: #780B76; }
+    &.biologia { border-color: #418600; color: #418600; }
+    &.geografia { border-color: #CF761C; color: #CF761C; }
+    &.historia { border-color: #B39025; color: #B39025; }
+    &.filosofia { border-color: #5B3312; color: #5B3312; }
+    &.sociologia { border-color: #B75EB6; color: #B75EB6; }
+    &.espanhol { border-color: #B10508; color: #B10508; }
+    &.educacao { border-color: #3CC0A8; color: #3CC0A8; }
+    &.ingles { border-color: #2D51A6; color: #2D51A6; }
 
     @media (min-width: 769px) {
         min-width: unset;
     }
-
-
 `;
 
-export const ButtonQuiz = styled.button `
+export const ButtonQuiz = styled.button`
     padding: .5rem;
-    border-radius:.8rem;
-    margin-top:1rem;
-    border:0;
+    border-radius: .8rem;
+    margin-top: 1rem;
+    border: 0;
     width: 100%;
     color: white;
     font-weight: bold;
-    font-size:1rem;
+    font-size: 1rem;
 
-     &.matematica {
-        background-color: #003869;
-    }
-    &.portugues {
-        background-color: #930004; 
-    }
-    &.fisica {
-        background-color: #001F9C; 
-    }
-    &.quimica {
-        background-color: #780B76; 
-    }
-    &.biologia {
-        background-color: #418600;
-    }
-    &.geografia {
-        background-color: #CF761C; 
-    }
-    &.historia {
-        background-color: #B39025; 
-    }
-    &.filosofia {
-        background-color: #5B3312; 
-    }
-    &.sociologia {
-        background-color: #B75EB6; 
-    }
-    &.espanhol {
-
-        background-color: #B10508; 
-    }
-    &.educacao {
-        background-color: #3CC0A8;
-    }
-    &.ingles {
-        background-color: #2D51A6;
-    }
-`
+    &.matematica { background-color: #003869; }
+    &.portugues { background-color: #930004; }
+    &.fisica { background-color: #001F9C; }
+    &.quimica { background-color: #780B76; }
+    &.biologia { background-color: #418600; }
+    &.geografia { background-color: #CF761C; }
+    &.historia { background-color: #B39025; }
+    &.filosofia { background-color: #5B3312; }
+    &.sociologia { background-color: #B75EB6; }
+    &.espanhol { background-color: #B10508; }
+    &.educacao { background-color: #3CC0A8; }
+    &.ingles { background-color: #2D51A6; }
+`;

@@ -9,15 +9,18 @@ import {
 } from '../../styles/Landing';
 import { BackgroundContainer } from '../../components/BackgroundContainer';
 import Logo from '../../assets/Logo.png';
-import { X, Menu } from 'lucide-react';
+import decorLeft from '../../assets/decor-left.png';
+import decorRight from '../../assets/decor-right.png';
 import {
     Materias,
+    TituloContainer,
     Titulo,
+    DecorImage,
     MateriaCards,
     MateriaCard,
     Quizzes,
-    QuizCard,
     QuizzesCards,
+    QuizCard,
     ButtonQuiz
 } from '../../styles/Home';
 import {
@@ -32,7 +35,9 @@ import {
     UsersRound,
     Languages,
     Dumbbell,
-    MessageCircle
+    MessageCircle,
+    X,
+    Menu
 } from 'lucide-react';
 
 const materiasData = [
@@ -91,10 +96,14 @@ export const Home = () => {
 
             <BackgroundContainer>
                 <Materias id="materias">
-                    <Titulo>
-                        <h1>Componentes</h1>
-                        <p>Curriculares</p>
-                    </Titulo>
+                    <TituloContainer>
+                        <DecorImage src={decorLeft} alt="Decoração esquerda" className="left" />
+                        <Titulo>
+                            <h1>Componentes</h1>
+                            <p>Curriculares</p>
+                        </Titulo>
+                        <DecorImage src={decorRight} alt="Decoração direita" className="right" />
+                    </TituloContainer>
 
                     <MateriaCards>
                         {materiasData.map((materia, index) => (
@@ -108,10 +117,14 @@ export const Home = () => {
                 </Materias>
 
                 <Quizzes id="quizzes">
-                    <Titulo>
-                        <h1>Quizzes</h1>
-                    </Titulo>
-
+                    <TituloContainer>
+                        <DecorImage src={decorLeft} alt="Decoração esquerda" className="left" />
+                        <Titulo>
+                            <h1>Quizzes</h1>
+                            <p>Recomendados</p>
+                        </Titulo>
+                        <DecorImage src={decorRight} alt="Decoração direita" className="right" />
+                    </TituloContainer>
                     <QuizzesCards>
                         {materiasData.map((materia, index) => (
                             <QuizCard className={materia.cor} key={index}>
