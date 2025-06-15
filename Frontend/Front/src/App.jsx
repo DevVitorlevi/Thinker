@@ -4,7 +4,7 @@ import { Landing } from "./pages/Landing"
 import { Register } from './pages/Auth/Register'
 import { Login } from "./pages/Auth/Login"
 import { Home } from "./pages/Home/Home"
-import { UserProvider } from "./context/UserContext"
+import { UserProvider } from "./Context/UserContext"
 function App() {
 
 
