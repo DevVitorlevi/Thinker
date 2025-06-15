@@ -7,5 +7,4 @@ export const BackgroundContainer = styled.div`
   background-image: url(${HomeMobile});
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
 `;

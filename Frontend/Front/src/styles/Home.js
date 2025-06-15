@@ -1,13 +1,13 @@
 import styled,{keyframes} from 'styled-components';
 
 export const Materias = styled.div`
-    padding: 2rem;
+    padding: 5rem;
 `;
 
 export const Titulo = styled.div`
     font-family: 'Dalek';
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 10rem;
 
     h1 {
         color: #517BA1;
@@ -26,7 +26,7 @@ export const Titulo = styled.div`
 
 export const MateriaCards = styled.div`
     display: grid;
-    gap: 1.5rem;
+    gap: 2.5rem;
 
     @media (max-width: 768px) {
         display: flex;
@@ -45,7 +45,7 @@ export const MateriaCards = styled.div`
     }
 
     @media (min-width: 769px) {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 `;
 export const fadeInUp = keyframes`
@@ -63,7 +63,7 @@ export const MateriaCard = styled.div`
     border: 2px solid;
     border-radius: 1rem;
     padding: 1.5rem;
-    min-width: 250px;
+    min-width: 150px;
     transition: transform 0.2s ease;
     animation: ${fadeInUp} 0.6s ease both;
     cursor: pointer;
@@ -144,12 +144,13 @@ export const MateriaCard = styled.div`
 `;
 
 export const Quizzes = styled.div`
-    padding: 2rem;
+    padding: 5rem;
+    padding-bottom:30rem;
 `;
 
 export const QuizzesCards = styled.div`
     display: grid;
-    gap: 1.5rem;
+    gap: 2.5rem;
 
     @media (max-width: 768px) {
         display: flex;
@@ -168,7 +169,7 @@ export const QuizzesCards = styled.div`
     }
 
     @media (min-width: 769px) {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 `;
 export const QuizCard = styled.div`
@@ -176,7 +177,7 @@ export const QuizCard = styled.div`
     border: 2px solid;
     border-radius: 1rem;
     padding: 1.5rem;
-    min-width: 250px;
+    width: 550px;
     transition: transform 0.2s ease;
     animation: ${fadeInUp} 0.6s ease both;
     cursor: pointer;
