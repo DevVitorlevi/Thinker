@@ -13,14 +13,13 @@ import decorLeft from '../../assets/decor-left.png';
 import decorRight from '../../assets/decor-right.png';
 import {
     Materias,
-    TituloContainer,
     Titulo,
-    DecorImage,
     MateriaCards,
     MateriaCard,
     Quizzes,
     QuizzesCards,
     QuizCard,
+    QuizText,
     ButtonQuiz
 } from '../../styles/Home';
 import {
@@ -96,14 +95,10 @@ export const Home = () => {
 
             <BackgroundContainer>
                 <Materias id="materias">
-                    <TituloContainer>
-                        <DecorImage src={decorLeft} alt="Decoração esquerda" className="left" />
-                        <Titulo>
-                            <h1>Componentes</h1>
-                            <p>Curriculares</p>
-                        </Titulo>
-                        <DecorImage src={decorRight} alt="Decoração direita" className="right" />
-                    </TituloContainer>
+                    <Titulo>
+                        <h1>Componentes</h1>
+                        <p>Curriculares</p>
+                    </Titulo>
 
                     <MateriaCards>
                         {materiasData.map((materia, index) => (
@@ -117,18 +112,18 @@ export const Home = () => {
                 </Materias>
 
                 <Quizzes id="quizzes">
-                    <TituloContainer>
-                        <DecorImage src={decorLeft} alt="Decoração esquerda" className="left" />
-                        <Titulo>
-                            <h1>Quizzes</h1>
-                            <p>Recomendados</p>
-                        </Titulo>
-                        <DecorImage src={decorRight} alt="Decoração direita" className="right" />
-                    </TituloContainer>
+                    <Titulo>
+                        <h1>Quizzes</h1>
+                        <p>Recomendados</p>
+                    </Titulo>
                     <QuizzesCards>
                         {materiasData.map((materia, index) => (
                             <QuizCard className={materia.cor} key={index}>
-                                <h3>{materia.titulo}</h3>
+                                <QuizText>
+                                    <h3>{materia.titulo}</h3>
+                                    <p>QUIZ</p>
+
+                                </QuizText>
                                 <ButtonQuiz className={materia.cor}>Iniciar</ButtonQuiz>
                             </QuizCard>
                         ))}

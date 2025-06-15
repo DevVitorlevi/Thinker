@@ -4,41 +4,17 @@ export const Materias = styled.div`
     padding: 5rem;
 `;
 
-export const TituloContainer = styled.div`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10rem;
-`;
-
-export const DecorImage = styled.img`
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 50px;
-    &.left {
-        left: 0;
-    }
-
-    &.right {
-        right: 0;
-    }
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
 export const Titulo = styled.div`
     font-family: 'Dalek';
     text-align: center;
+    margin-bottom: 7rem;
 
     h1 {
         color: #517BA1;
         font-size: 5rem;
         letter-spacing: 1rem;
         text-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
+        margin-bottom: 1rem;
     }
 
     p {
@@ -51,7 +27,7 @@ export const Titulo = styled.div`
 
 export const MateriaCards = styled.div`
     display: grid;
-    gap: 2.5rem;
+    gap: 5rem;
 
     @media (max-width: 768px) {
         display: flex;
@@ -94,9 +70,10 @@ export const MateriaCard = styled.div`
     transition: transform 0.2s ease;
     animation: ${fadeInUp} 0.6s ease both;
     cursor: pointer;
-
+    text-align: center;
     .icon {
         margin-bottom: 0.8rem;
+
     }
 
     h3 {
@@ -110,9 +87,6 @@ export const MateriaCard = styled.div`
         font-family: 'Josefin Sans';
     }
 
-    &:hover {
-        outline: 3px solid gold;
-    }
 
     /* Cores específicas */
     &.matematica { border-color: #003869; color: #003869; }
@@ -140,7 +114,7 @@ export const Quizzes = styled.div`
 
 export const QuizzesCards = styled.div`
     display: grid;
-    gap: 2.5rem;
+    gap: 5rem;
 
     @media (max-width: 768px) {
         display: flex;
@@ -168,7 +142,7 @@ export const QuizCard = styled.div`
     border: 2px solid;
     border-radius: 1rem;
     padding: 1.5rem;
-    width: 550px;
+    min-width: 150px;
     transition: transform 0.2s ease;
     animation: ${fadeInUp} 0.6s ease both;
     cursor: pointer;
@@ -186,10 +160,6 @@ export const QuizCard = styled.div`
     p {
         font-size: 1rem;
         font-family: 'Josefin Sans';
-    }
-
-    &:hover {
-        outline: 3px solid gold;
     }
 
     /* Cores específicas */
@@ -210,6 +180,16 @@ export const QuizCard = styled.div`
         min-width: unset;
     }
 `;
+export const QuizText = styled.div `
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p{
+        margin-bottom: 1rem;
+        font-size:1.5rem;
+    }
+`
 
 export const ButtonQuiz = styled.button`
     padding: .5rem;
