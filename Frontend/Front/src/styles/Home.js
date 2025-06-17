@@ -1,15 +1,5 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-export const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
 
 export const Materias = styled.div`
   padding: 4rem 2rem;
@@ -114,9 +104,7 @@ export const MateriaCard = styled.div`
   border-radius: 1rem;
   min-width: 20rem;
   padding: 2rem;
-
-  transition: transform 0.2s ease;
-  animation: ${fadeInUp} 0.6s ease both;
+  transition: .5s;
   cursor: pointer;
   text-align: center;
 
@@ -155,8 +143,19 @@ export const MateriaCard = styled.div`
     max-width: 270px;
   }
     &:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
+  &.matematica { box-shadow:0 0 10px 6px rgba(0, 56, 105, 0.33); }
+  &.portugues { box-shadow:0 0 10px 6px rgba(147, 0, 5, 0.33); }
+  &.fisica { box-shadow:0 0 10px 6px rgba(0, 31, 156, 0.33); }
+  &.quimica { box-shadow:0 0 10px 6px rgba(120, 11, 118, 0.33); }
+  &.biologia { box-shadow:0 0 10px 6px rgba(65, 134, 0, 0.33); }
+  &.geografia { box-shadow:0 0 10px 6px rgba(207, 118, 28, 0.33); }
+  &.historia { box-shadow:0 0 10px 6px rgba(179, 144, 37, 0.33); }
+  &.filosofia { box-shadow:0 0 10px 6px rgba(91, 51, 18, 0.33); }
+  &.sociologia { box-shadow:0 0 10px 6px rgba(183, 94, 182, 0.33); }
+  &.espanhol { box-shadow:0 0 10px 6px rgba(177, 5, 8, 0.33); }
+  &.educacao { box-shadow:0 0 10px 6px rgba(60, 192, 168, 0.33); }
+  &.ingles { box-shadow:0 0 10px 6px rgba(45, 81, 166, 0.33); }}
+  
 `;
 
 export const Quizzes = styled.div`
@@ -229,19 +228,14 @@ export const QuizzesCards = styled.div`
 export const QuizCard = styled.div`
   background-color: #fff;
   border: 2px solid;
+  border: 2px solid;
   border-radius: 1rem;
 min-width: 250px;
 padding: 2rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: ${fadeInUp} 0.6s ease both;
   cursor: pointer;
   text-align: center;
   scroll-snap-align: start;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
 
   .icon {
     margin-bottom: 0.8rem;
@@ -279,6 +273,19 @@ padding: 2rem;
     min-width: unset;
     max-width: unset;
   }
+      &:hover {
+  &.matematica { box-shadow:0 0 10px 6px rgba(0, 56, 105, 0.33); }
+  &.portugues { box-shadow:0 0 10px 6px rgba(147, 0, 5, 0.33); }
+  &.fisica { box-shadow:0 0 10px 6px rgba(0, 31, 156, 0.33); }
+  &.quimica { box-shadow:0 0 10px 6px rgba(120, 11, 118, 0.33); }
+  &.biologia { box-shadow:0 0 10px 6px rgba(65, 134, 0, 0.33); }
+  &.geografia { box-shadow:0 0 10px 6px rgba(207, 118, 28, 0.33); }
+  &.historia { box-shadow:0 0 10px 6px rgba(179, 144, 37, 0.33); }
+  &.filosofia { box-shadow:0 0 10px 6px rgba(91, 51, 18, 0.33); }
+  &.sociologia { box-shadow:0 0 10px 6px rgba(183, 94, 182, 0.33); }
+  &.espanhol { box-shadow:0 0 10px 6px rgba(177, 5, 8, 0.33); }
+  &.educacao { box-shadow:0 0 10px 6px rgba(60, 192, 168, 0.33); }
+  &.ingles { box-shadow:0 0 10px 6px rgba(45, 81, 166, 0.33); }}
 `;
 
 export const QuizText = styled.div`
