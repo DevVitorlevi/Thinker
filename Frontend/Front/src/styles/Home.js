@@ -52,11 +52,19 @@ export const Titulo = styled.div`
 
 export const MateriaCards = styled.div`
   display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 2.5rem;
-padding: 2.5rem 4rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+  padding: 2.5rem 4rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1366px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 1024px) {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -65,8 +73,27 @@ padding: 2.5rem 4rem;
     gap: 1rem;
 
     & > * {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
+      flex: 0 0 calc(100% / 1.2);
+
+      @media (min-width: 600px) {
+        flex: 0 0 calc(100% / 2.2);
+      }
+
+      @media (min-width: 768px) {
+        flex: 0 0 calc(100% / 3.2);
+      }
+
+      @media (min-width: 850px) {
+        flex: 0 0 calc(100% / 4.2);
+      }
+
+      @media (min-width: 950px) {
+        flex: 0 0 calc(100% / 5.2);
+      }
+
+      @media (min-width: 1024px) {
+        flex: 0 0 calc(100% / 6);
+      }
     }
 
     &::-webkit-scrollbar {
@@ -80,12 +107,13 @@ padding: 2.5rem 4rem;
   }
 `;
 
+
 export const MateriaCard = styled.div`
   background-color: #fff;
   border: 2px solid;
   border-radius: 1rem;
-min-width: 400px;
-padding: 2rem;
+  min-width: 20rem;
+  padding: 2rem;
 
   transition: transform 0.2s ease;
   animation: ${fadeInUp} 0.6s ease both;
@@ -126,6 +154,9 @@ padding: 2rem;
     min-width: 240px;
     max-width: 270px;
   }
+    &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 export const Quizzes = styled.div`
@@ -138,12 +169,19 @@ export const Quizzes = styled.div`
 
 export const QuizzesCards = styled.div`
   display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 2.5rem;
-padding: 2.5rem 4rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+  padding: 2.5rem 4rem;
 
+  @media (max-width: 1366px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 1024px) {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -152,8 +190,27 @@ padding: 2.5rem 4rem;
     gap: 1rem;
 
     & > * {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
+      flex: 0 0 calc(100% / 1.2);
+
+      @media (min-width: 600px) {
+        flex: 0 0 calc(100% / 2.2);
+      }
+
+      @media (min-width: 768px) {
+        flex: 0 0 calc(100% / 3.2);
+      }
+
+      @media (min-width: 850px) {
+        flex: 0 0 calc(100% / 4.2);
+      }
+
+      @media (min-width: 950px) {
+        flex: 0 0 calc(100% / 5.2);
+      }
+
+      @media (min-width: 1024px) {
+        flex: 0 0 calc(100% / 6);
+      }
     }
 
     &::-webkit-scrollbar {
@@ -166,6 +223,8 @@ padding: 2.5rem 4rem;
     }
   }
 `;
+
+
 
 export const QuizCard = styled.div`
   background-color: #fff;
@@ -227,6 +286,7 @@ export const QuizText = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  text-align: left;
 
   p {
     margin-bottom: 1rem;
@@ -241,7 +301,7 @@ export const QuizText = styled.div`
 export const ButtonQuiz = styled.button`
   padding: 0.5rem;
   border-radius: 0.8rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
   border: 0;
   width: 100%;
   color: white;
