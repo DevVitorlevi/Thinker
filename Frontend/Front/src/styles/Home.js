@@ -52,9 +52,9 @@ export const Titulo = styled.div`
 
 export const MateriaCards = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+grid-template-columns: repeat(4, 1fr);
+gap: 2.5rem;
+padding: 2.5rem 4rem;
 
   @media (max-width: 768px) {
     display: flex;
@@ -84,8 +84,9 @@ export const MateriaCard = styled.div`
   background-color: #fff;
   border: 2px solid;
   border-radius: 1rem;
-  padding: 1.5rem;
-  min-width: 150px;
+min-width: 400px;
+padding: 2rem;
+
   transition: transform 0.2s ease;
   animation: ${fadeInUp} 0.6s ease both;
   cursor: pointer;
@@ -98,12 +99,12 @@ export const MateriaCard = styled.div`
   h3 {
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
-    font-family: 'Josefin Sans';
+  font-family: "Krona One", sans-serif;
   }
 
   p {
     font-size: 1rem;
-    font-family: 'Josefin Sans';
+  font-family: "Krona One", sans-serif;
   }
 
   &.matematica { border-color: #003869; color: #003869; }
@@ -137,9 +138,10 @@ export const Quizzes = styled.div`
 
 export const QuizzesCards = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 2.5rem;
+padding: 2.5rem 4rem;
+
 
   @media (max-width: 768px) {
     display: flex;
@@ -169,9 +171,8 @@ export const QuizCard = styled.div`
   background-color: #fff;
   border: 2px solid;
   border-radius: 1rem;
-  padding: 1.5rem;
-  min-width: 200px;
-  max-width: 280px;
+min-width: 250px;
+padding: 2rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   animation: ${fadeInUp} 0.6s ease both;
   cursor: pointer;
@@ -190,12 +191,12 @@ export const QuizCard = styled.div`
   h3 {
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
-    font-family: 'Josefin Sans';
+  font-family: "Krona One", sans-serif;
   }
 
   p {
     font-size: 1rem;
-    font-family: 'Josefin Sans';
+      font-family: "Krona One", sans-serif;
   }
 
   &.matematica { border-color: #003869; color: #003869; }
@@ -225,6 +226,7 @@ export const QuizText = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
 
   p {
     margin-bottom: 1rem;
@@ -245,6 +247,7 @@ export const ButtonQuiz = styled.button`
   color: white;
   font-weight: bold;
   font-size: 1rem;
+  font-family: "Krona One", sans-serif;
 
   &.matematica { background-color: #003869; }
   &.portugues { background-color: #930004; }
