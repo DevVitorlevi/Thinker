@@ -39,52 +39,48 @@ import {
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 
-const materiasData = [
-    { titulo: "Matemática", descricao: "Explore conceitos essenciais...", cor: "matematica", icon: <FunctionSquare size={28} /> },
-    { titulo: "Língua Portuguesa", descricao: "Aprimore sua comunicação!", cor: "portugues", icon: <BookText size={28} /> },
-    { titulo: "Física", descricao: "Estude as leis que regem o universo...", cor: "fisica", icon: <Atom size={28} /> },
-    { titulo: "Química", descricao: "Desvende os mistérios da matéria!", cor: "quimica", icon: <FlaskConical size={28} /> },
-    { titulo: "Biologia", descricao: "Explore a vida em todas as suas formas...", cor: "biologia", icon: <Leaf size={28} /> },
-    { titulo: "Geografia", descricao: "Explore o planeta...", cor: "geografia", icon: <Globe size={28} /> },
-    { titulo: "História", descricao: "Estude os principais eventos...", cor: "historia", icon: <Landmark size={28} /> },
-    { titulo: "Filosofia", descricao: "Investigue grandes questões...", cor: "filosofia", icon: <Brain size={28} /> },
-    { titulo: "Sociologia", descricao: "Estude a sociedade...", cor: "sociologia", icon: <UsersRound size={28} /> },
-    { titulo: "Espanhol", descricao: "Aprenda a se comunicar...", cor: "espanhol", icon: <Languages size={28} /> },
-    { titulo: "Educação Física", descricao: "Desenvolva corpo e mente...", cor: "educacao", icon: <Dumbbell size={28} /> },
-    { titulo: "Inglês", descricao: "Aprenda a entender e escrever em inglês...", cor: "ingles", icon: <MessageCircle size={28} /> }
-];
-
-// Mapeamento para aplicar classe de cor por matéria
-const corPorMateria = {
-    matematica: "matematica",
-    "lingua portuguesa": "portugues",       // removido acento de "língua"
-    fisica: "fisica",
-    quimica: "quimica",
-    biologia: "biologia",
-    geografia: "geografia",
-    historia: "historia",
-    filosofia: "filosofia",
-    sociologia: "sociologia",
-    espanhol: "espanhol",
-    "educacao fisica": "educacao",          // removido acento de "educação"
-    ingles: "ingles"
+// Mapeamento: nome da matéria (sem acento e minúsculo) → cor e ícone
+const materiaInfo = {
+    matematica: { cor: 'matematica', icon: <FunctionSquare size={28} /> },
+    'lingua portuguesa': { cor: 'portugues', icon: <BookText size={28} /> },
+    fisica: { cor: 'fisica', icon: <Atom size={28} /> },
+    quimica: { cor: 'quimica', icon: <FlaskConical size={28} /> },
+    biologia: { cor: 'biologia', icon: <Leaf size={28} /> },
+    geografia: { cor: 'geografia', icon: <Globe size={28} /> },
+    historia: { cor: 'historia', icon: <Landmark size={28} /> },
+    filosofia: { cor: 'filosofia', icon: <Brain size={28} /> },
+    sociologia: { cor: 'sociologia', icon: <UsersRound size={28} /> },
+    espanhol: { cor: 'espanhol', icon: <Languages size={28} /> },
+    'educacao fisica': { cor: 'educacao', icon: <Dumbbell size={28} /> },
+    ingles: { cor: 'ingles', icon: <MessageCircle size={28} /> }
 };
-
 
 export const Home = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [materias, setMaterias] = useState([]);
     const [quizzes, setQuizzes] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
+        async function fetchMaterias() {
+            try {
+                const response = await api.get('/materias');
+                setMaterias(response.data.materias);
+            } catch (error) {
+                console.error('Erro ao buscar matérias:', error);
+            }
+        }
+
         async function fetchQuizzes() {
             try {
                 const response = await api.get('/quizzes');
-                setQuizzes(response.data.quizzes.slice(0, 12)); // mostra só os 6 primeiros
+                setQuizzes(response.data.quizzes.slice(0, 12));
             } catch (error) {
                 console.error('Erro ao buscar quizzes:', error);
             }
         }
+
+        fetchMaterias();
         fetchQuizzes();
     }, []);
 
@@ -131,13 +127,22 @@ export const Home = () => {
                     </Titulo>
 
                     <MateriaCards>
-                        {materiasData.map((materia, index) => (
-                            <MateriaCard className={materia.cor} key={index}>
-                                <div className="icon">{materia.icon}</div>
-                                <h3>{materia.titulo}</h3>
-                                <p>{materia.descricao}</p>
-                            </MateriaCard>
-                        ))}
+                        {materias.map((materia, index) => {
+                            const nome = materia.nome
+                                ?.normalize("NFD")
+                                ?.replace(/[\u0300-\u036f]/g, "")
+                                ?.toLowerCase();
+
+                            const info = materiaInfo[nome] || { cor: 'default', icon: null };
+
+                            return (
+                                <MateriaCard className={info.cor} key={index}>
+                                    <div className="icon">{info.icon}</div>
+                                    <h3>{materia.nome}</h3>
+                                    <p>{materia.descricao}</p>
+                                </MateriaCard>
+                            );
+                        })}
                     </MateriaCards>
                 </Materias>
 
@@ -149,12 +154,12 @@ export const Home = () => {
 
                     <QuizzesCards>
                         {quizzes.map((quiz) => {
-                            const nomeMateriaNormalizado = quiz.materia?.nome
+                            const nomeMateria = quiz.materia?.nome
                                 ?.normalize("NFD")
                                 ?.replace(/[\u0300-\u036f]/g, "")
                                 ?.toLowerCase();
 
-                            const cor = corPorMateria[nomeMateriaNormalizado] || 'default';
+                            const cor = materiaInfo[nomeMateria]?.cor || 'default';
 
                             return (
                                 <QuizCard className={cor} key={quiz._id}>
@@ -170,7 +175,7 @@ export const Home = () => {
                         })}
                     </QuizzesCards>
                 </Quizzes>
-            </BackgroundContainer >
+            </BackgroundContainer>
 
             <Footer>
                 <img src={Logo} alt="Logo do Thinker" />
