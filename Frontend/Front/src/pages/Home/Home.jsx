@@ -57,7 +57,7 @@ const materiasData = [
 // Mapeamento para aplicar classe de cor por matéria
 const corPorMateria = {
     matematica: "matematica",
-    "língua portuguesa": "portugues",
+    "lingua portuguesa": "portugues",       // removido acento de "língua"
     fisica: "fisica",
     quimica: "quimica",
     biologia: "biologia",
@@ -66,9 +66,10 @@ const corPorMateria = {
     filosofia: "filosofia",
     sociologia: "sociologia",
     espanhol: "espanhol",
-    "educação física": "educacao",
+    "educacao fisica": "educacao",          // removido acento de "educação"
     ingles: "ingles"
 };
+
 
 export const Home = () => {
     const [menuOpen, setMenuOpen] = useState(false);
