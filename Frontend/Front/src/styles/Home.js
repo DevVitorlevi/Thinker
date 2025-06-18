@@ -21,7 +21,7 @@ export const Titulo = styled.div`
     text-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
     margin-bottom: 1rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       font-size: 2.5rem;
       letter-spacing: 0.2rem;
     }
@@ -33,8 +33,8 @@ export const Titulo = styled.div`
     letter-spacing: 0.5rem;
     text-shadow: 1rem 1rem 0.7rem rgba(0, 0, 0, 0.42);
 
-    @media (max-width: 768px) {
-      font-size: 1.5rem;
+    @media (max-width: 600px) {
+      font-size: 2rem;
       letter-spacing: 0.2rem;
     }
   }
@@ -50,7 +50,7 @@ export const MateriaCards = styled.div`
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -176,7 +176,7 @@ export const QuizzesCards = styled.div`
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
