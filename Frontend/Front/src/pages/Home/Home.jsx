@@ -148,8 +148,12 @@ export const Home = () => {
 
                     <QuizzesCards>
                         {quizzes.map((quiz) => {
-                            const nomeMateria = quiz.materia?.nome?.toLowerCase();
-                            const cor = corPorMateria[nomeMateria] || 'default';
+                            const nomeMateriaNormalizado = quiz.materia?.nome
+                                ?.normalize("NFD")
+                                ?.replace(/[\u0300-\u036f]/g, "")
+                                ?.toLowerCase();
+
+                            const cor = corPorMateria[nomeMateriaNormalizado] || 'default';
 
                             return (
                                 <QuizCard className={cor} key={quiz._id}>
