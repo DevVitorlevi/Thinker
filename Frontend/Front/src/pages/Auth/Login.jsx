@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
     ImageContent,
     FormSpace,
@@ -13,7 +13,8 @@ import { AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ImageSlider } from '../../components/ImageSlide';
-import { FlashMessage } from '../../components/FlashMessage';  // Importa aqui
+import { FlashMessage } from '../../components/FlashMessage';
+import { UserContext } from '../../Context/UserContext';
 
 export const Login = () => {
     const [formData, setFormData] = useState({
@@ -27,6 +28,8 @@ export const Login = () => {
     const [flash, setFlash] = useState({ type: '', message: '' }); // estado do flash
     const inputEmailRef = useRef(null);
     const navigate = useNavigate();
+    const { login } = useContext(UserContext);
+
 
     useEffect(() => {
         if (inputEmailRef.current) {
@@ -73,8 +76,10 @@ export const Login = () => {
             try {
                 const response = await axios.post('http://localhost:5000/users/login', formData);
 
-                const token = response.data.token;
+                const { token, user: userData } = response.data;
                 localStorage.setItem('token', token);
+                login(userData);
+
 
                 setFlash({ type: 'success', message: 'Login realizado com sucesso!' });
 

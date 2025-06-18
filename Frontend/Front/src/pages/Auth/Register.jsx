@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
     ImageContent,
     FormSpace,
@@ -14,6 +14,7 @@ import api from '../../services/api';
 import { ImageSlider } from '../../components/ImageSlide';
 import { FlashMessage } from '../../components/FlashMessage';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../Context/UserContext'
 
 
 export const Register = () => {
@@ -29,7 +30,7 @@ export const Register = () => {
     const [serverError, setServerError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [flash, setFlash] = useState({ type: '', message: '' });
-
+    const { login } = useContext(UserContext);
     const inputNameRef = useRef(null);
 
     useEffect(() => {
@@ -90,10 +91,9 @@ export const Register = () => {
 
                 // Mostrar flash message de sucesso
                 setFlash({ type: 'success', message });
-
                 localStorage.setItem('token', token);
+                login(user); // atualiza o contexto
 
-                console.log('Usuário cadastrado com sucesso:', user);
 
                 // limpa o form e foca no nome
                 setFormData({
