@@ -7,6 +7,7 @@ require('./config/conn'); // Importa a conexão com o MongoDB
 // Rotas
 const adminRoutes = require('./routes/AdminRoutes');
 const userRoutes = require('./routes/UserRoutes');
+const quizRoutes = require('./routes/QuizzesRoutes');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -35,6 +36,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Rotas
 app.use('/admin', adminRoutes);
 app.use('/users', userRoutes);
+app.use('/quizzes', quizRoutes);
 
 
 // Middleware de erro
