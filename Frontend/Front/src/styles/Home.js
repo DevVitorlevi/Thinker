@@ -104,18 +104,20 @@ export const MateriaCard = styled.div`
   border-radius: 1rem;
   min-width: 20rem;
   padding: 2rem;
-  transition: .5s;
+  transition: .2s;
   cursor: pointer;
-  text-align: center;
+  text-align:left;
 
   .icon {
     margin-bottom: 0.8rem;
+    text-align: center;
   }
 
   h3 {
     font-size: 1.3rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
   font-family: "Krona One", sans-serif;
+  text-align: center;
   }
 
   p {
