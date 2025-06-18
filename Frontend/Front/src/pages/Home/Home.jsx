@@ -79,7 +79,7 @@ export const Home = () => {
         async function fetchQuizzes() {
             try {
                 const response = await api.get('/quizzes');
-                setQuizzes(response.data.quizzes.slice(0, 6)); // mostra só os 6 primeiros
+                setQuizzes(response.data.quizzes.slice(0, 12)); // mostra só os 6 primeiros
             } catch (error) {
                 console.error('Erro ao buscar quizzes:', error);
             }
