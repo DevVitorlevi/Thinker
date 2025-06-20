@@ -1,5 +1,31 @@
 // styles/Register.js
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+
+const slideDown = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px; /* Valor suficiente para o conteúdo */
+  }
+`;
+
+const slideUp = keyframes`
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+`;
 
 export const Wrapper = styled.div`
   width: 100vw;
@@ -209,3 +235,56 @@ export const ButtonSubmit = styled.button`
         font-size: 2.4rem;
     }
 `;
+
+export const PasswordCriteriaContainer = styled.div`
+  width: 40vw;
+  background-color: #e9f0ff;
+  border: 2px solid #005bbb;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin: 0 auto 1rem auto;
+  font-size: 1.2rem;
+  color: #005bbb;
+  font-family: 'Josefin Sans', sans-serif;
+  user-select: none;
+  overflow: hidden;
+
+  animation-fill-mode: forwards;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+
+  /* Aparece se show for true, desaparece se false */
+  ${({ show }) =>
+    show
+      ? css`
+          animation-name: ${slideDown};
+          max-height: 200px;
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+          margin-bottom: 1rem;
+        `
+      : css`
+          animation-name: ${slideUp};
+          max-height: 0;
+          opacity: 0;
+          transform: translateY(-10px);
+          pointer-events: none;
+          margin-bottom: 0;
+        `}
+`;
+
+export const CriteriaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+`;
+
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ valid }) => (valid ? '#3BB143' : '#E02424')};
+`;
+

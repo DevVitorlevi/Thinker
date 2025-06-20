@@ -7,15 +7,17 @@ import {
     FormContainer,
     ButtonSubmit,
     InputContent,
+    PasswordCriteriaContainer,
+    CriteriaItem,
+    IconWrapper,
 } from '../../styles/Form';
-import { User, AtSign, Eye, EyeClosed, Lock } from 'lucide-react';
+import { User, AtSign, Eye, EyeClosed, Lock, XCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { ImageSlider } from '../../components/ImageSlide';
 import { FlashMessage } from '../../components/FlashMessage';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../Context/UserContext'
-
+import { UserContext } from '../../Context/UserContext';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -25,13 +27,15 @@ export const Register = () => {
     });
     const navigate = useNavigate();
 
-
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [flash, setFlash] = useState({ type: '', message: '' });
     const { login } = useContext(UserContext);
     const inputNameRef = useRef(null);
+
+    // Para mostrar/esconder a caixa de critérios
+    const [passwordFocused, setPasswordFocused] = useState(false);
 
     useEffect(() => {
         if (inputNameRef.current) {
@@ -41,6 +45,12 @@ export const Register = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    // Critérios da senha - funções que retornam boolean
+    const hasNumber = (str) => /\d/.test(str);
+    const hasUpperCase = (str) => /[A-Z]/.test(str);
+    const hasMinLength = (str) => str.length >= 8;
+    const hasSpecialChar = (str) => /[!@#$%^&*(),.?":{}|<>]/.test(str);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -49,13 +59,31 @@ export const Register = () => {
             [name]: value,
         }));
 
-        // Real-time validation
+        // Real-time validation email
         if (name === 'email') {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 email: emailRegex.test(value) ? '' : 'E-mail inválido',
             }));
         }
+
+        // Limpa erro de senha quando digita
+        if (name === 'password' && errors.password) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: '',
+            }));
+        }
+    };
+
+    const allCriteriaMet = () => {
+        const pwd = formData.password;
+        return (
+            hasNumber(pwd) &&
+            hasUpperCase(pwd) &&
+            hasMinLength(pwd) &&
+            hasSpecialChar(pwd)
+        );
     };
 
     const handleSubmit = async (e) => {
@@ -71,8 +99,8 @@ export const Register = () => {
             newErrors.email = 'E-mail inválido';
         }
 
-        if (formData.password.length < 6) {
-            newErrors.password = 'Senha muito curta';
+        if (!allCriteriaMet()) {
+            newErrors.password = 'A senha não atende todos os critérios';
         }
 
         setErrors(newErrors);
@@ -89,13 +117,10 @@ export const Register = () => {
 
                 const { message, token, user } = response.data;
 
-                // Mostrar flash message de sucesso
                 setFlash({ type: 'success', message });
                 localStorage.setItem('token', token);
-                login(user); // atualiza o contexto
+                login(user);
 
-
-                // limpa o form e foca no nome
                 setFormData({
                     name: '',
                     email: '',
@@ -104,7 +129,6 @@ export const Register = () => {
 
                 if (inputNameRef.current) inputNameRef.current.focus();
 
-                // Redireciona para a Home após 1.5s
                 setTimeout(() => {
                     navigate('/home');
                 }, 1500);
@@ -114,14 +138,12 @@ export const Register = () => {
 
                 setServerError(errorMsg);
 
-                // Mostrar flash message de erro
                 setFlash({ type: 'error', message: errorMsg });
 
                 console.error('Erro no cadastro:', err);
             }
         }
     };
-
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevShow) => !prevShow);
@@ -149,7 +171,7 @@ export const Register = () => {
                         </h1>
                     </Head>
                     <FormContainer>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} noValidate>
                             <InputContent>
                                 <input
                                     type="text"
@@ -187,10 +209,13 @@ export const Register = () => {
                                     required
                                     value={formData.password}
                                     onChange={handleChange}
+                                    onFocus={() => setPasswordFocused(true)}
+                                    onBlur={() => setPasswordFocused(false)}
                                     placeholder="Senha"
+                                    autoComplete="new-password"
                                 />
                                 <Lock className="icon" />
-                                <span onClick={togglePasswordVisibility}>
+                                <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
                                     {showPassword ? (
                                         <EyeClosed className="eye-c" />
                                     ) : (
@@ -201,7 +226,56 @@ export const Register = () => {
                                     <p className="error-message">{errors.password}</p>
                                 )}
                             </InputContent>
-                            <ButtonSubmit type="submit">Cadastrar</ButtonSubmit>
+
+                            <PasswordCriteriaContainer show={passwordFocused}>
+                                <CriteriaItem>
+                                    <IconWrapper valid={hasNumber(formData.password)}>
+                                        {hasNumber(formData.password) ? (
+                                            <CheckCircle color="#3BB143" size={18} />
+                                        ) : (
+                                            <XCircle color="#E02424" size={18} />
+                                        )}
+                                    </IconWrapper>
+                                    A Senha Deve Conter Pelo Menos um Número(12345...)
+                                </CriteriaItem>
+
+                                <CriteriaItem>
+                                    <IconWrapper valid={hasUpperCase(formData.password)}>
+                                        {hasUpperCase(formData.password) ? (
+                                            <CheckCircle color="#3BB143" size={18} />
+                                        ) : (
+                                            <XCircle color="#E02424" size={18} />
+                                        )}
+                                    </IconWrapper>
+                                    A Senha Deve Conter Pelo Menos uma Letra Maiuscula(ABCD...)
+                                </CriteriaItem>
+
+                                <CriteriaItem>
+                                    <IconWrapper valid={hasMinLength(formData.password)}>
+                                        {hasMinLength(formData.password) ? (
+                                            <CheckCircle color="#3BB143" size={18} />
+                                        ) : (
+                                            <XCircle color="#E02424" size={18} />
+                                        )}
+                                    </IconWrapper>
+                                    A Senha Deve Conter Mais de 8 digitos
+                                </CriteriaItem>
+
+                                <CriteriaItem>
+                                    <IconWrapper valid={hasSpecialChar(formData.password)}>
+                                        {hasSpecialChar(formData.password) ? (
+                                            <CheckCircle color="#3BB143" size={18} />
+                                        ) : (
+                                            <XCircle color="#E02424" size={18} />
+                                        )}
+                                    </IconWrapper>
+                                    A Senha Deve Conter Pelo Menos um Caractere Especial(!@#$%...)
+                                </CriteriaItem>
+                            </PasswordCriteriaContainer>
+
+                            <ButtonSubmit type="submit" disabled={!allCriteriaMet()}>
+                                Cadastrar
+                            </ButtonSubmit>
                             <Link to="/login">Já possui conta? Entre</Link>
                         </form>
                     </FormContainer>
